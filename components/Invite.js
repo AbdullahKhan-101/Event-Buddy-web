@@ -128,7 +128,7 @@ const Invite = () => {
   const getUserData = async () => {
     let user = await localStorage.getItem("user");
     const userData = JSON.parse(user);
-    console.log("------------>nnnn", userData?.user?.Id);
+    // console.log("------------>nnnn", userData?.user?.Id);
     setUserId(userData);
   };
   return (
@@ -153,7 +153,7 @@ const Invite = () => {
                   className="block w-full p-4 border-none outline-none rounded-xl"
                   onChange={(e) => {
                     setEventName(e.target.value);
-                    console.log(eventName);
+                    // console.log(eventName);
                   }}
                 />
               </div>
@@ -167,7 +167,7 @@ const Invite = () => {
                     placeholder="Pick Date"
                     className="block w-full p-4 text-gray-400 border-none outline-none rounded-xl"
                     onChange={(e) => {
-                      console.log(e.target.value);
+                      // console.log(e.target.value);
                       setEventDate(e.target.value);
                     }}
                   />
@@ -181,7 +181,7 @@ const Invite = () => {
                     placeholder="Pick Time"
                     className="block w-full p-4 text-gray-400 border-none outline-none rounded-xl"
                     onChange={(e) => {
-                      console.log(e.target.value);
+                      // console.log(e.target.value);
                       setEventTime(e.target.value);
                     }}
                   />

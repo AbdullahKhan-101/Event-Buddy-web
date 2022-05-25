@@ -6,7 +6,7 @@ import Chat from "./Chat";
 import { useDispatch, useSelector } from "react-redux";
 import { HomeActions } from "../store/actions";
 import IO from "socket.io-client";
-import { SOCKET_URL } from "../config/utils";
+import { imageBaseUrl, SOCKET_URL } from "../config/utils";
 import Notifications from "./Notifications";
 import { Avatar } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
@@ -16,22 +16,39 @@ import {
   ChevronLeftIcon,
   EmojiHappyIcon,
 } from "@heroicons/react/outline";
+import Moment from "react-moment";
+import Loader from "./Loader";
+import { useRecoilState } from "recoil";
+import { loadingState } from "../atoms/modalAtom";
+import moment from "moment";
+import { socket, setSocketRef } from "../config/utils";
 const Messeges = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const [user, setUser] = useState({});
+  const [chatItem, setChatItem] = useState();
   const userDetails = useSelector((state) => state?.Home?.userDetail);
+  const [loading, setLoading] = useRecoilState(loadingState);
+  const [message, setMessage] = useState("");
+  const [chat, setChat] = useState([]);
+  // let socket;
   // const user = localStorage.getItem("user");
   const [invitationMessagesSuccess, setInvitationMessagesSuccess] = useState(
     []
   );
 
   const invitationMessages = useSelector(
-    (state) => state?.Home?.InvitationMessages
+    (state) => state?.Home?.Invitation_messages
   );
-  console.log("user------------>", userDetails);
 
+  const invitatioinChat = useSelector((state) => state?.Home?.Invitation_chat);
+  // console.log(
+  //   "invitationMessages------------>",
+  //   invitationMessages?.data?.Data?.length
+  // );
+  // console.log("=======>User Not Login", invitatioinChat);
   useEffect(() => {
+    setLoading(true);
     UserDetails()
       .then((res) => {
         dispatch(
@@ -40,10 +57,12 @@ const Messeges = () => {
             token: res?.token,
           })
         );
-        socketConnection({ id: res?.user?.Id, token: res?.token });
+
+        // console.log("=======>User Not Login", invitationMessages);
+        // socketConnection({ id: res?.user?.Id, token: res?.token });
       })
       .catch((e) => {
-        console.log("=======>User Not Login", e);
+        // console.log("=======>User Not Login", e);
       });
     dispatch(HomeActions.InvitationMessages());
   }, []);
@@ -54,58 +73,85 @@ const Messeges = () => {
     setUser(user);
     return user;
   };
-  const socketConnection = (data) => {
-    const socket = IO(
-      `${SOCKET_URL}?actorId=${data?.id}&authorization=${data?.token}`,
-      {
-        forceNew: true,
-      }
-    );
-    console.log("===================>Socket Connection", socket);
+
+  if (invitationMessages?.data?.Data?.length >= 0) {
+    setLoading(false);
+  }
+
+  const getOldChat = (id) => {
+    dispatch(HomeActions.InvitationChat(id));
+    socket.emit("chat_join", {
+      ChatId: id,
+    });
+    let array = [];
+    invitatioinChat?.data?.Data?.map((item) => {
+      chat.push({
+        CreatedById: item?.CreatedById,
+        Id: item?.Id,
+        Message: item?.Message,
+      });
+    });
+    recievedMessagesfromServer();
+    // setChat(array);
+    // console.log("00000000000", array);
   };
 
-  const dummyMessages = [
-    {
-      img: "/man2.png",
-      name: "Kelly Bishop",
-      description: `Amazing event organizer Lorem ipsum dolor sit amet
-      consectetur adipisicing elit. Ut, quas.`,
-      time: "8m ago",
-    },
-    {
-      img: "/man2.png",
-      name: "Kelly Bishop",
-      description: `Amazing event organizer Lorem ipsum dolor sit amet
-      consectetur adipisicing elit. Ut, quas.`,
-      time: "8m ago",
-    },
-    {
-      img: "/man2.png",
-      name: "Kelly Bishop",
-      description: `Amazing event organizer Lorem ipsum dolor sit amet
-      consectetur adipisicing elit. Ut, quas.`,
-      time: "8m ago",
-    },
-  ];
+  const sendMessage = () => {
+    // console.log("-------->>>>>><<<<>>>", message);
+    setMessage("");
+    socket.emit(
+      "message",
+      {
+        InvitationId: chatItem?.Id,
+        Content: message,
+      },
+      async (data) => {
+        console.log("data", data);
+        chat.push({
+          CreatedById: data?.Chat?.CreatedById,
+          Id: data?.Chat.Id,
+          Message: data?.Chat.Message,
+        });
+      }
+    );
 
+    dispatch(HomeActions.InvitationChat(chatItem?.Id));
+  };
+  const recievedMessagesfromServer = () => {
+    socket.on("message", (data) => {
+      // const packet = JSON.parse(data);
+      console.log("----------->", data.Chat);
+      chat.push({
+        CreatedById: data?.Chat?.CreatedById,
+        Id: data?.Chat.Id,
+        Message: data?.Chat.Message,
+      });
+    });
+  };
   return (
     <div>
       <Nav active="messeges" />
       <div className="p-2 mx-auto mt-0 max-w-7xl md:mt-5 "></div>
-      <div className="flex flex-wrap mx-auto justify-evenly max-w-7xl ">
+      <div className="flex flex-wrap mx-auto justify-left max-w-7xl ">
         <div className="flex-grow md:max-w-[410px] bg-white  hidden md:inline-block">
           <div className="p-5 -mb-1 rounded-md md:mb-5 md:shadow-lg">
             <h1 className="text-2xl font-strongg text-[#0E134F]">Messeges</h1>
             <div>
-              {dummyMessages.map((item, index) => {
+              {invitationMessages?.data?.Data?.map((item, index) => {
                 return (
                   <div
                     key={index}
                     className="flex items-center p-2 py-4 mt-4 bg-white rounded-lg shadow-[0_5px_30px_-13px_rgba(0,0,0,0.3)] cursor-pointer md:-ml-2 md:shadow-none"
+                    // style={{ border: "2px solid red" }}
+                    onClick={() => {
+                      setChatItem(item);
+                      getOldChat(item?.Id);
+                      console.log("Item", item);
+                    }}
                   >
                     <div className="relative flex-grow-0 sm:mt-0 mt-0  max-w-[100%] w-[55px] h-[55px]  min-w-[55px]">
                       <Image
-                        src={item.img}
+                        src={imageBaseUrl + item?.User?.Media?.Path}
                         layout="fill"
                         objectfit="contain"
                         className="rounded-xl"
@@ -114,14 +160,14 @@ const Messeges = () => {
                     <div className="flex items-center flex-grow ml-4 md:ml-4">
                       <div className="flex-grow">
                         <h1 className="font-bold text-[#0E134F]">
-                          {item.name}
+                          {item?.User?.FullName}
                         </h1>
                         <h1 className="text-sm text-gray-400 line-clamp-1">
-                          {item.description}
+                          {item?.Description}
                         </h1>
                       </div>
-                      <p className="mb-4 text-sm text-[#E9813B]  min-w-[50px]">
-                        {item.time}
+                      <p className="mb-4 text-sm text-[#E9813B]  min-w-[120px] max-h-10">
+                        <Moment fromNow>{item?.CreatedAt}</Moment>
                       </p>
                     </div>
                   </div>
@@ -137,7 +183,7 @@ const Messeges = () => {
           <div className="p-5 -mb-1 rounded-md md:mb-5 md:shadow-lg">
             <h1 className="text-2xl font-bold text-[#0E134F]">Messeges</h1>
             <div>
-              {dummyMessages.map((item, index) => {
+              {invitationMessages?.data?.Data?.map((item, index) => {
                 return (
                   <div
                     key={index}
@@ -146,7 +192,7 @@ const Messeges = () => {
                   >
                     <div className="relative flex-grow-0 sm:mt-0 mt-0  max-w-[100%] w-[55px] h-[55px]  min-w-[55px]">
                       <Image
-                        src={item.img}
+                        src={imageBaseUrl + item?.User?.Media?.Path}
                         layout="fill"
                         objectfit="contain"
                         className="rounded-xl"
@@ -155,14 +201,14 @@ const Messeges = () => {
                     <div className="flex items-center flex-grow ml-4 md:ml-4">
                       <div className="flex-grow">
                         <h1 className="font-bold text-[#0E134F]">
-                          {item.name}
+                          {item?.User?.FullName}
                         </h1>
                         <h1 className="text-sm text-gray-400 line-clamp-1">
-                          {item.description}
+                          {item?.Description}
                         </h1>
                       </div>
                       <p className="mb-4 text-sm text-[#E9813B]  min-w-[50px]">
-                        {item.time}
+                        {item?.CreatedAt}
                       </p>
                     </div>
                   </div>
@@ -172,98 +218,111 @@ const Messeges = () => {
           </div>
         </div>
 
-        {/* here we declare */}
-        <div className="md:max-w-[700px]  flex-grow  bg-white hidden md:inline-block">
-          {/* <Chat /> */}
-          <div className="md:max-w-[700px]  flex-grow  bg-white ">
-            {/* chat here */}
-            <div className="shadow-lg md:rounded-lg">
-              <div className="p-5">
-                <h1 className="flex items-center justify-between">
-                  <span
-                    className="flex-grow-0 float-left cursor-pointer md:hidden"
-                    onClick={() => router.push("/messeges")}
-                  >
-                    <ChevronLeftIcon className="h-6 w-6 sm:w-8 sm:h-8 text-[#E9813B] cursor-pointer" />
-                  </span>
-                  <span className="pl-2 text-xl md:font-mediumm md:text-[#42526E] font-strongg text-[#0E134F]">
-                    Adam Willamson
-                  </span>
-                  <div className="relative w-[34px] mr-1 h-[22px]  text-[#E9813B] ">
-                    <Image
-                      src="/hand.png"
-                      alt="infoImg"
-                      layout="fill"
-                      objectfit="contain"
-                    />
-                  </div>
-                </h1>
-              </div>
-              <hr className="w-[100%] mx-auto border-gray-200" />
-              <div className="p-5">
-                <div className="border-[#E77334] border p-3 rounded-lg bg-white shadow-md">
-                  <p className="flex items-center ">
-                    <CalendarIcon className="w-4 h-4 text-[#ED974B]" />
-                    <span className="ml-2 text-sm text-gray-400">
-                      3 November, 2022
+        {chatItem && (
+          <div
+            className="md:max-w-[700px]  flex-grow  bg-white hidden md:inline-block"
+            style={{ marginLeft: chatItem ? "150px" : "0px" }}
+          >
+            <div className="md:max-w-[700px]  flex-grow  bg-white ">
+              <div className="shadow-lg md:rounded-lg">
+                <div className="p-5">
+                  <h1 className="flex items-center justify-between">
+                    <span
+                      className="flex-grow-0 float-left cursor-pointer md:hidden"
+                      onClick={() => router.push("/messeges")}
+                    >
+                      <ChevronLeftIcon className="h-6 w-6 sm:w-8 sm:h-8 text-[#E9813B] cursor-pointer" />
                     </span>
-                  </p>
-                  <h4 className="font-bold text-[#0E134F] my-1">
-                    Birthday Celebration
-                  </h4>
-                  <p className="text-sm text-gray-400  line-clamp-2 max-w-[330px]">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Quae, culpa?
-                  </p>
-                </div>
-                {/* messeges here */}
-                <div className="pt-8 pb-4 scrollbar-hide max-h-[350px] overflow-y-scroll ">
-                  <h1 className="float-right text-[14px] px-3 py-2 bg-gray-100 rounded-tr-none rounded-xl ">
-                    I am doing good
-                  </h1>
-                  <h1 className="flex mt-[52px] mb-[11px]">
-                    <Avatar src="/man1.png" />
-                    <span className="px-3 pt-2 pb-[10px] text-[14px] ml-2 bg-[#FCEFE6] rounded-tl-none rounded-xl">
-                      Hey how are you today?
+                    <span className="pl-2 text-xl md:font-mediumm md:text-[#42526E] font-strongg text-[#0E134F]">
+                      {chatItem?.User?.FullName}
                     </span>
-                  </h1>
-                  <h1 className="float-right text-[14px] px-3 py-2 bg-gray-100 rounded-tr-none rounded-xl ">
-                    Ok, Send me quick
-                  </h1>
-                  <h1 className="flex mt-[61px] mb-[11px]">
-                    <Avatar src="/man2.png" />
-                    <span className="px-1 py-1 text-[14px] ml-2 bg-[#FCEFE6] rounded-tl-none rounded-xl">
-                      <div className="relative flex-grow sm:mt-0 mt-0  md:max-w-[100%] w-[220px] mx-auto   cursor-pointer h-[125px]  min-w-[110px] max-h-[280px] max-w-[97%]  rounded-lg">
-                        <Image
-                          src="/gamepic.png"
-                          layout="fill"
-                          objectfit="cover"
-                          className="rounded-lg rounded-tl-none"
-                        />
-                      </div>
-                    </span>
+                    <div className="relative w-[34px] mr-1 h-[22px]  text-[#E9813B] ">
+                      <Image
+                        src="/hand.png"
+                        alt="infoImg"
+                        layout="fill"
+                        objectfit="contain"
+                      />
+                    </div>
                   </h1>
                 </div>
-                <div className="flex justify-between mb-6 md:mb-1">
-                  <div className="flex items-center flex-grow px-4 bg-[#F2F2F2] py-2 rounded-md mr-3">
-                    <input
-                      type="text"
-                      placeholder="Type messege"
-                      className="flex-grow text-sm bg-transparent border-none outline-none"
-                    />
-                    <EmojiHappyIcon className="w-5 h-5 mr-2 text-gray-400 cursor-pointer" />
-                    <CameraIcon className="w-5 h-5 text-gray-400 cursor-pointer" />
+                <hr className="w-[100%] mx-auto border-gray-200" />
+                <div className="p-5">
+                  <div className="border-[#E77334] border p-3 rounded-lg bg-white shadow-md">
+                    <p className="flex items-center ">
+                      <CalendarIcon className="w-4 h-4 text-[#ED974B]" />
+                      <span className="ml-2 text-sm text-gray-400">
+                        {moment(chatItem?.CreatedAt).format("LL")}
+                      </span>
+                    </p>
+                    <h4 className="font-bold text-[#0E134F] my-1">
+                      {chatItem?.Title}
+                    </h4>
+                    <p className="text-sm text-gray-400  line-clamp-2 max-w-[330px]">
+                      {chatItem?.Description}
+                    </p>
                   </div>
-                  <div className="float-right  cursor-pointer bg-[#E9813B] flex items-center justify-center p-2 rounded-md">
-                    <SendIcon className="w-5 h-5 text-white -rotate-45" />
+
+                  <div className="pt-8 pb-4 scrollbar-hide max-h-[350px] overflow-y-scroll ">
+                    {chat?.map((item) => {
+                      return (
+                        <>
+                          {user?.user?.Id == item?.CreatedById ? (
+                            <h1
+                              className="flex mt-[52px] mb-[11px]"
+                              style={{
+                                display: "flex",
+                                flexDirection: "column",
+                              }}
+                            >
+                              <span
+                                className="  px-3 pt-2 pb-[10px] text-[14px] ml-2 bg-gray-100 rounded-tl-none rounded-xl"
+                                style={{ alignSelf: "flex-end" }}
+                              >
+                                {item?.Message}
+                              </span>
+                            </h1>
+                          ) : (
+                            <h1 className="flex mt-[52px] mb-[11px]">
+                              <Avatar src="/man1.png" />
+                              <span className="px-3 pt-2 pb-[10px] text-[14px] ml-2 bg-[#FCEFE6] rounded-tl-none rounded-xl">
+                                {item?.Message}
+                              </span>
+                            </h1>
+                          )}
+                        </>
+                      );
+                    })}
+                  </div>
+                  <div className="flex justify-between mb-6 md:mb-1">
+                    <div className="flex items-center flex-grow px-4 bg-[#F2F2F2] py-2 rounded-md mr-3">
+                      <input
+                        type="text"
+                        placeholder="Type messege"
+                        className="flex-grow text-sm bg-transparent border-none outline-none"
+                        value={message}
+                        onChange={(e) => {
+                          setMessage(e.target.value);
+                        }}
+                      />
+                      {/* <EmojiHappyIcon className="w-5 h-5 mr-2 text-gray-400 cursor-pointer" /> */}
+                      <CameraIcon className="w-5 h-5 text-gray-400 cursor-pointer" />
+                    </div>
+                    <div
+                      className="float-right  cursor-pointer bg-[#E9813B] flex items-center justify-center p-2 rounded-md"
+                      onClick={() => sendMessage()}
+                    >
+                      <SendIcon className="w-5 h-5 text-white -rotate-45" />
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
       <Notifications />
+      <Loader />
     </div>
   );
 };

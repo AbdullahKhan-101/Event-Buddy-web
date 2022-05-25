@@ -10,13 +10,13 @@ export default function Home() {
   useEffect(() => {
     AOS.init();
   }, []);
-
   const router = useRouter();
   useEffect(() => {
     setTimeout(() => {
       router.push("login");
     }, 3000);
   }, []);
+
   return (
     <div>
       <Head>

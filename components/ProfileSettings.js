@@ -15,8 +15,11 @@ import { imageBaseUrl } from "../config/utils";
 import { useRecoilState } from "recoil";
 import { loadingState } from "../atoms/modalAtom";
 import Loader from "./Loader";
-
+import axios from "axios";
+import qs from "qs";
+import QueryString from "query-string";
 const ProfileSettings = () => {
+  // const queryString = require("query-string");
   const [name, setName] = useState("");
   const [number, setNumber] = useState("");
   const [description, setDescription] = useState("");
@@ -51,48 +54,59 @@ const ProfileSettings = () => {
     dispatch(HomeActions.UserProfile());
   }, []);
 
-  console.log(userProfile);
+  // console.log(userProfile);
   const onSave = async (image) => {
     setLoading(true);
     // console.log("===========>", image);
     const JWT = localStorage.getItem("JWT");
-    // if (selectedImage) {
-    //   const formData = new FormData();
-    //   formData.append("file", image);
-    //   try {
-    //     let fata = await axios.post(
-    //       "http://54.144.168.52:3000/media/upload",
-    //       formData,
-    //       {
-    //         headers: {
-    //           "Content-Type": "multipart/form-data",
-    //           authorization: JWT,
-    //         },
-    //       }
-    //     );
-    //     console.log(fata?.data.Status, "api payload");
-    //     if (fata?.data.Status == 200) {
-    //       updateProfile(fata);
-    //     } else {
-    //       throw new Error(fata?.data);
-    //     }
-    //   } catch (error) {
-    //     toast.error(error);
-    //     console.log(error, "api payload");
-    //   }
-    // } else {
-    //   updateProfile();
-    // }
+    if (selectedImage) {
+      const formData = new FormData();
+      formData.append("file", selectedImage);
+      try {
+        let fata = await axios.post(
+          "http://54.144.168.52:3000/media/upload",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              authorization: JWT,
+            },
+          }
+        );
+        console.log(fata, "api payload");
+        if (fata?.data.Status == 200) {
+          updateProfile(fata?.data?.Data?.Id);
+        } else {
+          throw new Error(fata?.data);
+        }
+      } catch (error) {
+        toast.error(error);
+        console.log(error, "api payload");
+      }
+    } else {
+      updateProfile();
+    }
   };
   const updateProfile = async (data) => {
+    console.log(data, "data ");
     const JWT = localStorage.getItem("JWT");
     const formData = new FormData();
     if (data) {
-      formData.append("MediaId", data);
+      // formData.append("MediaId", data);
+      const params = new URLSearchParams();
+      params.append("MediaId", 154);
+      console.log(params.values(), "WHat is my dat");
+      // params.append('lastName', 'fred');
+      // axios.post('/user', params);
+      // const payload = { MediaId: data };
+      // var mediaId = qs.stringify(payload);
+      // console.log(mediaId, "data ");
       try {
         let fata = await axios.post(
           "http://54.144.168.52:3000/user",
-          formData,
+          QueryString.stringify({
+            MediaId: 154, //gave the values directly for testing
+          }),
           {
             headers: {
               "Content-Type": "application/x-www-form-urlencoded",
@@ -100,11 +114,12 @@ const ProfileSettings = () => {
             },
           }
         );
+        console.log(fata.data, "user setting api image");
       } catch (error) {
         // setIsLoading(false);
         toast.error(error);
-        console.log(error, "api payload");
-        console.log("if user error", isLoading);
+        // console.log(error, "api payload");
+        // console.log("if user error", isLoading);
       }
     } else if (name && !data && !number && !description) {
       formData.append("FullName", name);
@@ -113,7 +128,7 @@ const ProfileSettings = () => {
       try {
         let fata = await axios.post(
           "http://54.144.168.52:3000/user",
-          formData,
+          { FullName: name, UserName: name },
           {
             headers: {
               "Content-Type": "application/x-www-form-urlencoded",
@@ -121,11 +136,12 @@ const ProfileSettings = () => {
             },
           }
         );
+        console.log(fata, "user setting api name");
       } catch (error) {
         // setIsLoading(false);
         toast.error(error);
-        console.log(error, "api payload");
-        console.log("if user error", isLoading);
+        // console.log(error, "api payload");
+        // console.log("if user error", isLoading);
       }
     } else if (name && !data && number && !description) {
       formData.append("FullName", name);
@@ -145,8 +161,8 @@ const ProfileSettings = () => {
       } catch (error) {
         // setIsLoading(false);
         toast.error(error);
-        console.log(error, "api payload");
-        console.log("if user error", isLoading);
+        // console.log(error, "api payload");
+        // console.log("if user error", isLoading);
       }
     } else if (name && !data && number && description) {
       formData.append("FullName", name);
@@ -167,8 +183,8 @@ const ProfileSettings = () => {
       } catch (error) {
         // setIsLoading(false);
         toast.error(error);
-        console.log(error, "api payload");
-        console.log("if user error", isLoading);
+        // console.log(error, "api payload");
+        // console.log("if user error", isLoading);
       }
     } else if (name && data && number && description) {
       formData.append("FullName", name);
@@ -190,8 +206,8 @@ const ProfileSettings = () => {
       } catch (error) {
         // setIsLoading(false);
         toast.error(error);
-        console.log(error, "api payload");
-        console.log("if user error", isLoading);
+        // console.log(error, "api payload");
+        // console.log("if user error", isLoading);
       }
     }
   };
@@ -332,6 +348,7 @@ const ProfileSettings = () => {
         </div>
       </div>
       <Loader />
+      <ToastContainer />
     </div>
   );
 };

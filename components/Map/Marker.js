@@ -3,7 +3,7 @@ import React from "react";
 import Image from "next/image";
 const MyMarker = ({ text, tooltip, $hover, image }) => {
   const handleClick = () => {
-    console.log(`You clicked on ${tooltip}`);
+    // console.log(`You clicked on ${tooltip}`);
   };
   // console.log(`You clicked on ${image}`);
   return (

@@ -48,7 +48,7 @@ const [noPhoto, setNoPhoto] = useState(true);
         video.play();
       })
       .catch((err) => {
-        console.error(err);
+        // console.error(err);
       });
     setPlay(true);
   };
@@ -79,7 +79,7 @@ const [noPhoto, setNoPhoto] = useState(true);
 
 
   const upload = async (image) => {
-console.log(image);
+// console.log(image);
     // const formData = new FormData();
     // formData.append('file',image)
     //   try {

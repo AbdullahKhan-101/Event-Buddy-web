@@ -14,7 +14,10 @@ import { v4 as uuidv4 } from "uuid";
 import SetPassModal from "./Modal/SetPassModal";
 import { useDispatch, useSelector } from "react-redux";
 import { HomeActions } from "../store/actions";
-import Loader from "../components/Loader/Loader";
+import Loader from "./Loader";
+import { useRecoilState } from "recoil";
+import { loadingState } from "../atoms/modalAtom";
+
 const Login = () => {
   const height = 0;
   const width = 0;
@@ -26,16 +29,16 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const uuid = uuidv4();
   const [showModal, setShowModal] = useState(false);
-
+  const [loading, setLoading] = useRecoilState(loadingState);
   useEffect(() => {
     AOS.init();
   }, []);
 
   const login = async () => {
-    setIsLoading(true);
+    setLoading(true);
     if (!email || !password) {
       toast.error("Please Enter Email Or Password");
-      setIsLoading(false);
+      setLoading(false);
     } else {
       const payload = {
         Email: email,
@@ -51,17 +54,17 @@ const Login = () => {
         // console.log(fata, "api payload");
         if (fata?.data?.Status == 200) {
           if (!fata?.data?.Data?.User?.Media) {
-            setIsLoading(false);
+            setLoading(false);
             setEmail("");
             setPassword("");
             router.push("/uploadPicture");
-            console.log("if 200", isLoading);
+            // console.log("if 200", isLoading);
           } else if (!fata?.data?.Data?.User?.SelfieMedia) {
-            setIsLoading(false);
+            setLoading(false);
             setEmail("");
             setPassword("");
             router.push("/selfie");
-            console.log("if Selfie Media", isLoading);
+            // console.log("if Selfie Media", isLoading);
           } else {
             dispatch(
               HomeActions.userDetails({
@@ -78,25 +81,25 @@ const Login = () => {
             );
             localStorage.setItem("JWT", fata?.data?.Data?.Token);
             router.push("/home");
-            setIsLoading(false);
+            setLoading(false);
             setEmail("");
             setPassword("");
-            console.log("if localstorage", isLoading);
+            // console.log("if localstorage", isLoading);
           }
         } else {
           // toast.error(fata?.data?.Message);
           // console.log(fata, "api payload");
           toast.error(fata?.data?.Message);
-          setIsLoading(false);
-          console.log("if apierror", isLoading);
+          setLoading(false);
+          // console.log("if apierror", isLoading);
 
           throw new Error(fata?.data);
         }
       } catch (error) {
-        setIsLoading(false);
+        setLoading(false);
         toast.error(error);
-        console.log(error, "api payload");
-        console.log("if user error", isLoading);
+        // console.log(error, "api payload");
+        // console.log("if user error", isLoading);
       }
     }
   };
@@ -224,6 +227,7 @@ const Login = () => {
         </p>
       </div>
       <ToastContainer />
+      <Loader />
     </div>
   );
 };

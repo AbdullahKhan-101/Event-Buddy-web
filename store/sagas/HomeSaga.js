@@ -36,12 +36,13 @@ const validateResponse = (response) => {
 const JWT_TOKEN = "c0bdb603-0d80-4a87-bc0d-4e900691b6bb";
 
 export function* OnSignupSuccess(action) {
-  console.log("hello world");
+  // console.log("hello world");
   const payload = action;
+  const jwt = localStorage.getItem("JWT");
   const response = yield call(ApiCaller.Post, `user/signup`, payload, {
     "content-type": "application/json",
   });
-  console.log(response, "Get User Dash data");
+  // console.log(response, "Get User Dash data");
   const response_status = yield call(validateResponse, response);
   if (response_status.success) {
     yield put({
@@ -57,13 +58,14 @@ export function* OnSignupSuccess(action) {
 }
 
 export function* CreateInvitation(action) {
-  console.log("hello world from create invitatioin fuction in saga");
+  // console.log("hello world from create invitatioin fuction in saga");
   const payload = action;
+  const jwt = localStorage.getItem("JWT");
   const response = yield call(ApiCaller.Post, `invitation`, payload, {
     "content-type": "application/json",
-    authorization: "cc48e853-ba0f-4e92-89eb-215850788333",
+    authorization: jwt,
   });
-  console.log(response, "Get User Dash data22");
+  // console.log(response, "Get User Dash data22");
   const response_status = yield call(validateResponse, response);
   if (response_status.success) {
     yield put({
@@ -79,7 +81,7 @@ export function* CreateInvitation(action) {
 }
 
 export function* GetUserProfile(action) {
-  console.log("hello world");
+  // console.log("hello world");
   const jwt = localStorage.getItem("JWT");
   // const payload = action;
   const fcm = "123";
@@ -87,7 +89,7 @@ export function* GetUserProfile(action) {
     "content-type": "application/json",
     authorization: jwt,
   });
-  console.log(response, "Get User Profile");
+  // console.log(response, "Get User Profile");
   const response_status = yield call(validateResponse, response);
   if (response_status.success) {
     yield put({
@@ -103,7 +105,7 @@ export function* GetUserProfile(action) {
 }
 
 export function* GetDiscoverUsers(action) {
-  console.log("hello world from getDiscoverUsers");
+  // console.log("hello world from getDiscoverUsers");
   const jwt = localStorage.getItem("JWT");
   // const payload = action;
   // const fcm = "123";
@@ -127,14 +129,15 @@ export function* GetDiscoverUsers(action) {
 }
 
 export function* GetUserById(action) {
-  console.log("hello world from GetUserById");
+  // console.log("hello world from GetUserById");
   // const payload = action;
   const id = "1";
+  const jwt = localStorage.getItem("JWT");
   const response = yield call(ApiCaller.Get, `user/details/${id}`, {
     "content-type": "application/json",
-    authorization: "cc48e853-ba0f-4e92-89eb-215850788333",
+    authorization: jwt,
   });
-  console.log(response, "Get  User by id ");
+  // console.log(response, "Get  User by id ");
   const response_status = yield call(validateResponse, response);
   if (response_status.success) {
     yield put({
@@ -150,12 +153,13 @@ export function* GetUserById(action) {
 }
 
 export function* GetPendingInvitations(action) {
-  console.log("hello world from GetPendingInvitations");
+  // console.log("hello world from GetPendingInvitations");
   // const payload = action;
   // const id = "1";
+  const jwt = localStorage.getItem("JWT");
   const response = yield call(ApiCaller.Get, `invitation/pending`, {
     "content-type": "application/json",
-    authorization: JWT_TOKEN,
+    authorization: jwt,
   });
   console.log(response, "Get  Pending Invitations ");
   const response_status = yield call(validateResponse, response);
@@ -173,14 +177,15 @@ export function* GetPendingInvitations(action) {
 }
 
 export function* GetSentInvitations(action) {
-  console.log("hello world from GetSentInvitations");
+  // console.log("hello world from GetSentInvitations");
   // const payload = action;
   // const id = "1";
+  const jwt = localStorage.getItem("JWT");
   const response = yield call(ApiCaller.Get, `invitation/sent`, {
     "content-type": "application/json",
-    authorization: JWT_TOKEN,
+    authorization: jwt,
   });
-  console.log(response, "Get  Sent Invitations ");
+  // console.log(response, "Get  Sent Invitations ");
   const response_status = yield call(validateResponse, response);
   if (response_status.success) {
     yield put({
@@ -196,14 +201,15 @@ export function* GetSentInvitations(action) {
 }
 
 export function* GetReceivedInvitations(action) {
-  console.log("hello world from GetReceivedInvitations");
+  // console.log("hello world from GetReceivedInvitations");
   // const payload = action;
   // const id = "1";
+  const jwt = localStorage.getItem("JWT");
   const response = yield call(ApiCaller.Get, `invitation/received`, {
     "content-type": "application/json",
-    authorization: JWT_TOKEN,
+    authorization: jwt,
   });
-  console.log(response, "Get  Received Invitations ");
+  // console.log(response, "Get  Received Invitations ");
   const response_status = yield call(validateResponse, response);
   if (response_status.success) {
     yield put({
@@ -219,14 +225,15 @@ export function* GetReceivedInvitations(action) {
 }
 
 export function* GetInvitationById(action) {
-  console.log("hello world from GetInvitationById");
+  // console.log("hello world from GetInvitationById");
   // const payload = action;
   const id = "3";
+  const jwt = localStorage.getItem("JWT");
   const response = yield call(ApiCaller.Get, `invitation/details/${id}`, {
     "content-type": "application/json",
-    authorization: JWT_TOKEN,
+    authorization: jwt,
   });
-  console.log(response, "GetInvitationById ");
+  // console.log(response, "GetInvitationById ");
   const response_status = yield call(validateResponse, response);
   if (response_status.success) {
     yield put({
@@ -242,14 +249,15 @@ export function* GetInvitationById(action) {
 }
 
 export function* GetInvitationMessages(action) {
-  console.log("hello world from GetInvitationMessages");
+  // console.log("hello world from GetInvitationMessages");
   // const payload = action;
   // const id = "3";
+  const jwt = localStorage.getItem("JWT");
   const response = yield call(ApiCaller.Get, `invitation/messages`, {
     "content-type": "application/json",
-    authorization: JWT_TOKEN,
+    authorization: jwt,
   });
-  console.log(response, "GetInvitationMessages ");
+  // console.log(response, "GetInvitationMessages ");
   const response_status = yield call(validateResponse, response);
   if (response_status.success) {
     yield put({
@@ -258,19 +266,20 @@ export function* GetInvitationMessages(action) {
     });
   } else {
     yield put({
-      type: HomeActions.INVITATION_BY_ID_FAIL,
+      type: HomeActions.INVITATION_MESSAGES_FAIL,
       payload: response,
     });
   }
 }
 
 export function* GetInvitationChat(action) {
-  console.log("hello world from GetInvitationChat");
-  // const payload = action;
-  const id = "24";
-  const response = yield call(ApiCaller.Get, `chat/${id}`, {
+  // console.log("hello world from GetInvitationChat", action);
+  const payload = action.payload;
+  // const id = "51";
+  const jwt = localStorage.getItem("JWT");
+  const response = yield call(ApiCaller.Get, `chat/${payload}`, {
     "content-type": "application/json",
-    authorization: JWT_TOKEN,
+    authorization: jwt,
   });
   console.log(response, "GetInvitationChat ");
   const response_status = yield call(validateResponse, response);
@@ -288,14 +297,15 @@ export function* GetInvitationChat(action) {
 }
 
 export function* GetUserReviews(action) {
-  console.log("hello world from GetUserReviews", action);
+  // console.log("hello world from GetUserReviews", action);
   const payload = action?.payload;
   // const id = "2";
+  const jwt = localStorage.getItem("JWT");
   const response = yield call(ApiCaller.Get, `review/user/${payload}`, {
     "content-type": "application/json",
-    authorization: JWT_TOKEN,
+    authorization: jwt,
   });
-  console.log(response, "GetUserReviews");
+  // console.log(response, "GetUserReviews");
   const response_status = yield call(validateResponse, response);
   if (response_status.success) {
     yield put({
@@ -311,14 +321,15 @@ export function* GetUserReviews(action) {
 }
 
 export function* GetMyReviewForUser(action) {
-  console.log("GetMyReviewForUser");
+  // console.log("GetMyReviewForUser");
   // const payload = action;
   const id = "2";
+  const jwt = localStorage.getItem("JWT");
   const response = yield call(ApiCaller.Get, `review/my/user/${id}`, {
     "content-type": "application/json",
-    authorization: JWT_TOKEN,
+    authorization: jwt,
   });
-  console.log(response, "GetMyReviewForUser");
+  // console.log(response, "GetMyReviewForUser");
   const response_status = yield call(validateResponse, response);
   if (response_status.success) {
     yield put({
@@ -334,19 +345,20 @@ export function* GetMyReviewForUser(action) {
 }
 
 export function* GetMyReviewForInvitation(action) {
-  console.log("GetMyReviewForInvitation");
+  // console.log("GetMyReviewForInvitation");
   // const payload = action;
   const id_one = "2";
   const id_two = "4";
+  const jwt = localStorage.getItem("JWT");
   const response = yield call(
     ApiCaller.Get,
     `review/my/user/${id_one}/invitation/${id_two}`,
     {
       "content-type": "application/json",
-      authorization: JWT_TOKEN,
+      authorization: jwt,
     }
   );
-  console.log(response, "GetMyReviewForInvitation");
+  // console.log(response, "GetMyReviewForInvitation");
   const response_status = yield call(validateResponse, response);
   if (response_status.success) {
     yield put({
@@ -362,14 +374,15 @@ export function* GetMyReviewForInvitation(action) {
 }
 
 export function* GetNotifications(action) {
-  console.log("GetNotifications");
+  // console.log("GetNotifications");
   // const payload = action;
   // const id = "2";
+  const jwt = localStorage.getItem("JWT");
   const response = yield call(ApiCaller.Get, `notification`, {
     "content-type": "application/json",
-    authorization: JWT_TOKEN,
+    authorization: jwt,
   });
-  console.log(response, "GetNotifications");
+  // console.log(response, "GetNotifications");
   const response_status = yield call(validateResponse, response);
   if (response_status.success) {
     yield put({
@@ -379,6 +392,30 @@ export function* GetNotifications(action) {
   } else {
     yield put({
       type: HomeActions.NOTIFICATIONS_FAIL,
+      payload: response,
+    });
+  }
+}
+
+export function* GetInvChat(action) {
+  console.log("GetNotifications", action.payload);
+  const payload = action.payload;
+  // const id = "2";
+  const jwt = localStorage.getItem("JWT");
+  const response = yield call(ApiCaller.Get, `/chat/${payload}`, {
+    "content-type": "application/json",
+    authorization: jwt,
+  });
+  console.log(response, "GetInvChat");
+  const response_status = yield call(validateResponse, response);
+  if (response_status.success) {
+    yield put({
+      type: HomeActions.INVITATIONCHAT_SUCCESS,
+      payload: response,
+    });
+  } else {
+    yield put({
+      type: HomeActions.INVITATIONCHAT_FAIL,
       payload: response,
     });
   }

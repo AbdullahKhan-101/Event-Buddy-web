@@ -25,6 +25,7 @@ import {
   GetMyReviewForUser,
   GetMyReviewForInvitation,
   GetNotifications,
+  GetInvChat,
 } from "./HomeSaga";
 
 // Redux Saga: Root Saga
@@ -52,4 +53,5 @@ export function* rootSaga() {
     takeLatest(HomeActions.MY_REVIEW_FOR_INVITATION, GetMyReviewForInvitation),
   ]);
   yield all([takeLatest(HomeActions.NOTIFICATIONS, GetNotifications)]);
+  yield all([takeLatest(HomeActions.INVITATIONCHAT, GetInvChat)]);
 }

@@ -15,7 +15,7 @@ const UploadPicture = () => {
   const fileSelectedHandler = (e) => {
     const reader = new FileReader();
     setImage(e.target.files[0]);
-    console.log("------------------>", e.target.files[0]);
+    // console.log("------------------>", e.target.files[0]);
     if (e.target.files[0]) {
       reader.readAsDataURL(e.target.files[0]);
     }
@@ -50,7 +50,7 @@ const UploadPicture = () => {
           },
         }
       );
-      console.log(fata?.data.Status, "api payload");
+      // console.log(fata?.data.Status, "api payload");
       if (fata?.data.Status == 200) {
         setSelectedFile("");
         // if (!fata?.data?.Data?.User?.Media) {
@@ -73,7 +73,7 @@ const UploadPicture = () => {
       }
     } catch (error) {
       toast.error(error);
-      console.log(error, "api payload");
+      // console.log(error, "api payload");
     }
   };
   return (

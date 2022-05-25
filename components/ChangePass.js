@@ -37,8 +37,8 @@ const ChangePass = () => {
         } catch (error) {
           // setIsLoading(false);
           toast.error(error);
-          console.log(error, "api payload");
-          console.log("if user error", isLoading);
+          // console.log(error, "api payload");
+          // console.log("if user error", isLoading);
         }
       } else {
         toast.error("Passwords Not Matched..");

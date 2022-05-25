@@ -27,15 +27,15 @@ const LeftSettingBar = () => {
   useEffect(() => {
     getUserDetails();
   }, []);
-  console.log("sss", typeof availibility);
+  // console.log("sss", typeof availibility);
   const getUserDetails = async () => {
     const User = await localStorage.getItem("user");
     const user = JSON.parse(User);
     setAvailibility(user?.user?.AvailableForInvitation);
-    console.log("========>", user?.user?.AvailableForInvitation);
+    // console.log("========>", user?.user?.AvailableForInvitation);
   };
   const AvailableforInvitation = async (boolean) => {
-    console.log("========>test", boolean);
+    // console.log("========>test", boolean);
 
     const JWT = localStorage.getItem("JWT");
     const formData = new FormData();
@@ -50,7 +50,7 @@ const LeftSettingBar = () => {
     } catch (error) {
       // setIsLoading(false);
       toast.error(error);
-      console.log(error, "api payload");
+      // console.log(error, "api payload");
     }
   };
 

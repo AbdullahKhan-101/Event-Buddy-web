@@ -19,6 +19,7 @@ const INITIAL_STATE = {
   My_review_for_Invitation: [],
   notifications: [],
   userDetail: {},
+  getInvCha: [],
   // userDash: [],
   // loader: false,
 };
@@ -143,6 +144,13 @@ function Reducer(state = INITIAL_STATE, action) {
     case HomeActions.NOTIFICATIONS_SUCCESS:
       return { ...state, loader: false, notifications: action.payload };
     case HomeActions.NOTIFICATIONS_FAIL:
+      return { ...state, loader: false };
+
+    case HomeActions.INVITATIONCHAT:
+      return { ...state, loader: true };
+    case HomeActions.INVITATIONCHAT_SUCCESS:
+      return { ...state, loader: false, getInvCha: action.payload };
+    case HomeActions.INVITATIONCHAT_FAIL:
       return { ...state, loader: false };
 
     case HomeActions.USERDETAILS:

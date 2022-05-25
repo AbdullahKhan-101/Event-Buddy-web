@@ -181,7 +181,7 @@ export default function Map() {
 
   // getLocation();
   // }, []);
-  console.log("==============>location", location);
+  // console.log("==============>location", location);
 
   const userDashMapData = useSelector((state) => state?.Home?.userDash);
   //console.log("Main API", userDashMapData);
@@ -201,7 +201,7 @@ export default function Map() {
       <GoogleMapReact
         bootstrapURLKeys={{
           // remove the key if you want to fork
-          key: "AIzaSyBzpeVhVlmsD3zeg6482RCOe7PcYSweF9E",
+          key: "AIzaSyDh0f846bnmUxgSw6n5XtIZb01xtprxQfs",
         }}
         center={{ lat: location.lat, lng: location.lng }}
         defaultZoom={25}

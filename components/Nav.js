@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import {
@@ -15,31 +15,48 @@ import { modalState, notificationCountState } from "../atoms/modalAtom";
 const Nav = ({ active }) => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useRecoilState(modalState);
-
+  let Ncount = [];
   const [notificationsCount, setNotificationsCount] = useRecoilState(
     notificationCountState
   );
 
-  console.log("checking notification recoilstate in nav", notificationsCount);
+  // console.log("checking notification recoilstate in nav", notificationsCount);
 
-  notificationsCount?.map((item, index) => {
-    let Ncount = [];
-    console.log("checking notifications in map == in nav ==", item.ReadStatus);
-    if (item?.ReadStatus == 0) {
-      Ncount.push(item);
-      setNotificationsCount(item);
-    }
-    console.log("Now Now Now checking actual COUNTS ==> ", Ncount.length);
-  });
+  // notificationsCount?.map((item, index) => {
+  //   let Ncount = [];
+  //   console.log("checking notifications in map == in nav ==", item.ReadStatus);
+  //   if (item?.ReadStatus == 0) {
+  //     Ncount.push(item);
+  //     setNotificationsCount(item);
+  //   }
+  //   console.log("Now Now Now checking actual COUNTS ==> ", Ncount.length);
+  // });
 
   // setTimeout(() => {
-  console.log(
-    "Checking notifications array in  Nav after time out  ==> ",
-    notificationsCount
-  );
+  // console.log(
+  //   "Checking notifications array in  Nav after time out  ==> ",
+  //   notificationsCount
+  // );
   // });
 
   // const handleOpen = () => {};
+  useEffect(() => {
+    getNotificationCount();
+  }, []);
+
+  const getNotificationCount = () => {
+    notificationsCount?.map((item, index) => {
+      if (item?.ReadStatus == 0) {
+        Ncount.push(item);
+        setNotificationsCount(item);
+        // console.log(
+        //   "checking notifications in map == in nav ==",
+        //   item.ReadStatus
+        // );
+      }
+      // console.log("Now Now Now checking actual COUNTS ==> ", Ncount.length);
+    });
+  };
 
   const goToHome = () => {
     router.push("/home");

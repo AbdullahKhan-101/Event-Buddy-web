@@ -18,11 +18,12 @@ import Notifications from "./Notifications";
 import { useRecoilState } from "recoil";
 import { usersDataModal } from "../atoms/modalAtom";
 import Geocode from "react-geocode";
-
+import Loader from "./Loader";
+import { loadingState } from "../atoms/modalAtom";
 const Home = () => {
   const [usersData, setUsersData] = useRecoilState(usersDataModal);
-  console.log("checking usersData in modal ", usersData);
-
+  // console.log("checking usersData in modal ", usersData);
+  const [loading, setLoading] = useRecoilState(loadingState);
   // const [usersData, setUsersData] = useState([]);
   const dispatch = useDispatch();
   const router = useRouter();
@@ -31,7 +32,7 @@ const Home = () => {
   const discoverUsers = useSelector((state) => state?.Home?.DiscoverUsers);
   const RealData = discoverUsers?.data?.Data?.Users;
 
-  console.log(discoverUsers, "discoverusers form home");
+  // console.log(discoverUsers, "discoverusers form home");
   const dummyData = [
     {
       reviews: "12 Reviews",
@@ -57,14 +58,17 @@ const Home = () => {
   ];
 
   useEffect(() => {
-    console.log(discoverUsers);
+    setLoading(true);
+    console.log(discoverUsers?.data?.Data?.Users.length, "-------->");
     // setSignupSuccess(SignupResponse);
     dispatch(HomeActions.UserProfile());
     dispatch(HomeActions.DiscoverUsers());
   }, []);
-  console.log("=========>Discver Users", discoverUsers);
-
-  Geocode.setApiKey("AIzaSyCO-DFYDJuGNIR5Ac-jIfBWG672fLYeP4s");
+  // console.log("=========>Discver Users", discoverUsers);
+  if (discoverUsers?.data?.Data?.Users.length > 0) {
+    setLoading(false);
+  }
+  Geocode.setApiKey("AIzaSyDh0f846bnmUxgSw6n5XtIZb01xtprxQfs");
   Geocode.setLanguage("en");
   Geocode.setRegion("es");
   Geocode.setLocationType("ROOFTOP");
@@ -75,7 +79,7 @@ const Home = () => {
       console.log("xxxxxxxxxxxxx", address);
     },
     (error) => {
-      console.error("--------->", error);
+      // console.error("--------->", error);
     }
   );
   return (
@@ -121,7 +125,7 @@ const Home = () => {
               <div
                 key={index}
                 onClick={() => {
-                  console.log("users data modal state here", item);
+                  // console.log("users data modal state here", item);
                   setUsersData(item);
                   router.push("/person");
                 }}
@@ -158,6 +162,7 @@ const Home = () => {
         Back
       </button> */}
       <Notifications />
+      <Loader />
     </div>
   );
 };

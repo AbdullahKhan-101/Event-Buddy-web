@@ -72,6 +72,10 @@ export default class Action {
   static USERDETAILS_SUCCESS = "USERDETAILS_SUCCESS";
   static USERDETAILS_FAIL = "USERDETAILS_FAIL";
 
+  static INVITATIONCHAT = "INVITATIONCHAT";
+  static INVITATIONCHAT_SUCCESS = "INVITATIONCHAT_SUCCESS";
+  static INVITATIONCHAT_FAIL = "INVITATIONCHAT_FAIL";
+
   // static GET_USER_DASH_DATA = "USER_DASH_DATA";
   // static GET_USER_DASH_DATA_SUCCESS = "GET_USER_DASH_DATA_SUCCESS";
   // static GET_USER_DASH_DATA_FAIL = "GET_USER_DASH_DATA_FAIL";
@@ -85,7 +89,7 @@ export default class Action {
   }
 
   static CreateInvitaion(payload) {
-    console.log(payload);
+    // console.log(payload);
     return {
       type: Action.CREATE_INVITATION,
       payload,
@@ -93,7 +97,7 @@ export default class Action {
   }
 
   static UserProfile(payload) {
-    console.log(payload);
+    // console.log(payload);
     return {
       type: Action.user_Profile,
       payload,
@@ -101,7 +105,7 @@ export default class Action {
   }
 
   static DiscoverUsers(payload) {
-    console.log(payload);
+    // console.log(payload);
     return {
       type: Action.DISCOVER_USERS,
       payload,
@@ -109,7 +113,7 @@ export default class Action {
   }
 
   static UserById(payload) {
-    console.log(payload);
+    // console.log(payload);
     return {
       type: Action.USER_BY_ID,
       payload,
@@ -117,7 +121,7 @@ export default class Action {
   }
 
   static PendingInvitatioins(payload) {
-    console.log(payload);
+    // console.log(payload);
     return {
       type: Action.PENDING_INVITATIONS,
       payload,
@@ -125,7 +129,7 @@ export default class Action {
   }
 
   static SentInvitatioins(payload) {
-    console.log(payload);
+    // console.log(payload);
     return {
       type: Action.SENT_INVITATIONS,
       payload,
@@ -133,7 +137,7 @@ export default class Action {
   }
 
   static ReceivedInvitatioins(payload) {
-    console.log(payload);
+    // console.log(payload);
     return {
       type: Action.RECEIVED_INVITATIONS,
       payload,
@@ -141,7 +145,7 @@ export default class Action {
   }
 
   static InvitationById(payload) {
-    console.log(payload);
+    // console.log(payload);
     return {
       type: Action.INVITATION_BY_ID,
       payload,
@@ -149,7 +153,7 @@ export default class Action {
   }
 
   static InvitationMessages(payload) {
-    console.log(payload);
+    // console.log(payload);
     return {
       type: Action.INVITATION_MESSAGES,
       payload,
@@ -158,7 +162,7 @@ export default class Action {
 
   // ==,==,== isko call krna he abhi
   static InvitationChat(payload) {
-    console.log(payload);
+    // console.log(payload);
     return {
       type: Action.INVITATION_CHAT,
       payload,
@@ -167,7 +171,7 @@ export default class Action {
   // ==^==^== isko call krna he abhi
 
   static UserReviews(payload) {
-    console.log(payload);
+    // console.log(payload);
     return {
       type: Action.USER_REVIEWS,
       payload,
@@ -176,7 +180,7 @@ export default class Action {
 
   // ==^==^== isko call krna he abhi
   static MyReviewForUser(payload) {
-    console.log(payload);
+    // console.log(payload);
     return {
       type: Action.MY_REVIEW_FOR_USER,
       payload,
@@ -186,7 +190,7 @@ export default class Action {
 
   // ==^==^== isko call krna he abhi
   static MyReviewForInvitation(payload) {
-    console.log(payload);
+    // console.log(payload);
     return {
       type: Action.MY_REVIEW_FOR_INVITATION,
       payload,
@@ -195,7 +199,7 @@ export default class Action {
   // ==^==^== isko call krna he abhi
 
   static Notifications(payload) {
-    console.log(payload);
+    // console.log(payload);
     return {
       type: Action.NOTIFICATIONS,
       payload,
@@ -203,7 +207,7 @@ export default class Action {
   }
 
   static Signup(payload) {
-    console.log(payload);
+    // console.log(payload);
     return {
       type: Action.On_Signup,
       payload,
@@ -223,9 +227,16 @@ export default class Action {
     };
   }
   static userDetails(payload) {
-    console.log("UserDetails Action Payload ", payload);
+    // console.log("UserDetails Action Payload ", payload);
     return {
       type: Action.USERDETAILS,
+      payload,
+    };
+  }
+  static getInvitationChat(payload) {
+    // console.log("UserDetails Action Payload ", payload);
+    return {
+      type: Action.INVITATIONCHAT,
       payload,
     };
   }

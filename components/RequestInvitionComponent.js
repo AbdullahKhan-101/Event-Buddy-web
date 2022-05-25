@@ -28,7 +28,7 @@ const RequestInvitionComponent = () => {
   const pendingInvitations = useSelector(
     (state) => state?.Home?.PendingInvitations
   );
-
+  console.log("checking get pending invitations ==> ", pendingInvitations);
   const sentInvitatioins = useSelector((state) => state?.Home?.SentInvitations);
 
   const receivedInvitatioins = useSelector(
@@ -42,10 +42,10 @@ const RequestInvitionComponent = () => {
     setActive("close");
     // setSignupSuccess(SignupResponse);
     dispatch(HomeActions.PendingInvitatioins());
-    console.log(
-      "checking get pending invitations ==> ",
-      pendingInvitations?.data?.Data
-    );
+    // console.log(
+    //   "checking get pending invitations ==> ",
+    //   pendingInvitations?.data?.Data
+    // );
   };
 
   useEffect(() => {
@@ -57,24 +57,24 @@ const RequestInvitionComponent = () => {
     setActive("sent");
     setState("close");
     dispatch(HomeActions.SentInvitatioins());
-    console.log(
-      "checking sent invitations in request component",
-      sentInvitatioins
-    );
+    // console.log(
+    //   "checking sent invitations in request component",
+    //   sentInvitatioins
+    // );
   };
 
   const ReceivedInvitations = () => {
-    console.log(
-      "checking received invitations in requst component",
-      receivedInvitatioins
-    );
+    // console.log(
+    //   "checking received invitations in requst component",
+    //   receivedInvitatioins
+    // );
     setActive("receive");
     setState("receive");
     dispatch(HomeActions.ReceivedInvitatioins());
   };
 
   const InvitationByIdCalling = () => {
-    console.log(invitationById);
+    // console.log(invitationById);
     dispatch(HomeActions.InvitationById());
   };
 

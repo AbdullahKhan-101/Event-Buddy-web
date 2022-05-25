@@ -44,10 +44,10 @@ const Notifications = () => {
   const router = useRouter();
   const [notificationSuccess, setNotificationSuccess] = useState([]);
 
-  console.log(
-    "notifications checking checking here from notifications",
-    notificationsData
-  );
+  // console.log(
+  //   "notifications checking checking here from notifications",
+  //   notificationsData
+  // );
   setNotificationsCount(notificationsData);
 
   useEffect(() => {
@@ -55,7 +55,7 @@ const Notifications = () => {
     dispatch(HomeActions.Notifications());
 
     setTimeout(() => {
-      console.log("checking length in useEffect", notificationsCount);
+      // console.log("checking length in useEffect", notificationsCount);
       setNotificationsCount(notificationsData);
     }, 1000);
   }, []);
@@ -73,7 +73,7 @@ const Notifications = () => {
   // });
   // console.log("checking notifications count  ==> ", .length);
   // };
-  console.log("notifications Count here ==> ", notificationsData);
+  // console.log("notifications Count here ==> ", notificationsData);
 
   // setNotificationsCount(notificationCount.length);
 

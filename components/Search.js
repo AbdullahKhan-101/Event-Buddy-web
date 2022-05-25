@@ -83,18 +83,18 @@ const Search = () => {
         </div>
         <div className="p-3 border rounded-md max-w-[400px] flex items-center mt-4">
           <SearchIcon className="w-5 h-5 mr-2 text-[#E9813B]" />
-          {/* <div style={{ width: "50vh" }}> */}
-          {/* <GooglePlacesAutocomplete
-            apiKey="AIzaSyDby459lxUcpmXqFpF3BSEShekowrR9YxI"
-            // apiOptions={{ language: "en", region: "es" }}
-          /> */}
-          {/* <PlacesAutocomplete></PlacesAutocomplete> */}
-          {/* </div> */}
-          <input
+          <div style={{ width: "50vh" }}>
+            <GooglePlacesAutocomplete
+              apiKey="AIzaSyDh0f846bnmUxgSw6n5XtIZb01xtprxQfs"
+              // apiOptions={{ language: "en", region: "es" }}
+            />
+            {/* <PlacesAutocomplete></PlacesAutocomplete> */}
+          </div>
+          {/* <input
             type="text"
             placeholder="Search Location"
             className="flex-grow outline-none text-[#42526E] opacity-70 font-normall"
-          />
+          /> */}
         </div>
         <p className="flex items-center mx-1 mt-4 mb-2 cursor- pointer md:mt-6">
           <div className="relative w-[28px] mr-3 h-[28px]  text-[#E9813B] ">
@@ -160,6 +160,10 @@ const Search = () => {
         Next
       </button> */}
     </div>
+    // <GooglePlacesAutocomplete
+    //   apiKey="AIzaSyDh0f846bnmUxgSw6n5XtIZb01xtprxQfs"
+    //   // apiOptions={{ language: "en", region: "es" }}
+    // />
   );
 };
 

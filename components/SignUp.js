@@ -64,7 +64,7 @@ const SignUp = () => {
         }
       } catch (error) {
         toast.error(error);
-        console.log(error, "api payload");
+        // console.log(error, "api payload");
       }
 
       // console.log(fata?.data?.Status, "api payload");

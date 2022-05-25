@@ -43,7 +43,7 @@ const Person = ({ active }) => {
 
   const userById = useSelector((state) => state?.Home?.UserById);
   const userReviews = useSelector((state) => state?.Home?.User_reviews);
-  console.log("=========================xxxxxxxxxxx=============", userReviews);
+  // console.log("=========================xxxxxxxxxxx=============", userReviews);
   useEffect(() => {
     // console.log(userById);
     // console.log(userReviews);
