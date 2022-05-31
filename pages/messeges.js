@@ -1,12 +1,18 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Messeges from "../components/Messeges";
-
+import { useRouter } from "next/router";
 const Messegess = () => {
-  return (
-    <div>
-      <Messeges />
-    </div>
-  );
+  const [loggedIn, setLoggedIn] = useState(false);
+  const router = useRouter();
+  useEffect(() => {
+    const JWT = localStorage.getItem("JWT");
+    if (!JWT) {
+      router.push("/login");
+    } else {
+      setLoggedIn(true);
+    }
+  }, []);
+  return <div>{loggedIn && <Messeges />}</div>;
 };
 
 export default Messegess;

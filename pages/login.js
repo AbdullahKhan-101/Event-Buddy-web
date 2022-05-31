@@ -1,8 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Login from "../components/Login";
 import Image from "next/image";
-
+import { useRouter } from "next/router";
 const Signin = () => {
+  const router = useRouter();
+  useEffect(() => {
+    const JWT = localStorage.getItem("JWT");
+    if (JWT) {
+      router.push("/home");
+    }
+  }, []);
   return (
     <div>
       <Login />

@@ -1,7 +1,7 @@
 import React from "react";
 import GooglePlacesAutocomplete from "react-google-places-autocomplete";
 
-const GoogePlaces = ({ value, onChange }) => {
+const GoogePlaces = ({ value, onChange, placeholder }) => {
   return (
     <div>
       <GooglePlacesAutocomplete
@@ -16,7 +16,7 @@ const GoogePlaces = ({ value, onChange }) => {
             outerHeight: "1000vh",
             border: "none",
           },
-          placeholder: "Location",
+          placeholder: placeholder,
         }}
       />
     </div>

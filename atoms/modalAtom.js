@@ -45,3 +45,13 @@ export const ClickNotificationData = atom({
     name: null,
   },
 });
+
+export const sendMessageModal = atom({
+  key: "sendMessageModal",
+  default: "close",
+});
+
+export const sendMessageId = atom({
+  key: "sendMessageId",
+  default: 0,
+});

@@ -13,7 +13,11 @@ export default function Home() {
   const router = useRouter();
   useEffect(() => {
     setTimeout(() => {
-      router.push("login");
+      if (!localStorage.getItem("JWT")) {
+        router.push("/login");
+      } else {
+        router.push("/home");
+      }
     }, 3000);
   }, []);
 

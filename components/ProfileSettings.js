@@ -86,7 +86,6 @@ const ProfileSettings = () => {
   const updateProfile = async (data) => {
     console.log(data, "data ");
     const JWT = localStorage.getItem("JWT");
-    const formData = new FormData();
     if (data) {
       const params = new URLSearchParams();
       params.append("MediaId", data);

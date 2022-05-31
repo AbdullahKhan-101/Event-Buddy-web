@@ -67,10 +67,10 @@ const [noPhoto, setNoPhoto] = useState(true);
     ctx?.drawImage(video, 0, 0, width, height);
     setNoPhoto(false);
     // photo?.toDataURL("image/png")
-// var img = new Image();
-// img.src = photo.toDataURL();
+var img = new Image();
+img.src = photo.toDataURL();
 // debugger;
-// console.log(img);
+console.log(img.src);
 
   };
   useEffect(() => {

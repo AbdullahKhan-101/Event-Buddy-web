@@ -11,7 +11,11 @@ import { useRouter } from "next/router";
 import Invite from "./Invite";
 import Person from "./Person";
 import { Avatar } from "@mui/material";
-import { acceptInviteModal, ClickNotificationData } from "../atoms/modalAtom";
+import {
+  acceptInviteModal,
+  ClickNotificationData,
+  usersDataModal,
+} from "../atoms/modalAtom";
 import { useRecoilState } from "recoil";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -30,6 +34,8 @@ const AcceptInvite = () => {
   );
   const [invitatioinAdd, setInvitatioinAdd] = useState("");
   const invitaionDetails = useSelector((state) => state?.Home?.Invitation_ById);
+  const [usersData, setUsersData] = useRecoilState(usersDataModal);
+  const [gotoProfile, setGotoProfile] = useState({});
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(HomeActions.InvitationById(clickNotificationData?.Id));
@@ -47,14 +53,18 @@ const AcceptInvite = () => {
     const User = await localStorage.getItem("user");
     const user = JSON.parse(User);
     setJwt(user?.token);
+    setGotoProfile({
+      ...invitaionDetails?.data?.Data?.CreatedBy,
+      from: "notification",
+    });
     // console.log("========>", user?.token);
   };
-  console.log("clickNotification", clickNotificationData);
+  // console.log("clickNotification", clickNotificationData);
   const router = useRouter();
 
   const getLocation = () => {
     if (invitaionDetails != undefined || invitaionDetails != null) {
-      // console.log("invitaionDetails", invitaionDetails);
+      console.log("invitaionDetails", invitaionDetails);
       Geocode.setApiKey("AIzaSyDh0f846bnmUxgSw6n5XtIZb01xtprxQfs");
       Geocode.setLanguage("en");
       Geocode.setRegion("es");
@@ -181,7 +191,7 @@ const AcceptInvite = () => {
                   </span>
                 </p>
               </div>
-              {invitaionDetails?.data?.Data?.Status == "pending" && (
+              {invitaionDetails?.data?.Data?.Status == "pending" ? (
                 <div className="flex items-center">
                   <button
                     onClick={() =>
@@ -200,6 +210,20 @@ const AcceptInvite = () => {
                   >
                     <CheckIcon className="w-6 h-6 -ml-3 text-white" />
                     <span className="ml-1">Accept</span>
+                  </button>
+                </div>
+              ) : (
+                <div className="flex items-center">
+                  <button
+                    className="font-semibold flex items-center mx-2 bg-[#ED974B] justify-center bg-gradient-to-tr  py-[10px] sm:py-3 px-7 rounded-full text-white from-[#E77334] to-[#ED974B] w-[97%] hover:from-[#ff6715] mt-0"
+                    onClick={() => {
+                      setUsersData(gotoProfile);
+                      router.push("/person");
+                      setIsOpen("close");
+                      // console.log("----->12345", invitaionDetails);
+                    }}
+                  >
+                    <span className="ml-1">Go To Profile</span>
                   </button>
                 </div>
               )}

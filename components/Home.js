@@ -72,11 +72,13 @@ const Home = () => {
     const userLatitude = JSON.parse(Latitude);
     const Longitude = await localStorage.getItem("userLongitude");
     const userLongitude = JSON.parse(Longitude);
+    console.log("=========>Discver Users", userLatitude, userLongitude);
     Geocode.setApiKey("AIzaSyDh0f846bnmUxgSw6n5XtIZb01xtprxQfs");
     Geocode.setLanguage("en");
-    Geocode.setRegion("es");
+    Geocode.setRegion("en");
     Geocode.setLocationType("ROOFTOP");
     Geocode.enableDebug();
+    console.log("=========>Aya");
     Geocode.fromLatLng(userLatitude, userLongitude).then(
       (response) => {
         const area = response.results[0].address_components[2].long_name;
@@ -86,7 +88,7 @@ const Home = () => {
         setUserAddress(`${area}, ${city}, ${state}`);
       },
       (error) => {
-        // console.error("--------->", error);
+        console.error("--------->", error);
       }
     );
   };

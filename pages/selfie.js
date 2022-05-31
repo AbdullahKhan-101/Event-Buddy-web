@@ -1,12 +1,18 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Selfie from "../components/Selfie";
-
+import { useRouter } from "next/router";
 const Picture = () => {
-  return (
-    <div>
-      <Selfie />
-    </div>
-  );
+  const [loggedIn, setLoggedIn] = useState(false);
+  const router = useRouter();
+  useEffect(() => {
+    const JWT = localStorage.getItem("JWT");
+    if (!JWT) {
+      router.push("/login");
+    } else {
+      setLoggedIn(true);
+    }
+  }, []);
+  return <div>{loggedIn && <Selfie />}</div>;
 };
 
 export default Picture;

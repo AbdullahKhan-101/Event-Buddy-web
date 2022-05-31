@@ -1,12 +1,18 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Settings from "../components/Settings";
-
+import { useRouter } from "next/router";
 const Settingss = () => {
-  return (
-    <div>
-      <Settings />
-    </div>
-  );
+  const [loggedIn, setLoggedIn] = useState(false);
+  const router = useRouter();
+  useEffect(() => {
+    const JWT = localStorage.getItem("JWT");
+    if (!JWT) {
+      router.push("/login");
+    } else {
+      setLoggedIn(true);
+    }
+  }, []);
+  return <div>{loggedIn && <Settings />}</div>;
 };
 
 export default Settingss;

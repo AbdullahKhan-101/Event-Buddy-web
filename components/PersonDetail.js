@@ -1,31 +1,29 @@
 import { ChevronLeftIcon, HeartIcon } from "@heroicons/react/outline";
-import React from "react";
+import React, { useState } from "react";
 import { useRecoilState } from "recoil";
 import {
   inviteModal,
   openReviewsModall,
   reviewModal,
+  ClickNotificationData,
+  sendMessageModal,
+  sendMessageId,
 } from "../atoms/modalAtom";
 import Image from "next/image";
 import { useRouter } from "next/router";
 
-const PersonDetail = ({ img, name, position, about }) => {
+const PersonDetail = ({ img, name, position, about, data }) => {
   const [isOpen, setIsOpen] = useRecoilState(inviteModal);
+  const [isSMOpen, setIsSMOpen] = useRecoilState(sendMessageModal);
+  const [clickNotificationData, setClickNotificationData] = useRecoilState(
+    ClickNotificationData
+  );
+  const [sMID, setSMID] = useRecoilState(sendMessageId);
   const [openReview, setOpenReview] = useRecoilState(reviewModal);
   const [openReviewsModal, setOpenReviewsModal] =
     useRecoilState(openReviewsModall);
-
+  console.log("--------->", data, "&&&", sMID);
   const router = useRouter();
-  const userDummyData = {
-    // img:
-    img: "/gora1.png",
-    name: "azad Willsan",
-    position: "UI/UX Designer",
-    about: `Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quo
-              dolorum beatae nihil harum doloribus? Quasi aspernatur unde
-              eligendi labore illo Lorem ipsum dolor sit amet Lorem ipsum dolor
-              sit amet consectetur adipisicing elit. Possimus, omnis?`,
-  };
 
   return (
     <div>
@@ -75,26 +73,47 @@ const PersonDetail = ({ img, name, position, about }) => {
               {/* two buttons here */}
               <div className="hidden mt-4 lg:block">
                 <button
-                  // onClick={() => setOpenReview(true)}
-                  onClick={() => setOpenReviewsModal(true)}
+                  onClick={() => console.log("-------->sMID", sMID)}
+                  // onClick={() => setOpenReviewsModal(true)}
                   className="   bg-[#FCEDE4]   py-[10px] sm:py-3 px-7 rounded-full text-[#E9813B]   font-mediumm w-[100%] mt-2 border-[#ED974B]"
                 >
                   More Reviews
                 </button>
-                <p
-                  onClick={() => setIsOpen("open")}
-                  className="font-mediumm  bg-[#ED974B] flex items-center justify-center bg-gradient-to-tr  py-[10px] sm:py-3 px-7 rounded-full text-white from-[#E77334] to-[#ED974B]   w-[100%]  mt-3 cursor-pointer"
-                >
-                  <div className="relative w-[20px] mr-2 h-[18px]  text-[#E9813B] ">
-                    <Image
-                      src="/sendMessage.png"
-                      alt="infoImg"
-                      layout="fill"
-                      objectfit="contain"
-                    />
-                  </div>
-                  Send Invitation
-                </p>
+                {data?.from == "notification" ? (
+                  <p
+                    onClick={() => {
+                      setSMID(clickNotificationData?.Id);
+                      // console.log("-------->sMID", clickNotificationData);
+                      setIsSMOpen("open");
+                    }}
+                    className="font-mediumm  bg-[#ED974B] flex items-center justify-center bg-gradient-to-tr  py-[10px] sm:py-3 px-7 rounded-full text-white from-[#E77334] to-[#ED974B]   w-[100%]  mt-3 cursor-pointer"
+                  >
+                    <div className="relative w-[20px] mr-2 h-[18px]  text-[#E9813B] ">
+                      <Image
+                        src="/sendMessage.png"
+                        alt="infoImg"
+                        layout="fill"
+                        objectfit="contain"
+                      />
+                    </div>
+                    Send Message
+                  </p>
+                ) : (
+                  <p
+                    onClick={() => setIsOpen("open")}
+                    className="font-mediumm  bg-[#ED974B] flex items-center justify-center bg-gradient-to-tr  py-[10px] sm:py-3 px-7 rounded-full text-white from-[#E77334] to-[#ED974B]   w-[100%]  mt-3 cursor-pointer"
+                  >
+                    <div className="relative w-[20px] mr-2 h-[18px]  text-[#E9813B] ">
+                      <Image
+                        src="/sendMessage.png"
+                        alt="infoImg"
+                        layout="fill"
+                        objectfit="contain"
+                      />
+                    </div>
+                    Send Invitaion
+                  </p>
+                )}
               </div>
             </div>
             <div className="md:max-w-[680px]  flex-grow  bg-white">

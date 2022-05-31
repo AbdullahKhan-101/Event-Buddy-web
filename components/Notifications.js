@@ -107,8 +107,9 @@ const Notifications = () => {
                 return (
                   <div
                     onClick={() => {
-                      // setInviteModal("open");
-                      // setClickNotificationData(item);
+                      console.log("------->", item);
+                      setInviteModal("open");
+                      setClickNotificationData(item);
                     }}
                     key={index}
                     className="flex items-center p-2 py-4 mt-1 bg-white rounded-lg shadow-md cursor-pointer md:-ml-2 md:shadow-none"

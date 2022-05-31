@@ -9,7 +9,12 @@ import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { HomeActions } from "../store/actions";
 import { useRecoilState } from "recoil";
-import { inviteModal, usersDataModal } from "../atoms/modalAtom";
+import {
+  inviteModal,
+  usersDataModal,
+  sendMessageModal,
+  sendMessageId,
+} from "../atoms/modalAtom";
 import { XIcon } from "@heroicons/react/solid";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -20,8 +25,9 @@ import GooglePlaces from "./Map/GoogePlaces";
 import Geocode from "react-geocode";
 import { ToastContainer, toast } from "react-toastify";
 
-const Invite = () => {
+const SendMessage = () => {
   const [isOpen, setIsOpen] = useRecoilState(inviteModal);
+  const [isSMOpen, setIsSMOpen] = useRecoilState(sendMessageModal);
   const [personDetails, setPersonDetails] = useRecoilState(usersDataModal);
   const [eventName, setEventName] = useState("");
   const [eventDescription, setEventDescription] = useState("");
@@ -32,16 +38,17 @@ const Invite = () => {
   const [eventTime, setEventTime] = useState("");
   const [add, setAdd] = useState("");
   const [eventDateandTime, setEventDateandTime] = useState("");
+  const [sMID, setSMID] = useRecoilState(sendMessageId);
   const [userId, setUserId] = useState();
   const styles = useSpring({
-    opacity: isOpen === "open" ? 1 : 0,
-    delay: isOpen === "open" ? 120 : 0,
+    opacity: isSMOpen === "open" ? 1 : 0,
+    delay: isSMOpen === "open" ? 120 : 0,
   });
   console.log(personDetails, "api payload");
 
   const router = useRouter();
   const dispatch = useDispatch();
-
+  console.log("sMID", sMID);
   const createInvitation = async () => {
     if (
       !eventName ||
@@ -78,7 +85,7 @@ const Invite = () => {
           }
         );
         console.log(fata, "api payload");
-        setIsOpen("close");
+        setIsSMOpen("close");
       } catch (error) {
         // setIsLoading(false);
         // toast.error(error);
@@ -123,10 +130,10 @@ const Invite = () => {
 
   return (
     <div>
-      {isOpen === "open" && (
+      {isSMOpen === "open" && (
         <div className="z-20">
           <div
-            onClick={() => setIsOpen("close")}
+            onClick={() => setIsSMOpen("close")}
             className="w-[100%] h-[100vh] bg-white fixed top-0  bg-opacity-60 right-0 left-0"
           ></div>
           <animated.div
@@ -179,14 +186,14 @@ const Invite = () => {
                 </div>
               </div>
               {/* <div className="flex items-center pl-2 bg-white border rounded-xl">
-                <span>
-                  <LocationMarkerIcon className="w-5 h-5 text-[#ED974B]" />
-                </span> */}
+                  <span>
+                    <LocationMarkerIcon className="w-5 h-5 text-[#ED974B]" />
+                  </span> */}
               <div style={{ width: "66vh" }}>
                 {/* <GooglePlacesAutocomplete
-                    apiKey="AIzaSyDh0f846bnmUxgSw6n5XtIZb01xtprxQfs"
-                    // apiOptions={{ language: "en", region: "es" }}
-                  /> */}
+                      apiKey="AIzaSyDh0f846bnmUxgSw6n5XtIZb01xtprxQfs"
+                      // apiOptions={{ language: "en", region: "es" }}
+                    /> */}
                 <GooglePlaces
                   value={add}
                   onChange={(e) => {
@@ -196,7 +203,6 @@ const Invite = () => {
                   selectProps={{
                     styles: { color: "red" },
                   }}
-                  placeholder="Event Location"
                 />
                 {/* </div> */}
               </div>
@@ -210,14 +216,9 @@ const Invite = () => {
                 />
               </div>
             </div>
-            <button
-              onClick={createInvitation}
-              className="font-semibold mx-2 bg-[#ED974B] bg-gradient-to-tr  py-[10px] sm:py-3 px-7 rounded-full text-white from-[#E77334] to-[#ED974B] w-[97%] hover:from-[#ff6715] mt-0"
-            >
-              Send
-            </button>
+
             <XIcon
-              onClick={() => setIsOpen("close")}
+              onClick={() => setIsSMOpen("close")}
               className="absolute p-1 text-gray-500 bg-white border rounded-full cursor-pointer h-9 w-9 -right-2 -top-5"
             />
           </animated.div>
@@ -228,4 +229,4 @@ const Invite = () => {
   );
 };
 
-export default Invite;
+export default SendMessage;

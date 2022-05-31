@@ -20,6 +20,7 @@ import {
   openReviewsModall,
   reviewModal,
   usersDataModal,
+  sendMessageModal,
 } from "../atoms/modalAtom";
 import { useRecoilState } from "recoil";
 import Invite from "./Invite";
@@ -28,9 +29,10 @@ import PersonDetail from "./PersonDetail";
 import { imageBaseUrl } from "../config/utils";
 import Review from "./Review";
 import ReviewsModal from "./ReviewsModal";
-
+import SendMessage from "./SendMessage";
 const Person = ({ active }) => {
   const [isOpen, setIsOpen] = useRecoilState(inviteModal);
+  const [isSMOpen, setIsSMOpen] = useRecoilState(sendMessageModal);
   const [openReview, setOpenReview] = useRecoilState(reviewModal);
   const [openReviewsModal, setOpenReviewsModal] =
     useRecoilState(openReviewsModall);
@@ -48,10 +50,9 @@ const Person = ({ active }) => {
     // console.log(userReviews);
     // setUserByIdSuccess(userById);
     // setUserReviewsSuccess(userReviews);
-    dispatch(HomeActions.UserById());
+    dispatch(HomeActions.UserById(usersData?.Id));
     dispatch(HomeActions.UserReviews(usersData?.Id));
   }, []);
-
   // const realData = usersData.data.Data.Users;
   // console.log("real data ==> ", realData);
 
@@ -125,6 +126,7 @@ const Person = ({ active }) => {
           name={usersData?.FullName}
           position={usersData?.UserName}
           about={usersData?.About != null ? usersData?.About : "No Data Found"}
+          data={usersData}
         />
         <div className="flex flex-wrap justify-center max-w-6xl mx-auto lg:justify-around">
           <div className="flex-grow md:max-w-[290px] hidden lg:block"></div>
@@ -233,6 +235,7 @@ const Person = ({ active }) => {
           </div>
           <Notifications />
           <Invite />
+          <SendMessage />
         </div>
         <Review />
       </div>
