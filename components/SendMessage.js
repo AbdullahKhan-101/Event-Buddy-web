@@ -29,7 +29,7 @@ const SendMessage = () => {
   const [isOpen, setIsOpen] = useRecoilState(inviteModal);
   const [isSMOpen, setIsSMOpen] = useRecoilState(sendMessageModal);
   const [personDetails, setPersonDetails] = useRecoilState(usersDataModal);
-  const [eventName, setEventName] = useState("");
+  const [message, setMessage] = useState("");
   const [eventDescription, setEventDescription] = useState("");
   const [eventLat, setEventLat] = useState(0);
   const [eventLng, setEventLng] = useState(0);
@@ -44,52 +44,39 @@ const SendMessage = () => {
     opacity: isSMOpen === "open" ? 1 : 0,
     delay: isSMOpen === "open" ? 120 : 0,
   });
-  console.log(personDetails, "api payload");
+  // console.log(personDetails, "api payload");
 
   const router = useRouter();
   const dispatch = useDispatch();
   console.log("sMID", sMID);
-  const createInvitation = async () => {
-    if (
-      !eventName ||
-      !eventDescription ||
-      !eventLat ||
-      !eventLng ||
-      !eventAddress ||
-      !eventDate ||
-      !eventTime
-    ) {
+  const createChat = async () => {
+    const jwt = localStorage.getItem("JWT");
+    if (!message) {
       // toast.error("Please Fill All Fields");
       // setIsLoading(false);
-      alert("Please Fill All Fields");
+      // alert("Please Fill All Fields");
     } else {
       const payload = {
-        Title: eventName,
-        Description: eventDescription,
-        Time: new Date(`${eventDate} ${eventTime}`).toISOString(),
-        Lat: eventLat,
-        Lng: eventLng,
-        Address: eventAddress,
-        UserId: personDetails?.Id,
+        Message: message,
+        InvitationId: sMID?.Meta?.InvitationId,
       };
       console.log(payload, "api payload");
       try {
-        let fata = await axios.post(
-          "http://54.144.168.52:3000/invitation",
-          payload,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              authorization: userId?.token,
-            },
-          }
-        );
+        let fata = await axios.post("http://54.144.168.52:3000/chat", payload, {
+          headers: {
+            "Content-Type": "application/json",
+            authorization: jwt,
+          },
+        });
         console.log(fata, "api payload");
-        setIsSMOpen("close");
+        if (fata?.data?.Status == 200) {
+          setIsSMOpen("close");
+          router.push("/messeges");
+        }
       } catch (error) {
         // setIsLoading(false);
         // toast.error(error);
-        // console.log(error, "api payload");
+        console.log(error, "error chat");
         // console.log("if user error", isLoading);
       }
     }
@@ -97,36 +84,7 @@ const SendMessage = () => {
 
   useEffect(() => {
     AOS.init();
-    getUserData();
   }, []);
-
-  const getUserData = async () => {
-    let user = await localStorage.getItem("user");
-    const userData = JSON.parse(user);
-    // console.log("------------>nnnn", userData?.user?.Id);
-    setUserId(userData);
-  };
-
-  const getLocation = async (e) => {
-    Geocode.setApiKey("AIzaSyDh0f846bnmUxgSw6n5XtIZb01xtprxQfs");
-    Geocode.setLanguage("en");
-    Geocode.setRegion("es");
-    Geocode.setLocationType("ROOFTOP");
-    Geocode.enableDebug();
-    Geocode.fromAddress(e.label).then(
-      (res) => {
-        const address = res.results[0].formatted_address;
-        const lat = res.results[0].geometry.location.lat;
-        const lng = res.results[0].geometry.location.lng;
-        setEventAddress(address);
-        setEventLat(lat);
-        setEventLng(lng);
-      },
-      (error) => {
-        // console.error("--------->", error);
-      }
-    );
-  };
 
   return (
     <div>
@@ -141,82 +99,29 @@ const SendMessage = () => {
             className="fixed  rounded-xl p-4 md:p-10  shadow-2xl top-10 w-[95%] max-w-[640px] mx-auto right-0 left-0 md:top-20 z-20 bg-white"
           >
             <h1 className=" text-[#0E134F]  text-2xl text-center  px-1 font-strongg flex items-center">
-              <span className="flex-grow">Invitation Messege</span>
+              <span className="flex-grow">
+                Send Messege To {sMID?.Meta?.User?.FullName}
+              </span>
             </h1>
             <div className="px-2 py-3 my-6 space-y-5 ">
               <div className="flex items-center pl-2 bg-white border rounded-xl">
                 <input
                   type="text"
-                  placeholder="Event Name"
-                  className="block w-full p-4 border-none outline-none rounded-xl"
+                  placeholder="Write here"
+                  className="block w-full p-9 border-none outline-none rounded-xl"
                   onChange={(e) => {
-                    setEventName(e.target.value);
+                    setMessage(e.target.value);
                     // console.log(eventName);
                   }}
                 />
               </div>
-              <div className="flex justify-between">
-                <div className="flex items-center w-5/12 pl-2 bg-white border rounded-xl">
-                  <span>
-                    <CalendarIcon className="w-5 h-5 text-[#ED974B]" />
-                  </span>
-                  <input
-                    type="date"
-                    placeholder="Pick Date"
-                    className="block w-full p-4 text-gray-400 border-none outline-none rounded-xl"
-                    onChange={(e) => {
-                      // console.log(e.target.value);
-                      setEventDate(e.target.value);
-                    }}
-                  />
-                </div>
-                <div className="flex items-center w-5/12 pl-2 bg-white border rounded-xl">
-                  <span>
-                    <ClockIcon className="w-5 h-5 text-[#ED974B]" />
-                  </span>
-                  <input
-                    type="time"
-                    placeholder="Pick Time"
-                    className="block w-full p-4 text-gray-400 border-none outline-none rounded-xl"
-                    onChange={(e) => {
-                      // console.log(e.target.value);
-                      setEventTime(e.target.value);
-                    }}
-                  />
-                </div>
-              </div>
-              {/* <div className="flex items-center pl-2 bg-white border rounded-xl">
-                  <span>
-                    <LocationMarkerIcon className="w-5 h-5 text-[#ED974B]" />
-                  </span> */}
-              <div style={{ width: "66vh" }}>
-                {/* <GooglePlacesAutocomplete
-                      apiKey="AIzaSyDh0f846bnmUxgSw6n5XtIZb01xtprxQfs"
-                      // apiOptions={{ language: "en", region: "es" }}
-                    /> */}
-                <GooglePlaces
-                  value={add}
-                  onChange={(e) => {
-                    setAdd(e);
-                    getLocation(e);
-                  }}
-                  selectProps={{
-                    styles: { color: "red" },
-                  }}
-                />
-                {/* </div> */}
-              </div>
-              <div className="flex items-center pl-2 bg-white border rounded-xl ">
-                <textarea
-                  type="text"
-                  placeholder="Event Description"
-                  rows="3"
-                  className="block w-full p-4 border-none outline-none resize-none rounded-xl"
-                  onChange={(e) => setEventDescription(e.target.value)}
-                />
-              </div>
             </div>
-
+            <button
+              onClick={createChat}
+              className="font-semibold mx-2 bg-[#ED974B] bg-gradient-to-tr  py-[10px] sm:py-3 px-7 rounded-full text-white from-[#E77334] to-[#ED974B] w-[97%] hover:from-[#ff6715] mt-0"
+            >
+              Send
+            </button>
             <XIcon
               onClick={() => setIsSMOpen("close")}
               className="absolute p-1 text-gray-500 bg-white border rounded-full cursor-pointer h-9 w-9 -right-2 -top-5"

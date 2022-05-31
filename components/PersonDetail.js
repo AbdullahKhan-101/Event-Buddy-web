@@ -82,7 +82,7 @@ const PersonDetail = ({ img, name, position, about, data }) => {
                 {data?.from == "notification" ? (
                   <p
                     onClick={() => {
-                      setSMID(clickNotificationData?.Id);
+                      setSMID(clickNotificationData);
                       // console.log("-------->sMID", clickNotificationData);
                       setIsSMOpen("open");
                     }}

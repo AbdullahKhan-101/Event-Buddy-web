@@ -38,11 +38,16 @@ const AcceptInvite = () => {
   const [gotoProfile, setGotoProfile] = useState({});
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(HomeActions.InvitationById(clickNotificationData?.Id));
-    getLocation();
+    dispatch(
+      HomeActions.InvitationById(
+        clickNotificationData?.from == "notificationList"
+          ? clickNotificationData?.Meta?.InvitationId
+          : clickNotificationData?.Id
+      )
+    );
   }, [clickNotificationData]);
+  console.log("clickNotificationData===============>", clickNotificationData);
   useEffect(() => {
-    getLocation();
     getUserDetails();
   }, [invitaionDetails]);
   const styles = useSpring({
@@ -57,6 +62,7 @@ const AcceptInvite = () => {
       ...invitaionDetails?.data?.Data?.CreatedBy,
       from: "notification",
     });
+    getLocation();
     // console.log("========>", user?.token);
   };
   // console.log("clickNotification", clickNotificationData);
@@ -67,13 +73,12 @@ const AcceptInvite = () => {
       console.log("invitaionDetails", invitaionDetails);
       Geocode.setApiKey("AIzaSyDh0f846bnmUxgSw6n5XtIZb01xtprxQfs");
       Geocode.setLanguage("en");
-      Geocode.setRegion("es");
+      Geocode.setRegion("en");
       Geocode.setLocationType("ROOFTOP");
       Geocode.enableDebug();
-
       Geocode.fromLatLng(
-        invitaionDetails?.data?.Data?.Location.Lat,
-        invitaionDetails?.data?.Data?.Location.Lng
+        invitaionDetails?.data?.Data?.Location?.Lat,
+        invitaionDetails?.data?.Data?.Location?.Lng
       ).then(
         (response) => {
           const area = response.results[0].address_components[2].long_name;
@@ -88,11 +93,12 @@ const AcceptInvite = () => {
     }
   };
   const AcceptInvitation = async (id) => {
-    // console.log("Accepted", id);
+    console.log("Accepted", id);
     const JWT = localStorage.getItem("JWT");
     try {
       let fata = await axios.put(
         `http://54.144.168.52:3000/invitation/${id}/accept`,
+        {},
         {
           headers: {
             authorization: JWT,
@@ -115,6 +121,7 @@ const AcceptInvite = () => {
     try {
       let fata = await axios.put(
         `http://54.144.168.52:3000/invitation/${id}/reject`,
+        {},
         {
           headers: {
             authorization: JWT,
