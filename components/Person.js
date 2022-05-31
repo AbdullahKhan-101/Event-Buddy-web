@@ -34,7 +34,6 @@ const Person = ({ active }) => {
   const [openReview, setOpenReview] = useRecoilState(reviewModal);
   const [openReviewsModal, setOpenReviewsModal] =
     useRecoilState(openReviewsModall);
-
   const [usersData, setUsersData] = useRecoilState(usersDataModal);
   const dispatch = useDispatch();
   const router = useRouter();
@@ -43,7 +42,7 @@ const Person = ({ active }) => {
 
   const userById = useSelector((state) => state?.Home?.UserById);
   const userReviews = useSelector((state) => state?.Home?.User_reviews);
-  // console.log("=========================xxxxxxxxxxx=============", userReviews);
+  console.log("=========================xxxxxxxxxxx=============", usersData);
   useEffect(() => {
     // console.log(userById);
     // console.log(userReviews);
@@ -97,8 +96,14 @@ const Person = ({ active }) => {
     <div>
       {/* <Script src="https://google.com"></Script> */}
       <Script src="Google/location/AIzaSyBzpeVhVlmsD3zeg6482RCOe7PcYSweF9E"></Script>
-      <div className={`${openReview ? "-z-50" : ""}`}>
-        <div className={`${isOpen === "open" ? "opacity-30" : "opacity-100"}`}>
+      <div
+      // className={`${openReview ? "-z-50" : ""}`}
+      >
+        <div
+          className={`${isOpen === "open" ? "opacity-30" : "opacity-100"}
+        ${openReview ? "opacity-90" : "opacity-100"}
+        `}
+        >
           <Nav active={active} />
         </div>
         {/* than tk */}
@@ -203,13 +208,13 @@ const Person = ({ active }) => {
                 </div>
               )}
               <div className="mt-4 mb-6 md:hidden">
-                <button
+                {/* <button
                   onClick={() => setOpenReviewsModal(true)}
                   className="font-semibold border  bg-[#FCEDE4]   py-[10px] sm:py-3 px-7 rounded-full text-[#ff6715]    w-[100%] mt-2 border-[#ED974B]"
                 >
                   More Reviews
-                </button>
-                <button
+                </button> */}
+                {/* <button
                   onClick={() => setIsOpen("open")}
                   className="font-semibold  bg-[#ED974B] flex items-center justify-center bg-gradient-to-tr  py-[10px] sm:py-3 px-7 rounded-full text-white from-[#E77334] to-[#ED974B]   w-[100%] hover:from-[#ff6715] mt-3"
                 >
@@ -221,8 +226,8 @@ const Person = ({ active }) => {
                       objectfit="contain"
                     />
                   </div>
-                  Send Messege
-                </button>
+                  Send Message
+                </button> */}
               </div>
             </div>
           </div>

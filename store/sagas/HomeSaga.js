@@ -113,7 +113,7 @@ export function* GetDiscoverUsers(action) {
     "content-type": "application/json",
     authorization: jwt,
   });
-  console.log(response, "Get Discover Users ");
+  // console.log(response, "Get Discover Users ");
   const response_status = yield call(validateResponse, response);
   if (response_status.success) {
     yield put({
@@ -161,7 +161,7 @@ export function* GetPendingInvitations(action) {
     "content-type": "application/json",
     authorization: jwt,
   });
-  console.log(response, "Get  Pending Invitations ");
+  // console.log(response, "Get  Pending Invitations ");
   const response_status = yield call(validateResponse, response);
   if (response_status.success) {
     yield put({
@@ -226,14 +226,13 @@ export function* GetReceivedInvitations(action) {
 
 export function* GetInvitationById(action) {
   // console.log("hello world from GetInvitationById");
-  // const payload = action;
-  const id = "3";
+  const payload = action.payload;
   const jwt = localStorage.getItem("JWT");
-  const response = yield call(ApiCaller.Get, `invitation/details/${id}`, {
+  const response = yield call(ApiCaller.Get, `invitation/details/${payload}`, {
     "content-type": "application/json",
     authorization: jwt,
   });
-  // console.log(response, "GetInvitationById ");
+  console.log(response, "GetInvitationById ");
   const response_status = yield call(validateResponse, response);
   if (response_status.success) {
     yield put({
@@ -281,7 +280,7 @@ export function* GetInvitationChat(action) {
     "content-type": "application/json",
     authorization: jwt,
   });
-  console.log(response, "GetInvitationChat ");
+  // console.log(response, "GetInvitationChat ");
   const response_status = yield call(validateResponse, response);
   if (response_status.success) {
     yield put({
@@ -398,7 +397,7 @@ export function* GetNotifications(action) {
 }
 
 export function* GetInvChat(action) {
-  console.log("GetNotifications", action.payload);
+  // console.log("GetNotifications", action.payload);
   const payload = action.payload;
   // const id = "2";
   const jwt = localStorage.getItem("JWT");
@@ -406,7 +405,7 @@ export function* GetInvChat(action) {
     "content-type": "application/json",
     authorization: jwt,
   });
-  console.log(response, "GetInvChat");
+  // console.log(response, "GetInvChat");
   const response_status = yield call(validateResponse, response);
   if (response_status.success) {
     yield put({

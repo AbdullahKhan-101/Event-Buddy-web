@@ -9,6 +9,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { useRecoilState } from "recoil";
 import {
   acceptInviteModal,
+  ClickNotificationData,
   modalState,
   notificationCountState,
 } from "../atoms/modalAtom";
@@ -19,13 +20,12 @@ import { useSpring, animated } from "react-spring";
 import { imageBaseUrl } from "../config/utils";
 import Moment from "react-moment";
 import moment from "moment";
-import FadeLoader from "react-spinners/FadeLoader";
-import { NotificationsOff } from "@mui/icons-material";
-
-// import Spinner from "react-spinkit";
 
 const Notifications = () => {
   const [isOpen, setIsOpen] = useRecoilState(modalState);
+  const [clickNotificationData, setClickNotificationData] = useRecoilState(
+    ClickNotificationData
+  );
   const [notificationsCount, setNotificationsCount] = useRecoilState(
     notificationCountState
   );
@@ -43,11 +43,6 @@ const Notifications = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const [notificationSuccess, setNotificationSuccess] = useState([]);
-
-  // console.log(
-  //   "notifications checking checking here from notifications",
-  //   notificationsData
-  // );
   setNotificationsCount(notificationsData);
 
   useEffect(() => {
@@ -99,14 +94,7 @@ const Notifications = () => {
   ];
 
   return (
-    <div className="">
-      {/* <div className="hidden md:block">
-        <Person active="notifications" />
-      </div> */}
-      {/* <div className=" md:hidden">
-        <Nav active="notifications" />
-      </div> */}
-      {/* yhan tk */}
+    <div>
       {isOpen && (
         <animated.div
           style={styles}
@@ -118,7 +106,10 @@ const Notifications = () => {
               {notificationsData?.map((item, index) => {
                 return (
                   <div
-                    onClick={() => setInviteModal("open")}
+                    onClick={() => {
+                      // setInviteModal("open");
+                      // setClickNotificationData(item);
+                    }}
                     key={index}
                     className="flex items-center p-2 py-4 mt-1 bg-white rounded-lg shadow-md cursor-pointer md:-ml-2 md:shadow-none"
                   >
@@ -149,7 +140,6 @@ const Notifications = () => {
           </animated.div>
         </animated.div>
       )}
-      {/* yhan tk */}
       <AcceptInvite />
     </div>
   );

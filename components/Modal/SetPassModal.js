@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
-import classes from "../../styles/SetPassModal.module.css";
-import { Input } from "reactstrap";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import Image from "next/image";
 import { XIcon } from "@heroicons/react/solid";
 import AOS from "aos";
 import "aos/dist/aos.css";
+
 function SetPassModal({ closeModal }) {
   const [passReqNext, setPassReqNext] = useState(true);
   const [emailAuth, setEmailAuth] = useState(false);
@@ -49,6 +48,10 @@ function SetPassModal({ closeModal }) {
     }
   };
 
+  useEffect(() => {
+    AOS.init();
+  }, []);
+
   return (
     <>
       <div
@@ -56,8 +59,12 @@ function SetPassModal({ closeModal }) {
         data-aos-easing="ease-in-back"
         data-aos-delay="200"
         data-aos-offset="0"
-        className="fixed top-0 right-0 bg-white w-[100%] h-[100vh] bg-opacity-70 z-50"
+        className="fixed top-0 right-0 bg-white w-[100%] h-[100vh] bg-opacity-70 z-10"
       >
+        <div
+          onClick={() => closeModal(false)}
+          className="w-[100%] h-[100vh] bg-white fixed top-0  bg-opacity-20 right-0 left-0 "
+        ></div>
         <div
           data-aos="fade-up"
           data-aos-delay="300"

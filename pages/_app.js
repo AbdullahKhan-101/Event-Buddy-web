@@ -15,15 +15,15 @@ import { SOCKET_URL } from "../config/utils";
 // });
 
 function MyApp({ Component, pageProps }) {
-  console.log("=======>Render");
+  // console.log("=======>Render");
   useEffect(() => {
     UserDetails()
       .then((res) => {
-        console.log("=======>Render1");
+        // console.log("=======>Render1");
         socketConnection({ id: res?.user?.Id, token: res?.token });
       })
       .catch((e) => {
-        console.log("=======>User Not Login", e);
+        // console.log("=======>User Not Login", e);
       });
   }, []);
   const socketConnection = (data) => {
@@ -46,7 +46,7 @@ function MyApp({ Component, pageProps }) {
     setSocketRef(socket);
   };
   const UserDetails = async () => {
-    console.log("=======>ok");
+    // console.log("=======>ok");
     const User = await localStorage.getItem("user");
     const user = JSON.parse(User);
     // setUser(user);

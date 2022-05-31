@@ -17,7 +17,8 @@ import { HomeActions } from "../store/actions";
 import Loader from "./Loader";
 import { useRecoilState } from "recoil";
 import { loadingState } from "../atoms/modalAtom";
-
+// import Loader from "../components/Loader/Loader";
+// import ForgotPass from "./Modal/ForgotPass";
 const Login = () => {
   const height = 0;
   const width = 0;

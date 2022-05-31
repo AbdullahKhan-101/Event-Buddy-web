@@ -38,3 +38,10 @@ export const notificationCountState = atom({
   key: "notificationCountState",
   default: [],
 });
+
+export const ClickNotificationData = atom({
+  key: "ClickNotificationData",
+  default: {
+    name: null,
+  },
+});

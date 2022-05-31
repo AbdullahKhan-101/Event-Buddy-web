@@ -7,37 +7,42 @@ import {
 } from "@heroicons/react/outline";
 import { useRouter } from "next/router";
 import { toast, ToastContainer } from "react-toastify";
-
+import axios from "axios";
 const ChangePass = () => {
   const [oldPass, setOldPass] = useState("");
   const [newPass, setNewPass] = useState("");
   const [reNewPass, setReNewPass] = useState("");
 
   const ChangePassword = async () => {
-    // console.log("=========>");
+    console.log("=========>");
     const JWT = localStorage.getItem("JWT");
     if (!oldPass && !newPass && !reNewPass) {
       toast.error("Please Fill All Fields..");
     } else {
       if (newPass == reNewPass) {
-        const formData = new FormData();
-        formData.append("OldPassword", oldPass);
-        formData.append("Password", newPass);
+        const params = new URLSearchParams();
+        params.append("OldPassword", oldPass);
+        params.append("Password", newPass);
         try {
-          let fata = await axios.post(
-            "http://54.144.168.52:3000/user",
-            formData,
-            {
-              headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-                authorization: JWT,
-              },
-            }
-          );
+          let fata = await axios.put("http://54.144.168.52:3000/user", params, {
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+              authorization: JWT,
+            },
+          });
+          console.log(fata, "Change Pass");
+          if (fata?.data?.Status == 200) {
+            toast.success("Password Changed Successfully");
+            setOldPass("");
+            setNewPass("");
+            setReNewPass("");
+          } else {
+            toast.error("Incorrect Old Password");
+          }
         } catch (error) {
           // setIsLoading(false);
           toast.error(error);
-          // console.log(error, "api payload");
+          console.log(error, "api payload");
           // console.log("if user error", isLoading);
         }
       } else {
@@ -99,7 +104,7 @@ const ChangePass = () => {
               />
               <button
                 className="font-mediumm mx-2 bg-[#ED974B] bg-gradient-to-tr  py-[10px] sm:py-3 px-7 rounded-full text-white from-[#E77334] to-[#ED974B] w-[97%] hover:from-[#ff6715] mt-10"
-                onClick={() => ChangePassword()}
+                onClick={ChangePassword}
               >
                 Save
               </button>

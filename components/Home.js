@@ -27,6 +27,7 @@ const Home = () => {
   // const [usersData, setUsersData] = useState([]);
   const dispatch = useDispatch();
   const router = useRouter();
+  const [userAddress, setUserAddress] = useState("");
   const [discoverUsersSuccess, setDiscoverUsersSuccess] = useState([]);
 
   const discoverUsers = useSelector((state) => state?.Home?.DiscoverUsers);
@@ -58,9 +59,7 @@ const Home = () => {
   ];
 
   useEffect(() => {
-    setLoading(true);
-    console.log(discoverUsers?.data?.Data?.Users.length, "-------->");
-    // setSignupSuccess(SignupResponse);
+    getLocation();
     dispatch(HomeActions.UserProfile());
     dispatch(HomeActions.DiscoverUsers());
   }, []);
@@ -68,20 +67,30 @@ const Home = () => {
   if (discoverUsers?.data?.Data?.Users.length > 0) {
     setLoading(false);
   }
-  Geocode.setApiKey("AIzaSyDh0f846bnmUxgSw6n5XtIZb01xtprxQfs");
-  Geocode.setLanguage("en");
-  Geocode.setRegion("es");
-  Geocode.setLocationType("ROOFTOP");
-  Geocode.enableDebug();
-  Geocode.fromLatLng("48.8583701", "2.2922926").then(
-    (response) => {
-      const address = response.results[0].formatted_address;
-      console.log("xxxxxxxxxxxxx", address);
-    },
-    (error) => {
-      // console.error("--------->", error);
-    }
-  );
+  const getLocation = async () => {
+    const Latitude = await localStorage.getItem("userLatitude");
+    const userLatitude = JSON.parse(Latitude);
+    const Longitude = await localStorage.getItem("userLongitude");
+    const userLongitude = JSON.parse(Longitude);
+    Geocode.setApiKey("AIzaSyDh0f846bnmUxgSw6n5XtIZb01xtprxQfs");
+    Geocode.setLanguage("en");
+    Geocode.setRegion("es");
+    Geocode.setLocationType("ROOFTOP");
+    Geocode.enableDebug();
+    Geocode.fromLatLng(userLatitude, userLongitude).then(
+      (response) => {
+        const area = response.results[0].address_components[2].long_name;
+        const city = response.results[0].address_components[3].long_name;
+        const state = response.results[0].address_components[7].long_name;
+        console.log("xxxxxxxxxxxxx", response);
+        setUserAddress(`${area}, ${city}, ${state}`);
+      },
+      (error) => {
+        // console.error("--------->", error);
+      }
+    );
+  };
+
   return (
     <div className="bg-white ">
       <Nav active="Home" />
@@ -96,9 +105,7 @@ const Home = () => {
           <div className="flex">
             <p className="items-center hidden mr-8 md:flex ">
               <LocationMarkerIcon className="w-6 h-6 text-[#E9813B] mr-2" />
-              <span className="text-[#42526E] font-normall">
-                Waddington, EN1, London
-              </span>
+              <span className="text-[#42526E] font-normall">{userAddress}</span>
             </p>
             <p
               className="flex items-center px-4 py-2 bg-[#FCEDE4] rounded-tl-lg rounded-bl-lg md:rounded-[40px] justify-center"

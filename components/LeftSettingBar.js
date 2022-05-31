@@ -19,34 +19,41 @@ import axios from "axios";
 const LeftSettingBar = () => {
   const router = useRouter();
   const label = { inputProps: { "aria-label": "Switch demo" } };
-  const [availibility, setAvailibility] = useState(false);
-  useLayoutEffect(() => {
-    getUserDetails();
-  }, [availibility]);
-
+  const [user, setUser] = useState();
   useEffect(() => {
     getUserDetails();
   }, []);
+
   // console.log("sss", typeof availibility);
   const getUserDetails = async () => {
     const User = await localStorage.getItem("user");
     const user = JSON.parse(User);
-    setAvailibility(user?.user?.AvailableForInvitation);
-    // console.log("========>", user?.user?.AvailableForInvitation);
+    setUser(user?.user);
+    console.log("========>", user?.user);
   };
   const AvailableforInvitation = async (boolean) => {
-    // console.log("========>test", boolean);
+    console.log("========>test", boolean);
 
     const JWT = localStorage.getItem("JWT");
-    const formData = new FormData();
-    formData.append("AvailableForInvitation", boolean);
+    const params = new URLSearchParams();
+    params.append("AvailableForInvitation", boolean);
     try {
-      let fata = await axios.post("http://54.144.168.52:3000/user", formData, {
+      let fata = await axios.put("http://54.144.168.52:3000/user", params, {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
           authorization: JWT,
         },
       });
+      console.log(fata, "api payload");
+      if (fata?.data?.Data?.Message == "Updated") {
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            user: fata?.data?.Data?.User,
+          })
+        );
+        getUserDetails();
+      }
     } catch (error) {
       // setIsLoading(false);
       toast.error(error);
@@ -62,7 +69,9 @@ const LeftSettingBar = () => {
             <span>Settings</span>
             <span className="flex text-sm items-center px-4 py-1 bg-[#FCEDE4] rounded-tl-full rounded-bl-full  float-right font-normal -mr-5">
               <UserAddIcon className="w-4 h-4 text-[#E9813B] mr-2" />
-              <span className="text-[#E9813B] ">Unverified</span>
+              <span className="text-[#E9813B] ">
+                {user?.IsVerified == true ? "Verified" : "UnVerified"}
+              </span>
             </span>
           </h1>
           <div>
@@ -168,22 +177,21 @@ const LeftSettingBar = () => {
                 <p className="mb-0 text-sm text-[#E9813B]  min-w-[30px]  flex items-center justify-center">
                   <Switch
                     {...label}
-                    checked={availibility}
+                    checked={user?.AvailableforInvitation}
                     size="small"
                     color="warning"
-                    onChange={() => {
-                      if (availibility) {
+                    onChange={(e) => {
+                      if (user?.AvailableforInvitation == true) {
                         AvailableforInvitation(false);
                       } else {
                         AvailableforInvitation(true);
                       }
                     }}
-                    // className="w-5 h-5  text-[#E9813B] cursor-pointer"
                   />
                 </p>
               </div>
             </div>
-            <div className="flex items-center p-2 py-4 mt-4 bg-white rounded-lg shadow-md cursor-pointer md:-ml-2 md:shadow-none">
+            {/* <div className="flex items-center p-2 py-4 mt-4 bg-white rounded-lg shadow-md cursor-pointer md:-ml-2 md:shadow-none">
               <div className="relative w-[20px] mr-1 h-[18px]  text-[#E9813B] ">
                 <Image
                   src="/verify.png"
@@ -202,7 +210,7 @@ const LeftSettingBar = () => {
                   <ChevronRightIcon className="w-5 h-5 text-gray-400 cursor-pointer" />
                 </p>
               </div>
-            </div>
+            </div> */}
             <div
               onClick={() => router.push("/privacyPolicy")}
               className="flex items-center p-2 py-4 mt-4 bg-white rounded-lg shadow-md cursor-pointer md:-ml-2 md:shadow-none"
@@ -234,7 +242,14 @@ const LeftSettingBar = () => {
                 />
               </div>
               <div className="flex items-center flex-grow ml-4 md:ml-4">
-                <div className="flex-grow">
+                <div
+                  className="flex-grow"
+                  onClick={() => {
+                    router.push("/login");
+                    localStorage.setItem("user", "");
+                    localStorage.setItem("JWT", "");
+                  }}
+                >
                   <h1 className="font-bold text-[#0E134F]">Logout</h1>
                 </div>
                 <p className="mb-0 text-sm text-[#E9813B]  min-w-[30px] md:hidden flex items-center justify-center">

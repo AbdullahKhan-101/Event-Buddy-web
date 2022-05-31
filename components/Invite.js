@@ -9,15 +9,20 @@ import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { HomeActions } from "../store/actions";
 import { useRecoilState } from "recoil";
-import { inviteModal } from "../atoms/modalAtom";
+import { inviteModal, usersDataModal } from "../atoms/modalAtom";
 import { XIcon } from "@heroicons/react/solid";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import axios from "axios";
 import { useSpring, animated } from "react-spring";
 import moment from "moment";
+import GooglePlaces from "./Map/GoogePlaces";
+import Geocode from "react-geocode";
+import { ToastContainer, toast } from "react-toastify";
+
 const Invite = () => {
   const [isOpen, setIsOpen] = useRecoilState(inviteModal);
+  const [personDetails, setPersonDetails] = useRecoilState(usersDataModal);
   const [eventName, setEventName] = useState("");
   const [eventDescription, setEventDescription] = useState("");
   const [eventLat, setEventLat] = useState(0);
@@ -25,99 +30,62 @@ const Invite = () => {
   const [eventAddress, setEventAddress] = useState("");
   const [eventDate, setEventDate] = useState("");
   const [eventTime, setEventTime] = useState("");
+  const [add, setAdd] = useState("");
   const [eventDateandTime, setEventDateandTime] = useState("");
   const [userId, setUserId] = useState();
   const styles = useSpring({
     opacity: isOpen === "open" ? 1 : 0,
     delay: isOpen === "open" ? 120 : 0,
   });
+  // console.log(personDetails, "api payload");
 
   const router = useRouter();
   const dispatch = useDispatch();
 
   const createInvitation = async () => {
-    // if (
-    //   !eventName ||
-    //   !eventDescription ||
-    //   !eventLat ||
-    //   !eventLng ||
-    //   !eventAddress ||
-    //   !eventDate ||
-    //   !eventTime
-    // ) {
-    //   toast.error("Please Fill All Fields");
-    //   // setIsLoading(false);
-    // } else {
-    const payload = {
-      Title: eventName,
-      Description: eventDescription,
-      Time: new Date(`${eventDate} ${eventTime}`).toISOString(),
-      Lat: 24.916682,
-      Lng: 67.1229623,
-      Address: "Testing",
-      UserId: userId?.user?.Id,
-    };
-    // try {
-    //   let fata = await axios.post(
-    //     "http://54.144.168.52:3000/invitation",
-    //     payload,
-    //     {
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //         authorization: userId?.token,
-    //       },
-    //     }
-    //   );
-    //   console.log(fata, "api payload");
-    //   if (fata?.data?.Status == 200) {
-    //     if (!fata?.data?.Data?.User?.Media) {
-    //       // setIsLoading(false);
-    //       // setEmail("");
-    //       // setPassword("");
-    //       // router.push("/uploadPicture");
-    //       // console.log("if 200", isLoading);
-    //     } else if (!fata?.data?.Data?.User?.SelfieMedia) {
-    //       // setIsLoading(false);
-    //       // setEmail("");
-    //       // setPassword("");
-    //       // router.push("/selfie");
-    //       // console.log("if Selfie Media", isLoading);
-    //     } else {
-    //       // dispatch(
-    //       //   HomeActions.userDetails({
-    //       //     user: fata?.data?.Data?.User,
-    //       //     token: fata?.data?.Data?.Token,
-    //       //   })
-    //       // );
-    //       // localStorage.setItem(
-    //       //   "user",
-    //       //   JSON.stringify({
-    //       //     user: fata?.data?.Data?.User,
-    //       //     token: fata?.data?.Data?.Token,
-    //       //   })
-    //       // );
-    //       // localStorage.setItem("JWT", fata?.data?.Data?.Token);
-    //       // router.push("/home");
-    //       // setIsLoading(false);
-    //       // setEmail("");
-    //       // setPassword("");
-    //       // console.log("if localstorage", isLoading);
-    //     }
-    //   } else {
-    //     // toast.error(fata?.data?.Message);
-    //     // console.log(fata, "api payload");
-    //     // toast.error(fata?.data?.Message);
-    //     // setIsLoading(false);
-    //     // console.log("if apierror", isLoading);
-    //     // throw new Error(fata?.data);
-    //   }
-    // } catch (error) {
-    //   // setIsLoading(false);
-    //   // toast.error(error);
-    //   // console.log(error, "api payload");
-    //   // console.log("if user error", isLoading);
-    // }
-    // }
+    if (
+      !eventName ||
+      !eventDescription ||
+      !eventLat ||
+      !eventLng ||
+      !eventAddress ||
+      !eventDate ||
+      !eventTime
+    ) {
+      // toast.error("Please Fill All Fields");
+      // setIsLoading(false);
+      alert("Please Fill All Fields");
+    } else {
+      const payload = {
+        Title: eventName,
+        Description: eventDescription,
+        Time: new Date(`${eventDate} ${eventTime}`).toISOString(),
+        Lat: eventLat,
+        Lng: eventLng,
+        Address: eventAddress,
+        UserId: 70,
+      };
+      console.log(payload, "api payload");
+      try {
+        let fata = await axios.post(
+          "http://54.144.168.52:3000/invitation",
+          payload,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              authorization: userId?.token,
+            },
+          }
+        );
+        console.log(fata, "api payload");
+        setIsOpen("close");
+      } catch (error) {
+        // setIsLoading(false);
+        // toast.error(error);
+        // console.log(error, "api payload");
+        // console.log("if user error", isLoading);
+      }
+    }
   };
 
   useEffect(() => {
@@ -131,16 +99,39 @@ const Invite = () => {
     // console.log("------------>nnnn", userData?.user?.Id);
     setUserId(userData);
   };
+
+  const getLocation = async (e) => {
+    Geocode.setApiKey("AIzaSyDh0f846bnmUxgSw6n5XtIZb01xtprxQfs");
+    Geocode.setLanguage("en");
+    Geocode.setRegion("es");
+    Geocode.setLocationType("ROOFTOP");
+    Geocode.enableDebug();
+    Geocode.fromAddress(e.label).then(
+      (res) => {
+        const address = res.results[0].formatted_address;
+        const lat = res.results[0].geometry.location.lat;
+        const lng = res.results[0].geometry.location.lng;
+        setEventAddress(address);
+        setEventLat(lat);
+        setEventLng(lng);
+      },
+      (error) => {
+        // console.error("--------->", error);
+      }
+    );
+  };
+
   return (
     <div>
       {isOpen === "open" && (
-        <div className="z-50">
-          {/* <div className="z-50 bg-opacity-20 md:bg-opacity-10"> */}
-          {/* <Person /> */}
-          {/* </div> */}
+        <div className="z-20">
+          <div
+            onClick={() => setIsOpen("close")}
+            className="w-[100%] h-[100vh] bg-white fixed top-0  bg-opacity-60 right-0 left-0"
+          ></div>
           <animated.div
             style={styles}
-            className="fixed  rounded-xl p-4 md:p-10  shadow-2xl top-10 w-[95%] max-w-[640px] mx-auto right-0 left-0 md:top-20 z-50 bg-white"
+            className="fixed  rounded-xl p-4 md:p-10  shadow-2xl top-10 w-[95%] max-w-[640px] mx-auto right-0 left-0 md:top-20 z-20 bg-white"
           >
             <h1 className=" text-[#0E134F]  text-2xl text-center  px-1 font-strongg flex items-center">
               <span className="flex-grow">Invitation Messege</span>
@@ -187,15 +178,26 @@ const Invite = () => {
                   />
                 </div>
               </div>
-              <div className="flex items-center pl-2 bg-white border rounded-xl">
+              {/* <div className="flex items-center pl-2 bg-white border rounded-xl">
                 <span>
                   <LocationMarkerIcon className="w-5 h-5 text-[#ED974B]" />
-                </span>
-                <input
-                  type="text"
-                  placeholder="Event Location"
-                  className="block w-full p-4 border-none outline-none rounded-xl"
+                </span> */}
+              <div style={{ width: "66vh" }}>
+                {/* <GooglePlacesAutocomplete
+                    apiKey="AIzaSyDh0f846bnmUxgSw6n5XtIZb01xtprxQfs"
+                    // apiOptions={{ language: "en", region: "es" }}
+                  /> */}
+                <GooglePlaces
+                  value={add}
+                  onChange={(e) => {
+                    setAdd(e);
+                    getLocation(e);
+                  }}
+                  selectProps={{
+                    styles: { color: "red" },
+                  }}
                 />
+                {/* </div> */}
               </div>
               <div className="flex items-center pl-2 bg-white border rounded-xl ">
                 <textarea
@@ -220,7 +222,7 @@ const Invite = () => {
           </animated.div>
         </div>
       )}
-      {/* yhan tk */}
+      <ToastContainer />
     </div>
   );
 };

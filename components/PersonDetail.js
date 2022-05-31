@@ -75,6 +75,7 @@ const PersonDetail = ({ img, name, position, about }) => {
               {/* two buttons here */}
               <div className="hidden mt-4 lg:block">
                 <button
+                  // onClick={() => setOpenReview(true)}
                   onClick={() => setOpenReviewsModal(true)}
                   className="   bg-[#FCEDE4]   py-[10px] sm:py-3 px-7 rounded-full text-[#E9813B]   font-mediumm w-[100%] mt-2 border-[#ED974B]"
                 >
@@ -92,7 +93,7 @@ const PersonDetail = ({ img, name, position, about }) => {
                       objectfit="contain"
                     />
                   </div>
-                  Send Messege
+                  Send Invitation
                 </p>
               </div>
             </div>

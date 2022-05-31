@@ -29,6 +29,7 @@ const ProfileSettings = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const [loading, setLoading] = useRecoilState(loadingState);
+  const [user, setUser] = useState();
 
   const fileSelectedHandler = (e) => {
     setSelectedImage(e.target.files[0]);
@@ -40,23 +41,18 @@ const ProfileSettings = () => {
       setSelectedFile(readerEvent.target.result);
     };
   };
-
-  const userProfile = useSelector((state) => state?.Home?.UserProfile);
-  const userProfileData = userProfile?.data?.Data?.User;
-
-  // console.log("user profile checking data Name ==> ", userProfileData.FullName);
-
-  // userProfileData.map((item, index) => {
-  //   setUserProfileDatas(item);
-  // });
-
   useEffect(() => {
-    dispatch(HomeActions.UserProfile());
+    getUserDetails();
   }, []);
 
-  // console.log(userProfile);
+  const getUserDetails = async () => {
+    const User = await localStorage.getItem("user");
+    const user = JSON.parse(User);
+    setUser(user?.user);
+    console.log("===========>", user?.user);
+  };
   const onSave = async (image) => {
-    setLoading(true);
+    // setLoading(true);
     // console.log("===========>", image);
     const JWT = localStorage.getItem("JWT");
     if (selectedImage) {
@@ -73,7 +69,7 @@ const ProfileSettings = () => {
             },
           }
         );
-        console.log(fata, "api payload");
+        console.log(fata, "image response");
         if (fata?.data.Status == 200) {
           updateProfile(fata?.data?.Data?.Id);
         } else {
@@ -81,7 +77,7 @@ const ProfileSettings = () => {
         }
       } catch (error) {
         toast.error(error);
-        console.log(error, "api payload");
+        // console.log(error, "api payload");
       }
     } else {
       updateProfile();
@@ -92,29 +88,28 @@ const ProfileSettings = () => {
     const JWT = localStorage.getItem("JWT");
     const formData = new FormData();
     if (data) {
-      // formData.append("MediaId", data);
       const params = new URLSearchParams();
-      params.append("MediaId", 154);
-      console.log(params.values(), "WHat is my dat");
-      // params.append('lastName', 'fred');
-      // axios.post('/user', params);
-      // const payload = { MediaId: data };
-      // var mediaId = qs.stringify(payload);
-      // console.log(mediaId, "data ");
+      params.append("MediaId", data);
+
       try {
-        let fata = await axios.post(
-          "http://54.144.168.52:3000/user",
-          QueryString.stringify({
-            MediaId: 154, //gave the values directly for testing
-          }),
-          {
-            headers: {
-              "Content-Type": "application/x-www-form-urlencoded",
-              authorization: JWT,
-            },
-          }
-        );
-        console.log(fata.data, "user setting api image");
+        let fata = await axios.put("http://54.144.168.52:3000/user", params, {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            authorization: JWT,
+          },
+        });
+        console.log(fata, "user setting api image");
+        if (fata?.data?.Data?.Message == "Updated") {
+          localStorage.setItem(
+            "user",
+            JSON.stringify({
+              user: fata?.data?.Data?.User,
+            })
+          );
+          getUserDetails();
+          setSelectedFile(null);
+          setSelectedImage("");
+        }
       } catch (error) {
         // setIsLoading(false);
         toast.error(error);
@@ -122,21 +117,81 @@ const ProfileSettings = () => {
         // console.log("if user error", isLoading);
       }
     } else if (name && !data && !number && !description) {
-      formData.append("FullName", name);
-      formData.append("UserName", name);
+      const params = new URLSearchParams();
+      params.append("FullName", name);
+      params.append("UserName", name);
 
       try {
-        let fata = await axios.post(
-          "http://54.144.168.52:3000/user",
-          { FullName: name, UserName: name },
-          {
-            headers: {
-              "Content-Type": "application/x-www-form-urlencoded",
-              authorization: JWT,
-            },
-          }
-        );
-        console.log(fata, "user setting api name");
+        let fata = await axios.put("http://54.144.168.52:3000/user", params, {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            authorization: JWT,
+          },
+        });
+        if (fata?.data?.Data?.Message == "Updated") {
+          localStorage.setItem(
+            "user",
+            JSON.stringify({
+              user: fata?.data?.Data?.User,
+            })
+          );
+          getUserDetails();
+          setName("");
+        }
+      } catch (error) {
+        // setIsLoading(false);
+        toast.error(error);
+        // console.log(error, "api payload");
+        // console.log("if user error", isLoading);
+      }
+    } else if (!name && !data && !number && description) {
+      const params = new URLSearchParams();
+
+      params.append("About", description);
+      try {
+        let fata = await axios.put("http://54.144.168.52:3000/user", params, {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            authorization: JWT,
+          },
+        });
+        if (fata?.data?.Data?.Message == "Updated") {
+          localStorage.setItem(
+            "user",
+            JSON.stringify({
+              user: fata?.data?.Data?.User,
+            })
+          );
+          getUserDetails();
+          setSelectedFile(null);
+          setDescription("");
+        }
+      } catch (error) {
+        // setIsLoading(false);
+        toast.error(error);
+        // console.log(error, "api payload");
+        // console.log("if user error", isLoading);
+      }
+    } else if (!name && !data && number && !description) {
+      const params = new URLSearchParams();
+      params.append("PhoneNumber", number);
+      try {
+        let fata = await axios.put("http://54.144.168.52:3000/user", params, {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            authorization: JWT,
+          },
+        });
+        if (fata?.data?.Data?.Message == "Updated") {
+          localStorage.setItem(
+            "user",
+            JSON.stringify({
+              user: fata?.data?.Data?.User,
+            })
+          );
+          getUserDetails();
+          setNumber("");
+        }
       } catch (error) {
         // setIsLoading(false);
         toast.error(error);
@@ -144,20 +199,28 @@ const ProfileSettings = () => {
         // console.log("if user error", isLoading);
       }
     } else if (name && !data && number && !description) {
-      formData.append("FullName", name);
-      formData.append("UserName", name);
-      formData.append("PhoneNumber", number);
+      const params = new URLSearchParams();
+      params.append("FullName", name);
+      params.append("UserName", name);
+      params.append("PhoneNumber", number);
       try {
-        let fata = await axios.post(
-          "http://54.144.168.52:3000/user",
-          formData,
-          {
-            headers: {
-              "Content-Type": "application/x-www-form-urlencoded",
-              authorization: JWT,
-            },
-          }
-        );
+        let fata = await axios.put("http://54.144.168.52:3000/user", params, {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            authorization: JWT,
+          },
+        });
+        if (fata?.data?.Data?.Message == "Updated") {
+          localStorage.setItem(
+            "user",
+            JSON.stringify({
+              user: fata?.data?.Data?.User,
+            })
+          );
+          getUserDetails();
+          setNumber("");
+          setName("");
+        }
       } catch (error) {
         // setIsLoading(false);
         toast.error(error);
@@ -165,21 +228,30 @@ const ProfileSettings = () => {
         // console.log("if user error", isLoading);
       }
     } else if (name && !data && number && description) {
-      formData.append("FullName", name);
-      formData.append("UserName", name);
-      formData.append("PhoneNumber", number);
-      formData.append("About", description);
+      const params = new URLSearchParams();
+      params.append("FullName", name);
+      params.append("UserName", name);
+      params.append("PhoneNumber", number);
+      params.append("About", description);
       try {
-        let fata = await axios.post(
-          "http://54.144.168.52:3000/user",
-          formData,
-          {
-            headers: {
-              "Content-Type": "application/x-www-form-urlencoded",
-              authorization: JWT,
-            },
-          }
-        );
+        let fata = await axios.put("http://54.144.168.52:3000/user", params, {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            authorization: JWT,
+          },
+        });
+        if (fata?.data?.Data?.Message == "Updated") {
+          localStorage.setItem(
+            "user",
+            JSON.stringify({
+              user: fata?.data?.Data?.User,
+            })
+          );
+          getUserDetails();
+          setNumber("");
+          setName("");
+          setDescription("");
+        }
       } catch (error) {
         // setIsLoading(false);
         toast.error(error);
@@ -187,22 +259,32 @@ const ProfileSettings = () => {
         // console.log("if user error", isLoading);
       }
     } else if (name && data && number && description) {
-      formData.append("FullName", name);
-      formData.append("UserName", name);
-      formData.append("PhoneNumber", number);
-      formData.append("About", description);
-      formData.append("MediaId", data);
+      const params = new URLSearchParams();
+      params.append("FullName", name);
+      params.append("UserName", name);
+      params.append("PhoneNumber", number);
+      params.append("About", description);
+      params.append("MediaId", data);
       try {
-        let fata = await axios.post(
-          "http://54.144.168.52:3000/user",
-          formData,
-          {
-            headers: {
-              "Content-Type": "application/x-www-form-urlencoded",
-              authorization: JWT,
-            },
-          }
-        );
+        let fata = await axios.put("http://54.144.168.52:3000/user", params, {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            authorization: JWT,
+          },
+        });
+        if (fata?.data?.Data?.Message == "Updated") {
+          localStorage.setItem(
+            "user",
+            JSON.stringify({
+              user: fata?.data?.Data?.User,
+            })
+          );
+          getUserDetails();
+          setSelectedFile(null);
+          setNumber("");
+          setName("");
+          setDescription("");
+        }
       } catch (error) {
         // setIsLoading(false);
         toast.error(error);
@@ -237,32 +319,13 @@ const ProfileSettings = () => {
 
           <div className="flex flex-wrap justify-between p-5 mb-32">
             <div className="flex-grow   md:max-w-[240px]  p-8 sm:min-w-[300px] min-w-[240px] ">
-              {/* yhan */}
-              {/* {!selectedFile && (
-                <div className="flex items-center justify-center mx-auto  rounded-full w-28 h-28 md:mx-4 md:h-36 md:w-36 bg-[#FCEDE4] relative">
-                  <UserIcon className="w-[72px] h-[72px] md:w-[80px] md:h-[80px]  text-[#E9813B] " />
-                  <div
-                    onClick={() => filePickerRef.current.click()}
-                    className="absolute  p-1 md:p-[6px] bg-white border-[#E9813B] cursor-pointer rounded-full bottom-0 right-1 border  "
-                  >
-                    <UploadIcon className="md:h-6 md:w-6 h-5 w-5  text-[#E9813B] " />
-                  </div>
-                  <input
-                    ref={filePickerRef}
-                    type="file"
-                    className="hidden"
-                    onChange={fileSelectedHandler}
-                  />
-                </div>
-              )} */}
-              {/* {selectedFile && ( */}
               <div className="relative sm:w-[160px] sm:h-[160px] mx-auto rounded-full w-[138px] h-[138px] border">
                 <div className=" bg-gray-100 relative border sm:w-[160px] sm:h-[160px] mx-auto  rounded-full sm:py-[34px] px-2 w-[138px] h-[138px]">
                   <Image
                     src={
                       selectedFile
                         ? selectedFile
-                        : imageBaseUrl + userProfileData?.Media?.Path
+                        : imageBaseUrl + user?.Media?.Path
                     }
                     alt="infoImg"
                     layout="fill"
@@ -292,11 +355,7 @@ const ProfileSettings = () => {
                   </>
                 )}
               </div>
-              {/* )} */}
             </div>
-            {/* {userProfileData?.map((item, index) => {
-              console.log(item);
-              return ( */}
             <>
               <div className="flex-grow  md:max-w-[400px] min-w-[240px]">
                 <p htmlFor="name" className="mt-6 ">
@@ -304,7 +363,7 @@ const ProfileSettings = () => {
                 </p>
                 <input
                   type="text"
-                  placeholder={userProfileData?.FullName}
+                  placeholder={user?.FullName}
                   name="name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
@@ -315,7 +374,7 @@ const ProfileSettings = () => {
                 </p>
                 <input
                   type="number"
-                  placeholder={userProfileData?.PhoneNumber}
+                  placeholder={user?.PhoneNumber}
                   name="name"
                   value={number}
                   onChange={(e) => setNumber(e.target.value)}
@@ -327,7 +386,7 @@ const ProfileSettings = () => {
                 <textarea
                   rows="4"
                   type="text"
-                  placeholder={userProfileData?.About}
+                  placeholder={user?.About}
                   name="description"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
@@ -341,9 +400,6 @@ const ProfileSettings = () => {
                 </button>
               </div>
             </>
-            {/* );
-            })} */}
-            {/* // )})} */}
           </div>
         </div>
       </div>

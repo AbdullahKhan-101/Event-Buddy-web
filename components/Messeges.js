@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Nav from "./Nav";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -22,31 +22,26 @@ import { useRecoilState } from "recoil";
 import { loadingState } from "../atoms/modalAtom";
 import moment from "moment";
 import { socket, setSocketRef } from "../config/utils";
+import axios from "axios";
+import ClipLoader from "react-spinners/ClipLoader";
+
 const Messeges = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const [user, setUser] = useState({});
   const [chatItem, setChatItem] = useState();
-  const userDetails = useSelector((state) => state?.Home?.userDetail);
   const [loading, setLoading] = useRecoilState(loadingState);
   const [message, setMessage] = useState("");
   const [chat, setChat] = useState([]);
-  // let socket;
-  // const user = localStorage.getItem("user");
-  const [invitationMessagesSuccess, setInvitationMessagesSuccess] = useState(
-    []
-  );
-
+  const [chatJoined, setChatJoined] = useState(false);
+  // const divRef = useRef();
+  const invitatioinChat = useSelector((state) => state?.Home?.Invitation_chat);
+  const [sendChat, setSendChat] = useState(false);
   const invitationMessages = useSelector(
     (state) => state?.Home?.Invitation_messages
   );
+  // console.log("-------->", typeof invitationMessages.data.Data);
 
-  const invitatioinChat = useSelector((state) => state?.Home?.Invitation_chat);
-  // console.log(
-  //   "invitationMessages------------>",
-  //   invitationMessages?.data?.Data?.length
-  // );
-  // console.log("=======>User Not Login", invitatioinChat);
   useEffect(() => {
     setLoading(true);
     UserDetails()
@@ -77,28 +72,48 @@ const Messeges = () => {
   if (invitationMessages?.data?.Data?.length >= 0) {
     setLoading(false);
   }
-
+  const getOldChatFromApi = async (id) => {
+    setLoading(true);
+    const jwt = localStorage.getItem("JWT");
+    let data = await axios
+      .get(
+        `
+        http://54.144.168.52:3000/chat/${id}`,
+        {
+          headers: {
+            authorization: jwt,
+          },
+        }
+      )
+      .then((res) => {
+        // console.log("-------->", res);
+        res?.data?.Data?.map((item) => {
+          chat.push({
+            CreatedById: item?.CreatedById,
+            Id: item?.Id,
+            Message: item?.Message,
+            invitatioinId: item?.InvitationId,
+          });
+        });
+      });
+    // }
+  };
   const getOldChat = (id) => {
-    dispatch(HomeActions.InvitationChat(id));
     socket.emit("chat_join", {
       ChatId: id,
     });
-    let array = [];
-    invitatioinChat?.data?.Data?.map((item) => {
-      chat.push({
-        CreatedById: item?.CreatedById,
-        Id: item?.Id,
-        Message: item?.Message,
-      });
-    });
-    recievedMessagesfromServer();
-    // setChat(array);
-    // console.log("00000000000", array);
+    getOldChatFromApi(id);
+    setChatJoined(true);
   };
 
+  useEffect(() => {
+    {
+      chatJoined && recievedMessagesfromServer();
+    }
+  }, [chat, chatJoined]);
   const sendMessage = () => {
-    // console.log("-------->>>>>><<<<>>>", message);
-    setMessage("");
+    setSendChat(true);
+    setMessage("Sending....");
     socket.emit(
       "message",
       {
@@ -106,12 +121,14 @@ const Messeges = () => {
         Content: message,
       },
       async (data) => {
-        console.log("data", data);
+        // console.log("data", data);
         chat.push({
           CreatedById: data?.Chat?.CreatedById,
           Id: data?.Chat.Id,
           Message: data?.Chat.Message,
         });
+        setMessage("");
+        setSendChat(false);
       }
     );
 
@@ -119,14 +136,20 @@ const Messeges = () => {
   };
   const recievedMessagesfromServer = () => {
     socket.on("message", (data) => {
-      // const packet = JSON.parse(data);
-      console.log("----------->", data.Chat);
-      chat.push({
-        CreatedById: data?.Chat?.CreatedById,
-        Id: data?.Chat.Id,
-        Message: data?.Chat.Message,
-      });
+      setChat([
+        ...chat,
+        {
+          CreatedById: data?.Chat?.CreatedById,
+          Id: data?.Chat.Id,
+          Message: data?.Chat.Message,
+        },
+      ]);
     });
+  };
+  const AlwaysScrollToBottom = () => {
+    const elementRef = useRef();
+    useEffect(() => elementRef.current.scrollIntoView());
+    return <div ref={elementRef} />;
   };
   return (
     <div>
@@ -138,20 +161,26 @@ const Messeges = () => {
             <h1 className="text-2xl font-strongg text-[#0E134F]">Messeges</h1>
             <div>
               {invitationMessages?.data?.Data?.map((item, index) => {
+                let userId = user?.user?.Id;
                 return (
                   <div
                     key={index}
                     className="flex items-center p-2 py-4 mt-4 bg-white rounded-lg shadow-[0_5px_30px_-13px_rgba(0,0,0,0.3)] cursor-pointer md:-ml-2 md:shadow-none"
                     // style={{ border: "2px solid red" }}
                     onClick={() => {
+                      dispatch(HomeActions.InvitationChat(item?.Id));
                       setChatItem(item);
                       getOldChat(item?.Id);
-                      console.log("Item", item);
+                      // console.log("Item", item);
                     }}
                   >
                     <div className="relative flex-grow-0 sm:mt-0 mt-0  max-w-[100%] w-[55px] h-[55px]  min-w-[55px]">
                       <Image
-                        src={imageBaseUrl + item?.User?.Media?.Path}
+                        src={
+                          userId == item?.User?.Id
+                            ? imageBaseUrl + item?.CreatedBy?.Media?.Path
+                            : imageBaseUrl + item?.User?.Media?.Path
+                        }
                         layout="fill"
                         objectfit="contain"
                         className="rounded-xl"
@@ -160,7 +189,9 @@ const Messeges = () => {
                     <div className="flex items-center flex-grow ml-4 md:ml-4">
                       <div className="flex-grow">
                         <h1 className="font-bold text-[#0E134F]">
-                          {item?.User?.FullName}
+                          {userId == item?.User?.Id
+                            ? item?.CreatedBy?.FullName
+                            : item?.User?.FullName}
                         </h1>
                         <h1 className="text-sm text-gray-400 line-clamp-1">
                           {item?.Description}
@@ -168,47 +199,6 @@ const Messeges = () => {
                       </div>
                       <p className="mb-4 text-sm text-[#E9813B]  min-w-[120px] max-h-10">
                         <Moment fromNow>{item?.CreatedAt}</Moment>
-                      </p>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-
-        {/* These messeges only appear in mobile  */}
-
-        <div className="flex-grow md:max-w-[410px] bg-white md:hidden ">
-          <div className="p-5 -mb-1 rounded-md md:mb-5 md:shadow-lg">
-            <h1 className="text-2xl font-bold text-[#0E134F]">Messeges</h1>
-            <div>
-              {invitationMessages?.data?.Data?.map((item, index) => {
-                return (
-                  <div
-                    key={index}
-                    onClick={() => router.push("/chat")}
-                    className="flex items-center p-2 py-4 mt-4 bg-white rounded-lg shadow-[0_5px_30px_-15px_rgba(0,0,0,0.3)] cursor-pointer md:-ml-2 md:shadow-none"
-                  >
-                    <div className="relative flex-grow-0 sm:mt-0 mt-0  max-w-[100%] w-[55px] h-[55px]  min-w-[55px]">
-                      <Image
-                        src={imageBaseUrl + item?.User?.Media?.Path}
-                        layout="fill"
-                        objectfit="contain"
-                        className="rounded-xl"
-                      />
-                    </div>
-                    <div className="flex items-center flex-grow ml-4 md:ml-4">
-                      <div className="flex-grow">
-                        <h1 className="font-bold text-[#0E134F]">
-                          {item?.User?.FullName}
-                        </h1>
-                        <h1 className="text-sm text-gray-400 line-clamp-1">
-                          {item?.Description}
-                        </h1>
-                      </div>
-                      <p className="mb-4 text-sm text-[#E9813B]  min-w-[50px]">
-                        {item?.CreatedAt}
                       </p>
                     </div>
                   </div>
@@ -234,7 +224,10 @@ const Messeges = () => {
                       <ChevronLeftIcon className="h-6 w-6 sm:w-8 sm:h-8 text-[#E9813B] cursor-pointer" />
                     </span>
                     <span className="pl-2 text-xl md:font-mediumm md:text-[#42526E] font-strongg text-[#0E134F]">
-                      {chatItem?.User?.FullName}
+                      {/* {chatItem?.User?.FullName} */}
+                      {user?.user?.Id == chatItem?.User?.Id
+                        ? chatItem?.CreatedBy?.FullName
+                        : chatItem?.User?.FullName}
                     </span>
                     <div className="relative w-[34px] mr-1 h-[22px]  text-[#E9813B] ">
                       <Image
@@ -264,41 +257,53 @@ const Messeges = () => {
                   </div>
 
                   <div className="pt-8 pb-4 scrollbar-hide max-h-[350px] overflow-y-scroll ">
-                    {chat?.map((item) => {
-                      return (
-                        <>
-                          {user?.user?.Id == item?.CreatedById ? (
-                            <h1
-                              className="flex mt-[52px] mb-[11px]"
-                              style={{
-                                display: "flex",
-                                flexDirection: "column",
-                              }}
-                            >
-                              <span
-                                className="  px-3 pt-2 pb-[10px] text-[14px] ml-2 bg-gray-100 rounded-tl-none rounded-xl"
-                                style={{ alignSelf: "flex-end" }}
-                              >
-                                {item?.Message}
-                              </span>
-                            </h1>
-                          ) : (
-                            <h1 className="flex mt-[52px] mb-[11px]">
-                              <Avatar src="/man1.png" />
-                              <span className="px-3 pt-2 pb-[10px] text-[14px] ml-2 bg-[#FCEFE6] rounded-tl-none rounded-xl">
-                                {item?.Message}
-                              </span>
-                            </h1>
-                          )}
-                        </>
-                      );
-                    })}
+                    {chat?.length > 0 ? (
+                      <div>
+                        {chat?.map((item) => {
+                          return (
+                            <>
+                              {user?.user?.Id == item?.CreatedById ? (
+                                <h1
+                                  className="flex mt-[52px] mb-[11px]"
+                                  style={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                  }}
+                                >
+                                  <span
+                                    className="  px-3 pt-2 pb-[10px] text-[14px] ml-2 bg-gray-100 rounded-tl-none rounded-xl"
+                                    style={{ alignSelf: "flex-end" }}
+                                  >
+                                    {item?.Message}
+                                  </span>
+                                </h1>
+                              ) : (
+                                <h1 className="flex mt-[52px] mb-[11px]">
+                                  <Avatar src="/man1.png" />
+                                  <span className="px-3 pt-2 pb-[10px] text-[14px] ml-2 bg-[#FCEFE6] rounded-tl-none rounded-xl">
+                                    {item?.Message}
+                                  </span>
+                                </h1>
+                              )}
+                              <AlwaysScrollToBottom />
+                            </>
+                          );
+                        })}
+                      </div>
+                    ) : (
+                      <div
+                        style={{ display: "flex", justifyContent: "center" }}
+                      >
+                        <ClipLoader color="#ED974B" loading={true} size={50} />
+                      </div>
+                    )}
                   </div>
                   <div className="flex justify-between mb-6 md:mb-1">
                     <div className="flex items-center flex-grow px-4 bg-[#F2F2F2] py-2 rounded-md mr-3">
                       <input
                         type="text"
                         placeholder="Type messege"
+                        readOnly={sendChat}
                         className="flex-grow text-sm bg-transparent border-none outline-none"
                         value={message}
                         onChange={(e) => {
@@ -306,7 +311,7 @@ const Messeges = () => {
                         }}
                       />
                       {/* <EmojiHappyIcon className="w-5 h-5 mr-2 text-gray-400 cursor-pointer" /> */}
-                      <CameraIcon className="w-5 h-5 text-gray-400 cursor-pointer" />
+                      {/* <CameraIcon className="w-5 h-5 text-gray-400 cursor-pointer" /> */}
                     </div>
                     <div
                       className="float-right  cursor-pointer bg-[#E9813B] flex items-center justify-center p-2 rounded-md"

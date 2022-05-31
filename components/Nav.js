@@ -22,7 +22,7 @@ const Nav = ({ active }) => {
 
   // console.log("checking notification recoilstate in nav", notificationsCount);
 
-  // notificationsCount?.map((item, index) => {
+  // notificationsCount?.Meta?.map((item, index) => {
   //   let Ncount = [];
   //   console.log("checking notifications in map == in nav ==", item.ReadStatus);
   //   if (item?.ReadStatus == 0) {
@@ -30,13 +30,6 @@ const Nav = ({ active }) => {
   //     setNotificationsCount(item);
   //   }
   //   console.log("Now Now Now checking actual COUNTS ==> ", Ncount.length);
-  // });
-
-  // setTimeout(() => {
-  // console.log(
-  //   "Checking notifications array in  Nav after time out  ==> ",
-  //   notificationsCount
-  // );
   // });
 
   // const handleOpen = () => {};
@@ -78,7 +71,7 @@ const Nav = ({ active }) => {
       <div className="sticky top-0 z-10 bg-white">
         <nav className="fixed bottom-0 z-10 justify-around bg-white md:shadow-[0_4px_40px_0px_rgba(0,0,0,0.1)] shadow-[0_4px_40px_0px_rgba(0,0,0,0.15)] md:static">
           <header className="flex items-center justify-between md:max-w-6xl p-2 mx-auto bg-white min-w-[100vw] md:min-w-max">
-            <div className="relative hidden h-14 cursor-pointer md:w-48 md:inline-block">
+            <div className="relative hidden cursor-pointer h-14 md:w-48 md:inline-block">
               <Image
                 src="/logo.png"
                 alt="infoImg"

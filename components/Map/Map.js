@@ -4,8 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { HomeActions } from "../../store/actions";
 import GoogleMapReact from "google-map-react";
 import MyMarker from "./Marker";
-import image from "../../public/avatar1.png";
-import { ZoomOut } from "@mui/icons-material";
 // implementation of this function is needed for codesandbox example to work
 // you can remove it otherwise
 const distanceToMouse = (pt, mp, markerProps) => {
@@ -177,18 +175,7 @@ export default function Map() {
       image: "/avatar5.png",
     },
   ];
-  // useEffect(() => {
 
-  // getLocation();
-  // }, []);
-  // console.log("==============>location", location);
-
-  const userDashMapData = useSelector((state) => state?.Home?.userDash);
-  //console.log("Main API", userDashMapData);
-  //console.log("---------------------->", userDashMapData?.map_data);
-
-  const mapData = userDashMapData?.map_data;
-  //console.log("Map Data", mapData);
   const filterMapData = points?.map((item) => item);
   //console.log("Filter Map Data", filterMapData);
   const finalData = filterMapData?.map((item, indx) => {
@@ -206,10 +193,6 @@ export default function Map() {
         center={{ lat: location.lat, lng: location.lng }}
         defaultZoom={25}
         distanceToMouse={distanceToMouse}
-        // options={{
-        //   minZoom: 10,
-        // maxZoom: 30,
-        // }}
       >
         {finalData?.map(({ latitude, longitude, city, _id, image }) => {
           return (
@@ -227,52 +210,3 @@ export default function Map() {
     </div>
   );
 }
-
-// import React, { Component } from 'react';
-// import GoogleMapReact from 'google-map-react';
-// //import MdLocationOn from "react-icons/md"
-// import Marker from './Marker';
-
-// //const AnyReactComponent = ({ text }) => <div>{text}</div>;
-
-// const data = [
-//   {
-//     lat:30.375320,
-//     lng:69.345116
-// }
-// ]
-
-// class Map extends Component {
-
-//   static defaultProps = {
-//     center: {
-//       lat: 59.95,
-//       lng: 30.33
-//     },
-//     zoom: 11
-//   };
-//   render() {
-//     return (
-//       <div style={{ maxHeight:"217px" , height: '217px', maxwidth: '652px' }}>
-//         <GoogleMapReact
-//           bootstrapURLKeys={{ key: "AIzaSyDby459lxUcpmXqFpF3BSEShekowrR9YxI" }}
-//           defaultCenter={this.props.center}
-//           defaultZoom={this.props.zoom}
-// >
-// <Marker
-// lat={data.lat}
-// lng={data.lng}
-// text=""
-// />
-//           {/* <AnyReactComponent
-//             lat={24.860735}
-//             lng={67.001137}
-//             text=""
-//           /> */}
-//         </GoogleMapReact>
-//       </div>
-//     );
-//   }
-// }
-
-//export default Map;
