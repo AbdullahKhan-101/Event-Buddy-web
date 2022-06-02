@@ -7,29 +7,9 @@ const Loader = () => {
       style={{
         height: "100vh",
         width: "100vw",
-        // backgroundColor: "red",
-        // position: "absolute",
-        // top: 0,
-        // left: 0,
-        // right: 0,
-        // bottom: 0,
-        // zIndex: 100,
       }}
       className="bg-opacity-60 bg-slate-500 z-50"
     >
-      {/* <div
-        style={{
-          position: "absolute",
-          backgroundColor: "#ffffff00",
-          height: "100vh",
-          width: "100vw",
-          display: "flex",
-          justifyContent: "center",
-          opacity: 0.2,
-          // border: "2px solid red",
-          zIndex: 5,
-        }}
-      ></div> */}
       <div
         style={{
           display: "flex",

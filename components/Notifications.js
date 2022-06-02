@@ -50,48 +50,9 @@ const Notifications = () => {
     dispatch(HomeActions.Notifications());
 
     setTimeout(() => {
-      // console.log("checking length in useEffect", notificationsCount);
       setNotificationsCount(notificationsData);
     }, 1000);
   }, []);
-
-  // const notificationCount = () => {
-  // let notificationCount = [];
-
-  // notifications?.data?.Data?.notifications?.map((item, index) => {
-  //   console.log("checking item here", item);
-
-  //   if (item?.ReadStatus == 0) {
-  //     notificationCount.push(item);
-  //   }
-  //   // console.log("checking notifications status ", item);
-  // });
-  // console.log("checking notifications count  ==> ", .length);
-  // };
-  // console.log("notifications Count here ==> ", notificationsData);
-
-  // setNotificationsCount(notificationCount.length);
-
-  const dymmyData = [
-    {
-      img: "/man2.png",
-      time: "8m ago",
-      description: `Amazing event organizer Lorem event organizer Lorem 
-      event organizer Lorem`,
-    },
-    {
-      img: "/man2.png",
-      time: "8m ago",
-      description: `Amazing event organizer Lorem ipsum dolor sit amet
-      consectetur adipisicing elit. Ut, quas.`,
-    },
-    {
-      img: "/man2.png",
-      time: "8m ago",
-      description: `Amazing event organizer Lorem ipsum dolor sit amet
-      consectetur adipisicing elit. Ut, quas.`,
-    },
-  ];
 
   return (
     <div>
@@ -107,7 +68,6 @@ const Notifications = () => {
                 return (
                   <div
                     onClick={() => {
-                      console.log("------->", item);
                       setInviteModal("open");
                       setClickNotificationData({
                         ...item,
@@ -116,6 +76,7 @@ const Notifications = () => {
                     }}
                     key={index}
                     className="flex items-center p-2 py-4 mt-1 bg-white rounded-lg shadow-md cursor-pointer md:-ml-2 md:shadow-none"
+                    style={{ borderBottom: "1px solid  #DCDCDC" }}
                   >
                     <div className="relative flex-grow-0 sm:mt-0 mt-0  max-w-[100%] w-[55px] h-[55px]  min-w-[55px]">
                       <Image
@@ -129,8 +90,6 @@ const Notifications = () => {
                       <div className="flex-grow">
                         <p className="mb-1 text-sm text-[#E9813B]  min-w-[50px]">
                           <Moment fromNow>{item?.CreatedAt}</Moment>
-                          {/* {moment(item?.CreatedAt).format("hh: mm")} */}
-                          {/* {moment(item?.CreatedAt, "YYYYMMDD").fromNow()} */}
                         </p>
                         <h1 className="text-sm text-gray-400 line-clamp-1">
                           {item?.Description}

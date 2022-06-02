@@ -2,29 +2,22 @@ import React, { useEffect, useState, useRef } from "react";
 import Nav from "./Nav";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import Chat from "./Chat";
 import { useDispatch, useSelector } from "react-redux";
 import { HomeActions } from "../store/actions";
-import IO from "socket.io-client";
-import { imageBaseUrl, SOCKET_URL } from "../config/utils";
+import { imageBaseUrl } from "../config/utils";
 import Notifications from "./Notifications";
 import { Avatar } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
-import {
-  CalendarIcon,
-  CameraIcon,
-  ChevronLeftIcon,
-  EmojiHappyIcon,
-} from "@heroicons/react/outline";
+import { CalendarIcon, ChevronLeftIcon } from "@heroicons/react/outline";
 import Moment from "react-moment";
 import Loader from "./Loader";
 import { useRecoilState } from "recoil";
-import { loadingState } from "../atoms/modalAtom";
+import { loadingState, reviewModal } from "../atoms/modalAtom";
 import moment from "moment";
-import { socket, setSocketRef } from "../config/utils";
+import { socket } from "../config/utils";
 import axios from "axios";
 import ClipLoader from "react-spinners/ClipLoader";
-
+import Review from "./Review";
 const Messeges = () => {
   const dispatch = useDispatch();
   const router = useRouter();
@@ -34,13 +27,12 @@ const Messeges = () => {
   const [message, setMessage] = useState("");
   const [chat, setChat] = useState([]);
   const [chatJoined, setChatJoined] = useState(false);
-  // const divRef = useRef();
   const invitatioinChat = useSelector((state) => state?.Home?.Invitation_chat);
+  const [openReview, setOpenReview] = useRecoilState(reviewModal);
   const [sendChat, setSendChat] = useState(false);
   const invitationMessages = useSelector(
     (state) => state?.Home?.Invitation_messages
   );
-  // console.log("-------->", typeof invitationMessages.data.Data);
 
   useEffect(() => {
     setLoading(true);
@@ -52,13 +44,8 @@ const Messeges = () => {
             token: res?.token,
           })
         );
-
-        // console.log("=======>User Not Login", invitationMessages);
-        // socketConnection({ id: res?.user?.Id, token: res?.token });
       })
-      .catch((e) => {
-        // console.log("=======>User Not Login", e);
-      });
+      .catch((e) => {});
     dispatch(HomeActions.InvitationMessages());
   }, []);
 
@@ -70,7 +57,9 @@ const Messeges = () => {
   };
 
   if (invitationMessages?.data?.Data?.length >= 0) {
-    setLoading(false);
+    setTimeout(() => {
+      setLoading(false);
+    }, 3000);
   }
   const getOldChatFromApi = async (id) => {
     setLoading(true);
@@ -86,7 +75,6 @@ const Messeges = () => {
         }
       )
       .then((res) => {
-        // console.log("-------->", res);
         res?.data?.Data?.map((item) => {
           chat.push({
             CreatedById: item?.CreatedById,
@@ -96,7 +84,6 @@ const Messeges = () => {
           });
         });
       });
-    // }
   };
   const getOldChat = (id) => {
     socket.emit("chat_join", {
@@ -121,7 +108,6 @@ const Messeges = () => {
         Content: message,
       },
       async (data) => {
-        // console.log("data", data);
         chat.push({
           CreatedById: data?.Chat?.CreatedById,
           Id: data?.Chat.Id,
@@ -136,6 +122,7 @@ const Messeges = () => {
   };
   const recievedMessagesfromServer = () => {
     socket.on("message", (data) => {
+      console.log("--------->", data);
       setChat([
         ...chat,
         {
@@ -151,6 +138,7 @@ const Messeges = () => {
     useEffect(() => elementRef.current.scrollIntoView());
     return <div ref={elementRef} />;
   };
+  console.log("--------->", chatItem);
   return (
     <div>
       <Nav active="messeges" />
@@ -166,12 +154,14 @@ const Messeges = () => {
                   <div
                     key={index}
                     className="flex items-center p-2 py-4 mt-4 bg-white rounded-lg shadow-[0_5px_30px_-13px_rgba(0,0,0,0.3)] cursor-pointer md:-ml-2 md:shadow-none"
-                    // style={{ border: "2px solid red" }}
+                    style={{
+                      boxShadow: "5px 5px 10px 5px #DCDCDC",
+                    }}
                     onClick={() => {
                       dispatch(HomeActions.InvitationChat(item?.Id));
                       setChatItem(item);
+                      console.log("--------->item", item);
                       getOldChat(item?.Id);
-                      // console.log("Item", item);
                     }}
                   >
                     <div className="relative flex-grow-0 sm:mt-0 mt-0  max-w-[100%] w-[55px] h-[55px]  min-w-[55px]">
@@ -192,13 +182,16 @@ const Messeges = () => {
                           {userId == item?.User?.Id
                             ? item?.CreatedBy?.FullName
                             : item?.User?.FullName}
+                          <h1 className="text-sm text-gray-400 line-clamp-1">
+                            {item?.Title}
+                          </h1>
                         </h1>
                         <h1 className="text-sm text-gray-400 line-clamp-1">
-                          {item?.Description}
+                          {item?.Chats[0]?.Message}
                         </h1>
                       </div>
                       <p className="mb-4 text-sm text-[#E9813B]  min-w-[120px] max-h-10">
-                        <Moment fromNow>{item?.CreatedAt}</Moment>
+                        <Moment fromNow>{item?.Chats[0]?.CreatedAt}</Moment>
                       </p>
                     </div>
                   </div>
@@ -224,12 +217,16 @@ const Messeges = () => {
                       <ChevronLeftIcon className="h-6 w-6 sm:w-8 sm:h-8 text-[#E9813B] cursor-pointer" />
                     </span>
                     <span className="pl-2 text-xl md:font-mediumm md:text-[#42526E] font-strongg text-[#0E134F]">
-                      {/* {chatItem?.User?.FullName} */}
                       {user?.user?.Id == chatItem?.User?.Id
                         ? chatItem?.CreatedBy?.FullName
                         : chatItem?.User?.FullName}
                     </span>
-                    <div className="relative w-[34px] mr-1 h-[22px]  text-[#E9813B] ">
+                    <div
+                      className="relative w-[28px] mr-1 h-[22px]  text-[#E9813B] cursor-pointer hover:bg-#E9813B-80"
+                      onClick={() => {
+                        setOpenReview(true);
+                      }}
+                    >
                       <Image
                         src="/hand.png"
                         alt="infoImg"
@@ -279,7 +276,11 @@ const Messeges = () => {
                                 </h1>
                               ) : (
                                 <h1 className="flex mt-[52px] mb-[11px]">
-                                  <Avatar src="/man1.png" />
+                                  <Avatar
+                                    src={
+                                      imageBaseUrl + chatItem?.User?.Media?.Path
+                                    }
+                                  />
                                   <span className="px-3 pt-2 pb-[10px] text-[14px] ml-2 bg-[#FCEFE6] rounded-tl-none rounded-xl">
                                     {item?.Message}
                                   </span>
@@ -314,8 +315,16 @@ const Messeges = () => {
                       {/* <CameraIcon className="w-5 h-5 text-gray-400 cursor-pointer" /> */}
                     </div>
                     <div
-                      className="float-right  cursor-pointer bg-[#E9813B] flex items-center justify-center p-2 rounded-md"
-                      onClick={() => sendMessage()}
+                      className="float-right  cursor-pointer bg-[#E9813B] flex items-center justify-center p-2 rounded-md "
+                      style={{
+                        background:
+                          message == "Sending...." ? "#f6c8a9" : "#E9813B",
+                      }}
+                      onClick={() => {
+                        if (message != "") {
+                          sendMessage();
+                        }
+                      }}
                     >
                       <SendIcon className="w-5 h-5 text-white -rotate-45" />
                     </div>
@@ -328,6 +337,7 @@ const Messeges = () => {
       </div>
       <Notifications />
       <Loader />
+      <Review eventDetails={chatItem} />
     </div>
   );
 };

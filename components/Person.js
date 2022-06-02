@@ -21,6 +21,7 @@ import {
   reviewModal,
   usersDataModal,
   sendMessageModal,
+  modalState,
 } from "../atoms/modalAtom";
 import { useRecoilState } from "recoil";
 import Invite from "./Invite";
@@ -34,6 +35,7 @@ const Person = ({ active }) => {
   const [isOpen, setIsOpen] = useRecoilState(inviteModal);
   const [isSMOpen, setIsSMOpen] = useRecoilState(sendMessageModal);
   const [openReview, setOpenReview] = useRecoilState(reviewModal);
+  const [isOpenN, setIsOpenN] = useRecoilState(modalState);
   const [openReviewsModal, setOpenReviewsModal] =
     useRecoilState(openReviewsModall);
   const [usersData, setUsersData] = useRecoilState(usersDataModal);
@@ -44,62 +46,16 @@ const Person = ({ active }) => {
 
   const userById = useSelector((state) => state?.Home?.UserById);
   const userReviews = useSelector((state) => state?.Home?.User_reviews);
-  console.log("=========================xxxxxxxxxxx=============", usersData);
   useEffect(() => {
-    // console.log(userById);
-    // console.log(userReviews);
-    // setUserByIdSuccess(userById);
-    // setUserReviewsSuccess(userReviews);
     dispatch(HomeActions.UserById(usersData?.Id));
     dispatch(HomeActions.UserReviews(usersData?.Id));
+    setIsOpenN(false);
   }, []);
-  // const realData = usersData.data.Data.Users;
-  // console.log("real data ==> ", realData);
-
-  const userDummyData2 = [
-    {
-      // img:
-      img: "/gora1.png",
-      name: "Adam Willsan",
-      position: "UI/UX Designer",
-      about: `Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quo
-              dolorum beatae nihil harum doloribus? Quasi aspernatur unde
-              eligendi labore illo Lorem ipsum dolor sit amet Lorem ipsum dolor
-              sit amet consectetur adipisicing elit. Possimus, omnis?`,
-    },
-  ];
-
-  const dummyReviews = [
-    {
-      img: "/man1.png",
-      name: "Kelly Bishop",
-      description: "Amazing event atmosphere",
-      time: "8m ago",
-      rating: "5",
-    },
-    {
-      img: "/man1.png",
-      name: "Kelly Bishop",
-      description: "Amazing event atmosphere",
-      time: "8m ago",
-      rating: "3",
-    },
-    {
-      img: "/man1.png",
-      name: "Kelly Bishop",
-      description: "Amazing event atmosphere",
-      time: "8m ago",
-      rating: "2",
-    },
-  ];
 
   return (
     <div>
-      {/* <Script src="https://google.com"></Script> */}
       <Script src="Google/location/AIzaSyBzpeVhVlmsD3zeg6482RCOe7PcYSweF9E"></Script>
-      <div
-      // className={`${openReview ? "-z-50" : ""}`}
-      >
+      <div>
         <div
           className={`${isOpen === "open" ? "opacity-30" : "opacity-100"}
         ${openReview ? "opacity-90" : "opacity-100"}
@@ -107,20 +63,6 @@ const Person = ({ active }) => {
         >
           <Nav active={active} />
         </div>
-        {/* than tk */}
-        {/* {userDummyData2.map(({ img, name, position, about }, index) => {
-        console.log("userdymmyData ==> name", name);
-        return (
-          <div key={index}>
-            <PersonDetail
-              img={img}
-              name={name}
-              position={position}
-              about={about}
-            />
-          </div>
-        );
-      })} */}
         <PersonDetail
           img={imageBaseUrl + usersData?.Media?.Path}
           name={usersData?.FullName}
@@ -139,7 +81,6 @@ const Person = ({ active }) => {
               style={{ marginLeft: "14vh" }}
             >
               <h1 className="text-2xl font-bold text-[#0E134F]">Reviews</h1>
-              {/* three cards here */}
               {userReviews?.data?.Data?.Reviews?.length > 0 ? (
                 <div>
                   {userReviews?.data?.Data?.Reviews?.map((item, index) => {
@@ -209,28 +150,7 @@ const Person = ({ active }) => {
                   </p>
                 </div>
               )}
-              <div className="mt-4 mb-6 md:hidden">
-                {/* <button
-                  onClick={() => setOpenReviewsModal(true)}
-                  className="font-semibold border  bg-[#FCEDE4]   py-[10px] sm:py-3 px-7 rounded-full text-[#ff6715]    w-[100%] mt-2 border-[#ED974B]"
-                >
-                  More Reviews
-                </button> */}
-                {/* <button
-                  onClick={() => setIsOpen("open")}
-                  className="font-semibold  bg-[#ED974B] flex items-center justify-center bg-gradient-to-tr  py-[10px] sm:py-3 px-7 rounded-full text-white from-[#E77334] to-[#ED974B]   w-[100%] hover:from-[#ff6715] mt-3"
-                >
-                  <div className="relative w-[20px] mr-2 h-[18px]  text-[#E9813B] ">
-                    <Image
-                      src="/sendMessage.png"
-                      alt="infoImg"
-                      layout="fill"
-                      objectfit="contain"
-                    />
-                  </div>
-                  Send Message
-                </button> */}
-              </div>
+              <div className="mt-4 mb-6 md:hidden"></div>
             </div>
           </div>
           <Notifications />

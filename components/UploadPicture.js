@@ -52,6 +52,13 @@ const UploadPicture = () => {
       );
       // console.log(fata?.data.Status, "api payload");
       if (fata?.data.Status == 200) {
+        localStorage.setItem(
+          "userUploadImage",
+          JSON.stringify({
+            MediaId: fata?.data?.Data?.Id,
+            path: fata?.data?.Data?.MediaObject?.Path,
+          })
+        );
         setSelectedFile("");
         // if (!fata?.data?.Data?.User?.Media) {
         toast.success(fata?.data?.Message);

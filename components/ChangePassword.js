@@ -16,8 +16,6 @@ const ChangePassword = () => {
         <div className="flex-grow md:max-w-[410px] bg-white hidden md:block">
           <LeftSettingBar />
         </div>
-
-        {/* Profile Setting here */}
         <div className="md:max-w-[700px]  flex-grow bg-white ">
           <ChangePass />
         </div>

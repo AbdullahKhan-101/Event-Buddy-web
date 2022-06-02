@@ -7,9 +7,6 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 
 function SetPassModal({ closeModal }) {
-  const [passReqNext, setPassReqNext] = useState(true);
-  const [emailAuth, setEmailAuth] = useState(false);
-  const [newPasssubmit, setNewPassSubmit] = useState(false);
   const [data, setData] = useState({ email: "", code: "", password: "" });
   useEffect(() => {
     AOS.init();
@@ -32,7 +29,6 @@ function SetPassModal({ closeModal }) {
           "http://54.144.168.52:3000/user/forget-password",
           payload
         );
-        // console.log(fata, "api payload");
         if (fata?.data?.Status == 200) {
           setData({ ...data, email: "" });
           closeModal(false);
@@ -43,7 +39,6 @@ function SetPassModal({ closeModal }) {
         }
       } catch (error) {
         toast.error(error);
-        // console.log(error, "api payload");
       }
     }
   };
@@ -102,38 +97,6 @@ function SetPassModal({ closeModal }) {
         </div>
       </div>
     </>
-    // <div className={classes.modalBackground}>
-    //   <div
-    //     className={classes.modalCloseBackground}
-    //     onClick={() => closeModal(false)}
-    //   ></div>
-    //   <div className={classes.modalContainer}>
-    //     <div className={classes.titleCloseBtn}>
-    //       <button onClick={() => closeModal(false)}>X</button>
-    //     </div>
-    //     <div className={classes.title}>
-    //       <h1 className={classes.h1}>Forget Password..?</h1>
-    //     </div>
-    //     <div className={classes.body}>
-    //       <Input
-    //         required=""
-    //         name="email"
-    //         type="email"
-    //         className={classes.input}
-    //         placeholder="Please Enter Your Email Address"
-    //         id="exampleInputEmail1"
-    //         onChange={handleInputs}
-    //         autoComplete="off"
-    //       />
-    //     </div>
-    //     <div className={classes.footer}>
-    //       <button className={classes.nextBtn} onClick={AuthNext}>
-    //         Send
-    //       </button>
-    //     </div>
-    //   </div>
-    //   <ToastContainer />
-    // </div>
   );
 }
 

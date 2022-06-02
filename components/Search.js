@@ -1,18 +1,8 @@
-import { LocationMarkerIcon, SearchIcon } from "@heroicons/react/outline";
+import { SearchIcon } from "@heroicons/react/outline";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import SendIcon from "@mui/icons-material/Send";
-import { Avatar } from "@mui/material";
 import Map from "./Map/Map";
-import GooglePlacesAutocomplete from "react-google-places-autocomplete";
-import Script from "next/script";
-import {
-  geocodeByAddress,
-  geocodeByPlaceId,
-  getLatLng,
-  PlacesAutocomplete,
-} from "react-places-autocomplete";
 import GooglePlaces from "./Map/GoogePlaces";
 import ClipLoader from "react-spinners/ClipLoader";
 import Geocode from "react-geocode";
@@ -55,7 +45,6 @@ const Search = () => {
 
           setLat(position.coords.latitude);
           setLng(position.coords.longitude);
-          // router.push("/search");
           localStorage.setItem(
             "userLatitude",
             JSON.stringify(position.coords.latitude)
@@ -128,16 +117,10 @@ const Search = () => {
         localStorage.setItem("userLongitude", JSON.stringify(data.lng));
         router.push("/home");
       }
-    } catch (error) {
-      // setIsLoading(false);
-      // toast.error(error);
-      // console.log(error, "api payload");
-      // console.log("if user error", isLoading);
-    }
+    } catch (error) {}
   };
   return (
     <div className="mx-auto max-w-[100vw]">
-      {/* <Script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"></Script> */}
       <div className="fixed bottom-0 bg-white z-10 shadow-[0_4px_60px_0px_rgba(0,0,0,0.25)] rounded-tr-[20px] rounded-tl-[20px] w-[100vw] p-5 md:top-0 xl:w-3/12 md:w-4/12">
         <div className="flex items-center justify-between ">
           <h1 className="text-xl font-strongg text-[#0E134F]">
@@ -151,10 +134,7 @@ const Search = () => {
             Skip
           </h4>
         </div>
-        <div
-          className="p-3 border rounded-md max-w-[400px] flex items-center mt-4"
-          // onClick={() => setPlacesOpen(true)}
-        >
+        <div className="p-3 border rounded-md max-w-[400px] flex items-center mt-4">
           <SearchIcon className="w-5 h-5 mr-2 text-[#E9813B]" />
 
           <div style={{ width: "50vh" }}>
@@ -170,12 +150,6 @@ const Search = () => {
               placeholder="Search Location"
             />
           </div>
-
-          {/* <input
-            type="text"
-            placeholder="Search Location"
-            className="flex-grow outline-none text-[#42526E] opacity-70 font-normall"
-          /> */}
         </div>
         {openSL && (
           <>
@@ -242,50 +216,7 @@ const Search = () => {
             <ClipLoader color="#ED974B" loading={true} size={50} />
           </div>
         )}
-        {/* <div className="relative bg-white rounded-tl-[20px] hidden md:block float-right h-[100vh]  xl:w-9/12 md:w-8/12">
-          <Image src="/map.png" alt="infoImg" layout="fill" objectfit="cover" />
-        </div>
-        <div className="relative md:hidden float-right h-[75vh]  w-[100vw]">
-          <Image
-            src="/smallmap.png"
-            alt="infoImg"
-            layout="fill"
-            objectfit="cover"
-          />
-        </div>
-        <div className="absolute z-10 md:top-20 top-5 md:left-1/3 left-56">
-          <img src="/avatar1.png" />
-        </div>
-        <div className="absolute z-10 top-20 md:right-60 right-56">
-          <img src="/avatar2.png" />
-        </div>
-        <div className="absolute z-10 md:top-6 top-72 left-2/4">
-          <img src="/avatar3.png" />
-        </div>
-        <div className="absolute z-10 md:top-60 top-36 left-2/4">
-          <img src="/avatar4.png" />
-        </div> */}
-        {/* <div className="absolute z-10 md:top-96 top-80 left-1/3 md:left-2/3">
-          <div className="relative w-[70px] cursor-pointer mr-3 h-[70px]  text-[#E9813B] ">
-            <Image
-              src="/send1.png"
-              alt="infoImg"
-              layout="fill"
-              objectfit="contain"
-            />
-          </div>
-        </div>
-        <div className="absolute z-10 md:right-72 md:top-72 top-56 right-48">
-          <img src="/avatar5.png" />
-        </div> */}
       </div>
-
-      {/* <button
-        onClick={() => router.push("/home")}
-        className="fixed z-10 px-4 py-2 font-semibold uppercase bg-gray-200 rounded-lg lg:right-12 lg:bottom-8 hover:bg-gray-300 right-2 bottom-1"
-      >
-        Next
-      </button> */}
     </div>
   );
 };

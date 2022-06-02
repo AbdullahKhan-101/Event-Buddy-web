@@ -9,24 +9,19 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { HomeActions } from "../store/actions";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { imageBaseUrl } from "../config/utils";
 import { useRecoilState } from "recoil";
 import { loadingState } from "../atoms/modalAtom";
 import Loader from "./Loader";
 import axios from "axios";
-import qs from "qs";
-import QueryString from "query-string";
 const ProfileSettings = () => {
-  // const queryString = require("query-string");
   const [name, setName] = useState("");
   const [number, setNumber] = useState("");
   const [description, setDescription] = useState("");
   const [selectedImage, setSelectedImage] = useState();
   const filePickerRef = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
-  const dispatch = useDispatch();
   const router = useRouter();
   const [loading, setLoading] = useRecoilState(loadingState);
   const [user, setUser] = useState();
@@ -42,18 +37,41 @@ const ProfileSettings = () => {
     };
   };
   useEffect(() => {
-    getUserDetails();
+    setLoading(true);
+    getUserDetailsApi();
   }, []);
-
+  const getUserDetailsApi = async () => {
+    const jwt = localStorage.getItem("JWT");
+    await axios
+      .get(
+        `
+      http://54.144.168.52:3000/user/me`,
+        {
+          headers: {
+            authorization: jwt,
+          },
+        }
+      )
+      .then((res) => {
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            user: res?.data?.Data?.User,
+          })
+        );
+        setUser(res?.data?.Data?.User);
+        getUserDetails();
+      });
+  };
   const getUserDetails = async () => {
     const User = await localStorage.getItem("user");
     const user = JSON.parse(User);
-    setUser(user?.user);
-    console.log("===========>", user?.user);
+    // setUser(user?.user);
+    setTimeout(() => {
+      setLoading(false);
+    }, 3000);
   };
   const onSave = async (image) => {
-    // setLoading(true);
-    // console.log("===========>", image);
     const JWT = localStorage.getItem("JWT");
     if (selectedImage) {
       const formData = new FormData();
@@ -77,7 +95,6 @@ const ProfileSettings = () => {
         }
       } catch (error) {
         toast.error(error);
-        // console.log(error, "api payload");
       }
     } else {
       updateProfile();
@@ -110,10 +127,7 @@ const ProfileSettings = () => {
           setSelectedImage("");
         }
       } catch (error) {
-        // setIsLoading(false);
         toast.error(error);
-        // console.log(error, "api payload");
-        // console.log("if user error", isLoading);
       }
     } else if (name && !data && !number && !description) {
       const params = new URLSearchParams();
@@ -138,10 +152,7 @@ const ProfileSettings = () => {
           setName("");
         }
       } catch (error) {
-        // setIsLoading(false);
         toast.error(error);
-        // console.log(error, "api payload");
-        // console.log("if user error", isLoading);
       }
     } else if (!name && !data && !number && description) {
       const params = new URLSearchParams();
@@ -166,10 +177,7 @@ const ProfileSettings = () => {
           setDescription("");
         }
       } catch (error) {
-        // setIsLoading(false);
         toast.error(error);
-        // console.log(error, "api payload");
-        // console.log("if user error", isLoading);
       }
     } else if (!name && !data && number && !description) {
       const params = new URLSearchParams();
@@ -192,10 +200,7 @@ const ProfileSettings = () => {
           setNumber("");
         }
       } catch (error) {
-        // setIsLoading(false);
         toast.error(error);
-        // console.log(error, "api payload");
-        // console.log("if user error", isLoading);
       }
     } else if (name && !data && number && !description) {
       const params = new URLSearchParams();
@@ -221,10 +226,7 @@ const ProfileSettings = () => {
           setName("");
         }
       } catch (error) {
-        // setIsLoading(false);
         toast.error(error);
-        // console.log(error, "api payload");
-        // console.log("if user error", isLoading);
       }
     } else if (name && !data && number && description) {
       const params = new URLSearchParams();
@@ -252,10 +254,7 @@ const ProfileSettings = () => {
           setDescription("");
         }
       } catch (error) {
-        // setIsLoading(false);
         toast.error(error);
-        // console.log(error, "api payload");
-        // console.log("if user error", isLoading);
       }
     } else if (name && data && number && description) {
       const params = new URLSearchParams();
@@ -285,10 +284,7 @@ const ProfileSettings = () => {
           setDescription("");
         }
       } catch (error) {
-        // setIsLoading(false);
         toast.error(error);
-        // console.log(error, "api payload");
-        // console.log("if user error", isLoading);
       }
     }
   };
@@ -372,7 +368,7 @@ const ProfileSettings = () => {
                   Contact Number
                 </p>
                 <input
-                  type="number"
+                  type="text"
                   placeholder={user?.PhoneNumber}
                   name="name"
                   value={number}

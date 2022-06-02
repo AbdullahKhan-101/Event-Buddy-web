@@ -2,7 +2,6 @@ import React from "react";
 import Nav from "./Nav";
 import LeftSettingBar from "./LeftSettingBar";
 import { useRouter } from "next/router";
-import RequestInvitionComponent from "./RequestInvitionComponent";
 import { ChevronLeftIcon } from "@heroicons/react/outline";
 import Notifications from "./Notifications";
 

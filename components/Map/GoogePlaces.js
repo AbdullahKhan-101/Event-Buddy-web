@@ -6,7 +6,6 @@ const GoogePlaces = ({ value, onChange, placeholder }) => {
     <div>
       <GooglePlacesAutocomplete
         apiKey="AIzaSyDh0f846bnmUxgSw6n5XtIZb01xtprxQfs"
-        // apiOptions={{ language: "fr", region: "fr" }}
         selectProps={{
           value,
           onChange: onChange,

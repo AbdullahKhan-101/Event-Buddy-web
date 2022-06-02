@@ -1,29 +1,61 @@
-import {
-  CalendarIcon,
-  ClockIcon,
-  LocationMarkerIcon,
-} from "@heroicons/react/outline";
 import React, { useState } from "react";
-import Person from "./Person";
 import { useRouter } from "next/router";
 import { StarIcon, XIcon } from "@heroicons/react/solid";
-import { reviewModal } from "../atoms/modalAtom";
+import { reviewModal, loadingState } from "../atoms/modalAtom";
 import { useRecoilState } from "recoil";
 import { useSpring, animated } from "react-spring";
-
-const Review = () => {
+import axios from "axios";
+import Loader from "./Loader";
+const Review = ({ eventDetails }) => {
   const [openReview, setOpenReview] = useRecoilState(reviewModal);
+  const [loading, setLoading] = useRecoilState(loadingState);
 
   const styles = useSpring({
     opacity: openReview ? 1 : 0,
     delay: openReview ? 120 : 0,
   });
 
-  const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [active, setActive] = useState("");
+  const [active, setActive] = useState(0);
   const router = useRouter();
 
+  const writeReview = async () => {
+    setLoading(true);
+    const jwt = localStorage.getItem("JWT");
+    if (!description || active == 0) {
+      alert("Please Fill All Fields");
+    } else {
+      const payload = {
+        Description: description,
+        UserId: eventDetails?.CreatedById,
+        Rating: active,
+        InvitationId: eventDetails?.Id,
+        Title: eventDetails?.Title,
+      };
+      console.log(payload, "api payload");
+      try {
+        let fata = await axios.post(
+          "http://54.144.168.52:3000/review",
+          payload,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              authorization: jwt,
+            },
+          }
+        );
+        console.log(fata, "api payload");
+        if (fata?.data?.Status == 200) {
+          setOpenReview(false);
+          setActive(0);
+          setDescription("");
+          setLoading(false);
+        }
+      } catch (error) {
+        setLoading(false);
+      }
+    }
+  };
   return (
     <>
       {openReview && (
@@ -43,7 +75,7 @@ const Review = () => {
               <div className="flex items-center justify-center mx-auto mt-8 text-center">
                 <StarIcon
                   onClick={() => {
-                    active == 1 ? setActive("0") : setActive("1");
+                    active == 1 ? setActive(0) : setActive(1);
                   }}
                   className={`w-10 h-10 ${
                     active >= 1 ? "text-[#E9813B]" : "text-gray-300"
@@ -51,7 +83,7 @@ const Review = () => {
                 />
                 <StarIcon
                   onClick={() => {
-                    setActive("2");
+                    setActive(2);
                   }}
                   className={`w-10 h-10 ${
                     active >= 2 ? "text-[#E9813B]" : "text-gray-300"
@@ -59,7 +91,7 @@ const Review = () => {
                 />
                 <StarIcon
                   onClick={() => {
-                    setActive("3");
+                    setActive(3);
                   }}
                   className={`w-10 h-10 ${
                     active >= 3 ? "text-[#E9813B]" : "text-gray-300"
@@ -67,7 +99,7 @@ const Review = () => {
                 />
                 <StarIcon
                   onClick={() => {
-                    setActive("4");
+                    setActive(4);
                   }}
                   className={`w-10 h-10 ${
                     active >= 4 ? "text-[#E9813B]" : "text-gray-300"
@@ -75,7 +107,7 @@ const Review = () => {
                 />
                 <StarIcon
                   onClick={() => {
-                    setActive("5");
+                    setActive(5);
                   }}
                   className={`w-10 h-10 ${
                     active >= 5 ? "text-[#E9813B]" : "text-gray-300"
@@ -89,8 +121,8 @@ const Review = () => {
                     type="text"
                     placeholder="Event Name"
                     className="block w-full p-4 border-none outline-none rounded-xl font-normall"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    value={eventDetails.Title}
+                    readOnly={true}
                   />
                 </div>
 
@@ -105,7 +137,10 @@ const Review = () => {
                   />
                 </div>
               </div>
-              <button className="font-semibold mx-2 bg-[#ED974B] bg-gradient-to-tr  py-[10px] sm:py-3 px-7 rounded-full text-white from-[#E77334] to-[#ED974B] w-[97%] hover:from-[#ff6715] mt-0">
+              <button
+                className="font-semibold mx-2 bg-[#ED974B] bg-gradient-to-tr  py-[10px] sm:py-3 px-7 rounded-full text-white from-[#E77334] to-[#ED974B] w-[97%] hover:from-[#ff6715] mt-0"
+                onClick={writeReview}
+              >
                 Send
               </button>
               <XIcon
@@ -119,6 +154,7 @@ const Review = () => {
           </animated.div>
         </>
       )}
+      <Loader />
     </>
   );
 };

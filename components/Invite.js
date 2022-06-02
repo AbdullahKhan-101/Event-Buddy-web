@@ -1,13 +1,7 @@
-import {
-  CalendarIcon,
-  ClockIcon,
-  LocationMarkerIcon,
-} from "@heroicons/react/outline";
+import { CalendarIcon, ClockIcon } from "@heroicons/react/outline";
 import React, { useEffect, useState } from "react";
-import Person from "./Person";
 import { useRouter } from "next/router";
-import { useDispatch, useSelector } from "react-redux";
-import { HomeActions } from "../store/actions";
+import { useDispatch } from "react-redux";
 import { useRecoilState } from "recoil";
 import { inviteModal, usersDataModal } from "../atoms/modalAtom";
 import { XIcon } from "@heroicons/react/solid";
@@ -15,7 +9,6 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import axios from "axios";
 import { useSpring, animated } from "react-spring";
-import moment from "moment";
 import GooglePlaces from "./Map/GoogePlaces";
 import Geocode from "react-geocode";
 import { ToastContainer, toast } from "react-toastify";
@@ -31,16 +24,11 @@ const Invite = () => {
   const [eventDate, setEventDate] = useState("");
   const [eventTime, setEventTime] = useState("");
   const [add, setAdd] = useState("");
-  const [eventDateandTime, setEventDateandTime] = useState("");
   const [userId, setUserId] = useState();
   const styles = useSpring({
     opacity: isOpen === "open" ? 1 : 0,
     delay: isOpen === "open" ? 120 : 0,
   });
-  console.log(personDetails, "api payload");
-
-  const router = useRouter();
-  const dispatch = useDispatch();
 
   const createInvitation = async () => {
     if (
@@ -52,8 +40,6 @@ const Invite = () => {
       !eventDate ||
       !eventTime
     ) {
-      // toast.error("Please Fill All Fields");
-      // setIsLoading(false);
       alert("Please Fill All Fields");
     } else {
       const payload = {
@@ -79,12 +65,7 @@ const Invite = () => {
         );
         console.log(fata, "api payload");
         setIsOpen("close");
-      } catch (error) {
-        // setIsLoading(false);
-        // toast.error(error);
-        // console.log(error, "api payload");
-        // console.log("if user error", isLoading);
-      }
+      } catch (error) {}
     }
   };
 
@@ -96,7 +77,6 @@ const Invite = () => {
   const getUserData = async () => {
     let user = await localStorage.getItem("user");
     const userData = JSON.parse(user);
-    // console.log("------------>nnnn", userData?.user?.Id);
     setUserId(userData);
   };
 
@@ -115,9 +95,7 @@ const Invite = () => {
         setEventLat(lat);
         setEventLng(lng);
       },
-      (error) => {
-        // console.error("--------->", error);
-      }
+      (error) => {}
     );
   };
 
@@ -144,7 +122,6 @@ const Invite = () => {
                   className="block w-full p-4 border-none outline-none rounded-xl"
                   onChange={(e) => {
                     setEventName(e.target.value);
-                    // console.log(eventName);
                   }}
                 />
               </div>
@@ -158,7 +135,6 @@ const Invite = () => {
                     placeholder="Pick Date"
                     className="block w-full p-4 text-gray-400 border-none outline-none rounded-xl"
                     onChange={(e) => {
-                      // console.log(e.target.value);
                       setEventDate(e.target.value);
                     }}
                   />
@@ -172,21 +148,12 @@ const Invite = () => {
                     placeholder="Pick Time"
                     className="block w-full p-4 text-gray-400 border-none outline-none rounded-xl"
                     onChange={(e) => {
-                      // console.log(e.target.value);
                       setEventTime(e.target.value);
                     }}
                   />
                 </div>
               </div>
-              {/* <div className="flex items-center pl-2 bg-white border rounded-xl">
-                <span>
-                  <LocationMarkerIcon className="w-5 h-5 text-[#ED974B]" />
-                </span> */}
               <div style={{ width: "66vh" }}>
-                {/* <GooglePlacesAutocomplete
-                    apiKey="AIzaSyDh0f846bnmUxgSw6n5XtIZb01xtprxQfs"
-                    // apiOptions={{ language: "en", region: "es" }}
-                  /> */}
                 <GooglePlaces
                   value={add}
                   onChange={(e) => {
@@ -198,7 +165,6 @@ const Invite = () => {
                   }}
                   placeholder="Event Location"
                 />
-                {/* </div> */}
               </div>
               <div className="flex items-center pl-2 bg-white border rounded-xl ">
                 <textarea

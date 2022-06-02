@@ -1,11 +1,50 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { ChevronLeftIcon } from "@heroicons/react/outline";
 import Image from "next/image";
-
+import { imageBaseUrl } from "../config/utils";
+import { route } from "next/dist/server/router";
+import axios from "axios";
 const VerifyPicture = () => {
   const router = useRouter();
+  const [uploadedImage, setUploadedImage] = useState({});
+  const [selfieImage, setSelfieImage] = useState({});
 
+  useEffect(() => {
+    getUserImages();
+  }, []);
+
+  const getUserImages = async () => {
+    const Upload = await localStorage.getItem("userUploadImage");
+    const selfie = await localStorage.getItem("userSelfieImage");
+    const UploadPic = JSON.parse(Upload);
+    const SelfiePic = JSON.parse(selfie);
+    setUploadedImage(UploadPic);
+    setSelfieImage(SelfiePic);
+    console.log("---------->", UploadPic, SelfiePic);
+  };
+
+  const verifyPicture = async () => {
+    const JWT = localStorage.getItem("JWT");
+    const params = new URLSearchParams();
+    params.append("SelfieMediaId", selfieImage?.MediaId);
+    params.append("SelfieMedia", selfieImage?.MediaId);
+    params.append("MediaId", uploadedImage?.MediaId);
+    let verifyImage = await axios.put(
+      "http://54.144.168.52:3000/user",
+      params,
+      {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          authorization: JWT,
+        },
+      }
+    );
+    console.log(verifyImage, "verifyImage payload");
+    if (verifyImage?.data?.Status == 200) {
+      router.push("/enableLocation");
+    }
+  };
   return (
     <div>
       <div className="p-2 mx-auto mt-8 md:max-w-6xl max-w-[94%] ">
@@ -25,7 +64,7 @@ const VerifyPicture = () => {
             </p>
             <div className="relative sm:mt-4 mt-2   w-[100%]  h-[220px] sm:h-[250px]">
               <Image
-                src="/gora1.png"
+                src={imageBaseUrl + uploadedImage?.path}
                 layout="fill"
                 objectfit="cover"
                 className="rounded-xl"
@@ -38,7 +77,7 @@ const VerifyPicture = () => {
             </p>
             <div className="relative sm:mt-4 mt-2  w-[100%]  h-[220px] sm:h-[250px]">
               <Image
-                src="/gora2.png"
+                src={imageBaseUrl + selfieImage?.path}
                 layout="fill"
                 objectfit="cover"
                 className="rounded-xl"
@@ -58,20 +97,13 @@ const VerifyPicture = () => {
             Capture Selfie Again
           </button>
           <button
-            onClick={() => router.push("/enableLocation")}
+            onClick={verifyPicture}
             className="font-mediumm sm:mx-8 bg-[#ED974B] bg-gradient-to-tr  py-[10px] sm:py-3 px-7 rounded-full text-white from-[#E77334] to-[#ED974B] mx-3 md:w-[30%] w-[100%] hover:from-[#ff6715] mt-2"
           >
             Verify
           </button>
         </div>
       </div>
-
-      <button
-        onClick={() => router.push("/enableLocation")}
-        className="fixed px-4 py-2 font-semibold uppercase bg-gray-200 rounded-lg lg:right-12 lg:bottom-5 hover:bg-gray-300 right-2 bottom-1"
-      >
-        Next
-      </button>
     </div>
   );
 };

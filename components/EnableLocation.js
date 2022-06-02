@@ -60,7 +60,6 @@ const EnableLocation = () => {
         </p>
         <div className="flex max-w-md mx-auto">
           <button
-            // onClick={() => router.push("/search")}
             onClick={getLocation}
             className="font-mediumm sm:mx-8 bg-[#ED974B] bg-gradient-to-tr  py-[10px] sm:py-3 px-7 rounded-full text-white from-[#ff6715] to-[#ED974B]  mx-auto text-center border w-[95%] hover:from-[#f07a2b] mt-24 md:mt-16"
           >

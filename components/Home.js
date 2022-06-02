@@ -1,15 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { imageBaseUrl } from "../config/utils";
 import Image from "next/image";
-import {
-  BellIcon,
-  ChartPieIcon,
-  HomeIcon,
-  LocationMarkerIcon,
-  MailIcon,
-  MapIcon,
-  MenuIcon,
-} from "@heroicons/react/outline";
+import { LocationMarkerIcon } from "@heroicons/react/outline";
 import { useRouter } from "next/router";
 import Nav from "./Nav";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,71 +12,43 @@ import { usersDataModal } from "../atoms/modalAtom";
 import Geocode from "react-geocode";
 import Loader from "./Loader";
 import { loadingState } from "../atoms/modalAtom";
+import { ClipLoader } from "react-spinners";
 const Home = () => {
   const [usersData, setUsersData] = useRecoilState(usersDataModal);
-  // console.log("checking usersData in modal ", usersData);
   const [loading, setLoading] = useRecoilState(loadingState);
-  // const [usersData, setUsersData] = useState([]);
   const dispatch = useDispatch();
   const router = useRouter();
   const [userAddress, setUserAddress] = useState("");
-  const [discoverUsersSuccess, setDiscoverUsersSuccess] = useState([]);
 
   const discoverUsers = useSelector((state) => state?.Home?.DiscoverUsers);
   const RealData = discoverUsers?.data?.Data?.Users;
 
-  // console.log(discoverUsers, "discoverusers form home");
-  const dummyData = [
-    {
-      reviews: "12 Reviews",
-      img: "/man1.png",
-      name: "Andrew Willson",
-      description:
-        "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Omnis, deleniti? Lorem, ipsum dolor. ipsum dolor.",
-    },
-    {
-      reviews: "12 Reviews",
-      img: "/man2.png",
-      name: "Andrew Willson",
-      description:
-        "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Omnis, deleniti? Lorem, ipsum dolor. ipsum dolor.",
-    },
-    {
-      reviews: "12 Reviews",
-      img: "/man1.png",
-      name: "Andrew Willson",
-      description:
-        "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Omnis, deleniti? Lorem, ipsum dolor. ipsum dolor.",
-    },
-  ];
-
   useEffect(() => {
+    setLoading(true);
     getLocation();
     dispatch(HomeActions.UserProfile());
     dispatch(HomeActions.DiscoverUsers());
   }, []);
-  // console.log("=========>Discver Users", discoverUsers);
   if (discoverUsers?.data?.Data?.Users.length > 0) {
-    setLoading(false);
+    setTimeout(() => {
+      setLoading(false);
+    }, 3000);
   }
   const getLocation = async () => {
     const Latitude = await localStorage.getItem("userLatitude");
     const userLatitude = JSON.parse(Latitude);
     const Longitude = await localStorage.getItem("userLongitude");
     const userLongitude = JSON.parse(Longitude);
-    console.log("=========>Discver Users", userLatitude, userLongitude);
     Geocode.setApiKey("AIzaSyDh0f846bnmUxgSw6n5XtIZb01xtprxQfs");
     Geocode.setLanguage("en");
     Geocode.setRegion("en");
     Geocode.setLocationType("ROOFTOP");
     Geocode.enableDebug();
-    console.log("=========>Aya");
     Geocode.fromLatLng(userLatitude, userLongitude).then(
       (response) => {
         const area = response.results[0].address_components[2].long_name;
         const city = response.results[0].address_components[3].long_name;
         const state = response.results[0].address_components[7].long_name;
-        console.log("xxxxxxxxxxxxx", response);
         setUserAddress(`${area}, ${city}, ${state}`);
       },
       (error) => {
@@ -142,10 +106,17 @@ const Home = () => {
               >
                 <div className="relative flex-grow sm:mt-0 mt-0  max-w-[100%] w-[92px] h-[92px]  min-w-[92px]">
                   <Image
-                    src={imageBaseUrl + item?.Media?.Path}
+                    src={
+                      item?.Media?.Path
+                        ? imageBaseUrl + item?.Media?.Path
+                        : "/appicon.png"
+                    }
                     layout="fill"
                     objectfit="cover"
                     className="rounded-xl"
+                    onLoad={() => {
+                      console.log("Loading");
+                    }}
                   />
                 </div>
                 <div className="ml-2 sm:min-w-[225px] min-w-[190px]">
@@ -155,7 +126,10 @@ const Home = () => {
                   <h2 className="my-[2px] text-lg font-mediumm line-clamp-1 text-[#0E134F]">
                     {item?.FullName}
                   </h2>
-                  <p className="text-[12px] text-[#42526E] opacity-70 line-clamp-3">
+                  <p
+                    className="text-[12px] text-[#42526E] opacity-70 line-clamp-3"
+                    style={{ textAlign: "justify", paddingRight: "5px" }}
+                  >
                     {item?.About}
                   </p>
                 </div>
@@ -164,12 +138,6 @@ const Home = () => {
           })}
         </div>
       </div>
-      {/* <button
-        onClick={() => router.push("/search")}
-        className="fixed px-4 py-2 font-semibold uppercase bg-gray-200 rounded-lg lg:left-6 lg:bottom-4 hover:bg-gray-300 left-2 bottom-11 xl:bottom-8"
-      >
-        Back
-      </button> */}
       <Notifications />
       <Loader />
     </div>

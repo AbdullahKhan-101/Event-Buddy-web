@@ -5,9 +5,8 @@
 }
 
 .circle {
-  /* background-image: url(../../assets/images/dashboard/marker.png); */
-  background-color: #AB1A4E;
-  color:  white;
+  background-color: #ab1a4e;
+  color: white;
   height: 2em;
   position: relative;
   width: 2em;
@@ -21,7 +20,7 @@
   left: 50%;
   position: absolute;
   top: 50%;
-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
   width: 70%;
 }
 

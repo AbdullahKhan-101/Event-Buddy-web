@@ -1,39 +1,28 @@
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 
-import {
-  CalendarIcon,
-  ChevronRightIcon,
-  LockClosedIcon,
-  LogoutIcon,
-  UserAddIcon,
-  UserIcon,
-} from "@heroicons/react/outline";
-import Nav from "./Nav";
-import ShieldOutlinedIcon from "@mui/icons-material/ShieldOutlined";
-import ProfileSettings from "./ProfileSettings";
+import { ChevronRightIcon, UserAddIcon } from "@heroicons/react/outline";
+import { modalState } from "../atoms/modalAtom";
+import { useRecoilState } from "recoil";
 import Switch from "@mui/material/Switch";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 const LeftSettingBar = () => {
   const router = useRouter();
   const label = { inputProps: { "aria-label": "Switch demo" } };
+  const [isOpenN, setIsOpenN] = useRecoilState(modalState);
   const [user, setUser] = useState();
   useEffect(() => {
     getUserDetails();
+    setIsOpenN(false);
   }, []);
-
-  // console.log("sss", typeof availibility);
   const getUserDetails = async () => {
     const User = await localStorage.getItem("user");
     const user = JSON.parse(User);
     setUser(user?.user);
-    console.log("========>", user?.user);
   };
   const AvailableforInvitation = async (boolean) => {
-    console.log("========>test", boolean);
-
     const JWT = localStorage.getItem("JWT");
     const params = new URLSearchParams();
     params.append("AvailableForInvitation", boolean);
@@ -55,9 +44,7 @@ const LeftSettingBar = () => {
         getUserDetails();
       }
     } catch (error) {
-      // setIsLoading(false);
       toast.error(error);
-      // console.log(error, "api payload");
     }
   };
 
@@ -177,14 +164,14 @@ const LeftSettingBar = () => {
                 <p className="mb-0 text-sm text-[#E9813B]  min-w-[30px]  flex items-center justify-center">
                   <Switch
                     {...label}
-                    checked={user?.AvailableforInvitation}
+                    checked={user?.AvailableForInvitation}
                     size="small"
                     color="warning"
                     onChange={(e) => {
-                      if (user?.AvailableforInvitation == true) {
-                        AvailableforInvitation(false);
+                      if (user?.AvailableForInvitation == true) {
+                        AvailableforInvitation(0);
                       } else {
-                        AvailableforInvitation(true);
+                        AvailableforInvitation(1);
                       }
                     }}
                   />

@@ -1,15 +1,11 @@
 import {
   CalendarIcon,
   CheckIcon,
-  ClockIcon,
   LocationMarkerIcon,
   XIcon,
 } from "@heroicons/react/outline";
 import React, { useEffect, useState } from "react";
-import EnableLocation from "./EnableLocation";
 import { useRouter } from "next/router";
-import Invite from "./Invite";
-import Person from "./Person";
 import { Avatar } from "@mui/material";
 import {
   acceptInviteModal,
@@ -17,7 +13,6 @@ import {
   usersDataModal,
 } from "../atoms/modalAtom";
 import { useRecoilState } from "recoil";
-import AOS from "aos";
 import "aos/dist/aos.css";
 import { useSpring, animated } from "react-spring";
 import { imageBaseUrl } from "../config/utils";
@@ -46,7 +41,6 @@ const AcceptInvite = () => {
       )
     );
   }, [clickNotificationData]);
-  console.log("clickNotificationData===============>", clickNotificationData);
   useEffect(() => {
     getUserDetails();
   }, [invitaionDetails]);
@@ -63,14 +57,11 @@ const AcceptInvite = () => {
       from: "notification",
     });
     getLocation();
-    // console.log("========>", user?.token);
   };
-  // console.log("clickNotification", clickNotificationData);
   const router = useRouter();
 
   const getLocation = () => {
     if (invitaionDetails != undefined || invitaionDetails != null) {
-      console.log("invitaionDetails", invitaionDetails);
       Geocode.setApiKey("AIzaSyDh0f846bnmUxgSw6n5XtIZb01xtprxQfs");
       Geocode.setLanguage("en");
       Geocode.setRegion("en");
@@ -110,13 +101,10 @@ const AcceptInvite = () => {
         setIsOpen("close");
       }
     } catch (error) {
-      // setIsLoading(false);
-      // toast.error(error);
       console.log(error, "api payload");
     }
   };
   const RejectInvitation = async (id) => {
-    // console.log("Rejected", invitaionDetails);
     const JWT = localStorage.getItem("JWT");
     try {
       let fata = await axios.put(
@@ -133,8 +121,6 @@ const AcceptInvite = () => {
         setIsOpen("close");
       }
     } catch (error) {
-      // setIsLoading(false);
-      // toast.error(error);
       console.log(error, "api payload");
     }
   };
@@ -227,7 +213,6 @@ const AcceptInvite = () => {
                       setUsersData(gotoProfile);
                       router.push("/person");
                       setIsOpen("close");
-                      // console.log("----->12345", invitaionDetails);
                     }}
                   >
                     <span className="ml-1">Go To Profile</span>

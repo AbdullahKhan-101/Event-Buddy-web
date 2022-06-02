@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { LockClosedIcon, MailIcon } from "@heroicons/react/outline";
 import Image from "next/image";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -12,22 +11,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { v4 as uuidv4 } from "uuid";
 import SetPassModal from "./Modal/SetPassModal";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { HomeActions } from "../store/actions";
 import Loader from "./Loader";
 import { useRecoilState } from "recoil";
 import { loadingState } from "../atoms/modalAtom";
-// import Loader from "../components/Loader/Loader";
-// import ForgotPass from "./Modal/ForgotPass";
 const Login = () => {
-  const height = 0;
-  const width = 0;
   const router = useRouter();
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [hidePassword, setHidePassword] = useState("password");
-  const [isLoading, setIsLoading] = useState(false);
   const uuid = uuidv4();
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useRecoilState(loadingState);
@@ -52,20 +46,37 @@ const Login = () => {
           "http://54.144.168.52:3000/user/login",
           payload
         );
-        // console.log(fata, "api payload");
+
         if (fata?.data?.Status == 200) {
-          if (!fata?.data?.Data?.User?.Media) {
+          localStorage.setItem("JWT", fata?.data?.Data?.Token);
+
+          if (fata?.data?.Data?.User?.Media == null) {
+            localStorage.setItem(
+              "user",
+              JSON.stringify({
+                user: fata?.data?.Data?.User,
+                token: fata?.data?.Data?.Token,
+              })
+            );
+            localStorage.setItem("JWT", fata?.data?.Data?.Token);
             setLoading(false);
             setEmail("");
             setPassword("");
             router.push("/uploadPicture");
-            // console.log("if 200", isLoading);
-          } else if (!fata?.data?.Data?.User?.SelfieMedia) {
+          } else if (fata?.data?.Data?.User?.SelfieMedia == null) {
+            localStorage.setItem(
+              "user",
+              JSON.stringify({
+                user: fata?.data?.Data?.User,
+                token: fata?.data?.Data?.Token,
+              })
+            );
+            localStorage.setItem("JWT", fata?.data?.Data?.Token);
+
             setLoading(false);
             setEmail("");
             setPassword("");
             router.push("/selfie");
-            // console.log("if Selfie Media", isLoading);
           } else {
             dispatch(
               HomeActions.userDetails({
@@ -85,26 +96,19 @@ const Login = () => {
             setLoading(false);
             setEmail("");
             setPassword("");
-            // console.log("if localstorage", isLoading);
           }
         } else {
-          // toast.error(fata?.data?.Message);
-          // console.log(fata, "api payload");
           toast.error(fata?.data?.Message);
           setLoading(false);
-          // console.log("if apierror", isLoading);
 
           throw new Error(fata?.data);
         }
       } catch (error) {
         setLoading(false);
         toast.error(error);
-        // console.log(error, "api payload");
-        // console.log("if user error", isLoading);
       }
     }
   };
-  // console.log("Device uuid", uuid);
   return (
     <div className="bg-white">
       <Head>

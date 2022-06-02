@@ -1,10 +1,5 @@
 import React, { useState } from "react";
-import { UserIcon } from "@heroicons/react/solid";
-import {
-  ChevronLeftIcon,
-  UploadIcon,
-  UserAddIcon,
-} from "@heroicons/react/outline";
+import { ChevronLeftIcon } from "@heroicons/react/outline";
 import { useRouter } from "next/router";
 import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
@@ -14,7 +9,6 @@ const ChangePass = () => {
   const [reNewPass, setReNewPass] = useState("");
 
   const ChangePassword = async () => {
-    console.log("=========>");
     const JWT = localStorage.getItem("JWT");
     if (!oldPass && !newPass && !reNewPass) {
       toast.error("Please Fill All Fields..");
@@ -40,10 +34,8 @@ const ChangePass = () => {
             toast.error("Incorrect Old Password");
           }
         } catch (error) {
-          // setIsLoading(false);
           toast.error(error);
           console.log(error, "api payload");
-          // console.log("if user error", isLoading);
         }
       } else {
         toast.error("Passwords Not Matched..");

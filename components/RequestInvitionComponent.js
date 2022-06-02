@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { UserIcon } from "@heroicons/react/solid";
-import {
-  ChevronLeftIcon,
-  UploadIcon,
-  UserAddIcon,
-} from "@heroicons/react/outline";
+import { ChevronLeftIcon } from "@heroicons/react/outline";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
@@ -33,7 +28,6 @@ const RequestInvitionComponent = () => {
   const pendingInvitations = useSelector(
     (state) => state?.Home?.PendingInvitations
   );
-  // console.log("checking get pending invitations ==> ", pendingInvitations);
   const sentInvitatioins = useSelector((state) => state?.Home?.SentInvitations);
 
   const receivedInvitatioins = useSelector(
@@ -45,10 +39,6 @@ const RequestInvitionComponent = () => {
   const GetPendingInvitations = () => {
     setState("pending");
     dispatch(HomeActions.PendingInvitatioins());
-    // console.log(
-    //   "checking get pending invitations ==> ",
-    //   pendingInvitations?.data?.Data
-    // );
   };
 
   useEffect(() => {
@@ -61,21 +51,12 @@ const RequestInvitionComponent = () => {
     setActive("sent");
     setState("accepted");
     dispatch(HomeActions.SentInvitatioins());
-    // console.log(
-    //   "checking sent invitations in request component",
-    //   sentInvitatioins
-    // );
   };
 
   const ReceivedInvitations = () => {
     setActive("receive");
     setState("accepted");
     dispatch(HomeActions.ReceivedInvitatioins());
-  };
-
-  const InvitationByIdCalling = () => {
-    // console.log(invitationById);
-    // dispatch(HomeActions.InvitationById());
   };
 
   const accepted = () => {
@@ -85,8 +66,6 @@ const RequestInvitionComponent = () => {
     setState("rejected");
   };
 
-  // const pendingInvitationsData = pendingInvitations.data?.Data;
-
   const setntInvitationsData = sentInvitatioins.data?.Data;
 
   const receivedInvitatioinsData = receivedInvitatioins?.data?.Data;
@@ -94,8 +73,6 @@ const RequestInvitionComponent = () => {
   return (
     <div>
       <div className="md:max-w-[700px]  flex-grow  bg-white ">
-        {/* chat here */}
-        {/* <ProfileSettings /> */}
         <div className="md:shadow-lg md:rounded-lg">
           <div className="relative flex p-5">
             <h1 className="text-[#0E134F]  text-xl text-center sm:px-2 px-1 font-strongg flex items-center flex-grow">
@@ -192,14 +169,9 @@ const RequestInvitionComponent = () => {
                       return item.Status === "accepted";
                     })
                     .map((item, index) => {
-                      // console.log(
-                      //   "checking ============>  sent invitations =======> status ===> ",
-                      //   item.Status
-                      // );
                       return (
                         <div
                           key={index}
-                          //onClick=\{InvitationByIdCalling\}
                           className="flex items-center  p-2 py-4 mt-2 flex-grow bg-white rounded-lg shadow-[0px_4px_40px_-20px_rgba(0,0,0,0.3)] cursor-pointer md:-ml-2  md:max-w-[300px] max-w-[390px] sm:min-w-[300px] m-2"
                         >
                           <div className="relative flex-grow-0 sm:mt-0 mt-0  max-w-[100%] w-[55px] h-[55px]  min-w-[55px]">
@@ -231,10 +203,6 @@ const RequestInvitionComponent = () => {
                       return item.Status === "pending";
                     })
                     .map((item, index) => {
-                      // console.log(
-                      //   "checking ============>  sent invitations =======> status ===> ",
-                      //   item.Status
-                      // );
                       return (
                         <div
                           key={index}
@@ -269,10 +237,6 @@ const RequestInvitionComponent = () => {
                       return item.Status === "rejected";
                     })
                     .map((item, index) => {
-                      // console.log(
-                      //   "checking ============>  sent invitations =======> status ===> ",
-                      //   item.Status
-                      // );
                       return (
                         <div
                           key={index}

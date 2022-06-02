@@ -19,8 +19,9 @@ function MyApp({ Component, pageProps }) {
   useEffect(() => {
     UserDetails()
       .then((res) => {
-        // console.log("=======>Render1");
-        socketConnection({ id: res?.user?.Id, token: res?.token });
+        console.log("=======>Render1", res);
+        const jwt = localStorage.getItem("JWT");
+        socketConnection({ id: res?.user?.Id, token: jwt });
       })
       .catch((e) => {
         // console.log("=======>User Not Login", e);

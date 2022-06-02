@@ -20,19 +20,6 @@ const Nav = ({ active }) => {
     notificationCountState
   );
 
-  // console.log("checking notification recoilstate in nav", notificationsCount);
-
-  // notificationsCount?.Meta?.map((item, index) => {
-  //   let Ncount = [];
-  //   console.log("checking notifications in map == in nav ==", item.ReadStatus);
-  //   if (item?.ReadStatus == 0) {
-  //     Ncount.push(item);
-  //     setNotificationsCount(item);
-  //   }
-  //   console.log("Now Now Now checking actual COUNTS ==> ", Ncount.length);
-  // });
-
-  // const handleOpen = () => {};
   useEffect(() => {
     getNotificationCount();
   }, []);
@@ -42,12 +29,7 @@ const Nav = ({ active }) => {
       if (item?.ReadStatus == 0) {
         Ncount.push(item);
         setNotificationsCount(item);
-        // console.log(
-        //   "checking notifications in map == in nav ==",
-        //   item.ReadStatus
-        // );
       }
-      // console.log("Now Now Now checking actual COUNTS ==> ", Ncount.length);
     });
   };
 
