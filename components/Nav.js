@@ -19,7 +19,7 @@ const Nav = ({ active }) => {
   const [notificationsCount, setNotificationsCount] = useRecoilState(
     notificationCountState
   );
-
+  console.log("-------------->notificationsCount", notificationsCount);
   useEffect(() => {
     getNotificationCount();
   }, []);
