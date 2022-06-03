@@ -203,7 +203,7 @@ const LeftSettingBar = () => {
                 </p>
               </div>
             </div> */}
-            <div
+            {/* <div
               onClick={() => router.push("/privacyPolicy")}
               className="flex items-center p-2 py-4 mt-4 bg-white rounded-lg shadow-md cursor-pointer md:-ml-2 md:shadow-none"
             >
@@ -225,7 +225,7 @@ const LeftSettingBar = () => {
                   <ChevronRightIcon className="w-5 h-5 text-gray-400 cursor-pointer" />
                 </p>
               </div>
-            </div>
+            </div> */}
             <div
               onClick={() => router.push("/privacyPolicy")}
               className="flex items-center p-2 py-4 mt-4 bg-white rounded-lg shadow-md cursor-pointer md:-ml-2 md:shadow-none"

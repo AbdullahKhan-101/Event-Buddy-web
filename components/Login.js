@@ -230,6 +230,31 @@ const Login = () => {
             Create New Account
           </span>
         </p>
+        <div
+          className="mx-4 mt-20 text-sm sm:text-base sm:text-center font-normall "
+          style={{
+            display: "flex",
+            justifyContent: "space-around",
+            width: "28vw",
+          }}
+        >
+          <span
+            onClick={() => router.push("/termsNConditions")}
+            className="text-[#E9813B]  cursor-pointer font-normall"
+            style={{ textDecoration: "underline" }}
+          >
+            {" "}
+            Terms & Condition
+          </span>
+          <span
+            onClick={() => router.push("/privacy_policy")}
+            className="text-[#E9813B]  cursor-pointer font-normall"
+            style={{ textDecoration: "underline" }}
+          >
+            {" "}
+            Privacy Policy
+          </span>
+        </div>
       </div>
       <ToastContainer />
       <Loader />
