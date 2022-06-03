@@ -1,12 +1,3 @@
-import {
-  BellIcon,
-  ChatIcon,
-  ChevronLeftIcon,
-  HeartIcon,
-  HomeIcon,
-  MailIcon,
-  MenuIcon,
-} from "@heroicons/react/outline";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -64,11 +55,31 @@ const Person = ({ active }) => {
           <Nav active={active} />
         </div>
         <PersonDetail
-          img={imageBaseUrl + usersData?.Media?.Path}
-          name={usersData?.FullName}
-          position={usersData?.UserName}
-          about={usersData?.About != null ? usersData?.About : "No Data Found"}
-          data={usersData}
+          img={
+            usersData?.from == "Home"
+              ? imageBaseUrl + userById?.data?.Data?.Media?.Path
+              : imageBaseUrl + usersData?.Media?.Path
+          }
+          name={
+            usersData?.from == "Home"
+              ? userById?.data?.Data?.FullName
+              : usersData?.FullName
+          }
+          position={
+            usersData?.from == "Home"
+              ? userById?.data?.Data?.UserName
+              : usersData?.UserName
+          }
+          about={
+            usersData?.from == "Home"
+              ? userById?.data?.Data?.About != null
+                ? userById?.data?.Data?.About
+                : "No Data Found"
+              : usersData?.About != null
+              ? usersData?.About
+              : "No Data Found"
+          }
+          data={usersData?.from == "Home" ? userById?.data?.Data : usersData}
         />
         <div className="flex flex-wrap justify-center max-w-6xl mx-auto lg:justify-around">
           <div className="flex-grow md:max-w-[290px] hidden lg:block"></div>

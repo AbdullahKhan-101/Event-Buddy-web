@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import GoogleMapReact from "google-map-react";
 import MyMarker from "./Marker";
+import { imageBaseUrl } from "../../config/utils";
 const distanceToMouse = (pt, mp) => {
   if (pt && mp) {
     return Math.sqrt(
@@ -10,21 +11,49 @@ const distanceToMouse = (pt, mp) => {
   }
 };
 
-export default function Map({ locations }) {
-  const points = [
-    {
-      id: 1,
-      title: "York, North Yorkshire",
-      latitude: locations?.lat,
-      longitude: locations?.lng,
-      image: "/myMarker.png",
-    },
-  ];
+export default function Map({ locations, from }) {
+  const [points, setPoints] = useState([]);
+  useEffect(() => {
+    setMarker();
+  }, []);
+  const setMarker = () => {
+    let array = [];
+    if (from == "Home") {
+      locations?.map((item) => {
+        if (item.Location != null) {
+          array?.push({
+            _id: item?.Id,
+            title: "York, North Yorkshire",
+            latitude: item?.Location?.Lat,
+            longitude: item?.Location?.Lng,
+            image: imageBaseUrl + item?.Media?.Path,
+          });
+        }
+      });
+      setPoints(array);
+    } else {
+      array?.push({
+        _id: 1,
+        title: "York, North Yorkshire",
+        latitude: locations?.lat,
+        longitude: locations?.lng,
+        image: "/myMarker.png",
+      });
+    }
+    setPoints(array);
+    return;
+  };
 
+  // const points = [
+  //   {
+  //     id: 1,
+  //     title: "York, North Yorkshire",
+  //     latitude: locations?.lat,
+  //     longitude: locations?.lng,
+  //     image: "/myMarker.png",
+  //   },
+  // ];
   const filterMapData = points?.map((item) => item);
-  const finalData = filterMapData?.map((item, indx) => {
-    return item;
-  });
 
   return (
     <div className="App">
@@ -32,11 +61,14 @@ export default function Map({ locations }) {
         bootstrapURLKeys={{
           key: "AIzaSyDh0f846bnmUxgSw6n5XtIZb01xtprxQfs",
         }}
-        center={{ lat: locations?.lat, lng: locations?.lng }}
+        center={{
+          lat: from == "Home" ? points[0]?.latitude : locations?.lat,
+          lng: from == "Home" ? points[0]?.longitude : locations?.lng,
+        }}
         defaultZoom={25}
         distanceToMouse={distanceToMouse}
       >
-        {finalData?.map(({ latitude, longitude, city, _id, image }) => {
+        {filterMapData?.map(({ latitude, longitude, city, _id, image }) => {
           return (
             <MyMarker
               key={_id}
@@ -45,6 +77,7 @@ export default function Map({ locations }) {
               text={city}
               tooltip={city}
               image={image}
+              item={_id}
             />
           );
         })}

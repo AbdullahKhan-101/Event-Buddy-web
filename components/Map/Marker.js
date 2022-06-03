@@ -1,6 +1,11 @@
 import React from "react";
-
-const MyMarker = ({ image }) => {
+import { usersDataModal } from "../../atoms/modalAtom";
+import { useRecoilState } from "recoil";
+import { useRouter } from "next/router";
+const MyMarker = ({ image, item }) => {
+  console.log("------------>", item);
+  const [usersData, setUsersData] = useRecoilState(usersDataModal);
+  const router = useRouter();
   return (
     <div
       style={{
@@ -9,6 +14,10 @@ const MyMarker = ({ image }) => {
         width: "8rem",
         justifyContent: "center",
         transform: "translate(-50%, -50%)",
+      }}
+      onClick={() => {
+        setUsersData({ from: "Home", Id: item });
+        router.push("/person");
       }}
       className="circle hover"
     >
@@ -27,11 +36,11 @@ const MyMarker = ({ image }) => {
           src={image}
           alt="infoImg"
           style={{
-            height: 110,
-            width: 110,
-
-            position: "absolute",
-            marginTop: -29,
+            height: 40,
+            width: 40,
+            borderRadius: "30px",
+            // position: "absolute",
+            marginTop: "3px",
           }}
         />
       </div>

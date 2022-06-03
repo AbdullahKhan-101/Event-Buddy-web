@@ -30,6 +30,7 @@ const Invite = () => {
     delay: isOpen === "open" ? 120 : 0,
   });
 
+  console.log("Personaol Deatails", personDetails);
   const createInvitation = async () => {
     if (
       !eventName ||

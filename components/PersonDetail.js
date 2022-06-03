@@ -4,7 +4,6 @@ import { useRecoilState } from "recoil";
 import {
   inviteModal,
   openReviewsModall,
-  reviewModal,
   ClickNotificationData,
   sendMessageModal,
   sendMessageId,
@@ -19,6 +18,7 @@ const PersonDetail = ({ img, name, position, about, data }) => {
   const [isSMOpen, setIsSMOpen] = useRecoilState(sendMessageModal);
   const [isOpenN, setIsOpenN] = useRecoilState(modalState);
   const [user, setUser] = useState();
+
   const [clickNotificationData, setClickNotificationData] = useRecoilState(
     ClickNotificationData
   );
