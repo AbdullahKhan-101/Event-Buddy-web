@@ -49,7 +49,7 @@ const Messeges = () => {
     (state) => state?.Home?.Invitation_messages
   );
   const getUserCamera = () => {
-    setCameraOpen(true)
+    setCameraOpen(true);
     navigator.mediaDevices
       .getUserMedia({
         video: true,
@@ -69,84 +69,86 @@ const Messeges = () => {
   const closeCamera = () => {
     let video = videoRef.current;
     video.srcObject.getTracks()[0].stop();
-    setCameraOpen(false)
-    setNoPhoto(true)
+    setCameraOpen(false);
+    setNoPhoto(true);
   };
   const takePicture = () => {
-
     const width = 400;
     const height = width / (16 / 9);
 
     let video = videoRef.current;
 
     let photo = photoRef.current;
-    photo?.width = width;
+    photo.width = width;
 
-    photo?.height = height;
+    photo.height = height;
     let ctx = photo?.getContext("2d");
-// upload(photo?.current.toBlob())
+    // upload(photo?.current.toBlob())
     ctx?.drawImage(video, 0, 0, width, height);
     setNoPhoto(false);
     // photo?.toDataURL("image/png")
-var img = new Image();
-img.src = photo.toDataURL();
-setPic(img.src)
-// debugger;
-// console.log('---------->',photoRef)
-// console.log(img.src);
-// upload(img.src)
+    var img = new Image();
+    img.src = photo.toDataURL();
+    setPic(img.src);
+    // debugger;
+    // console.log('---------->',photoRef)
+    // console.log(img.src);
+    // upload(img.src)
   };
   function DataURIToBlob(dataURI) {
-    const splitDataURI = dataURI.split(',')
-    const byteString = splitDataURI[0].indexOf('base64') >= 0 ? atob(splitDataURI[1]) : decodeURI(splitDataURI[1])
-    const mimeString = splitDataURI[0].split(':')[1].split(';')[0]
+    const splitDataURI = dataURI.split(",");
+    const byteString =
+      splitDataURI[0].indexOf("base64") >= 0
+        ? atob(splitDataURI[1])
+        : decodeURI(splitDataURI[1]);
+    const mimeString = splitDataURI[0].split(":")[1].split(";")[0];
 
-    const ia = new Uint8Array(byteString.length)
+    const ia = new Uint8Array(byteString.length);
     for (let i = 0; i < byteString.length; i++)
-        ia[i] = byteString.charCodeAt(i)
+      ia[i] = byteString.charCodeAt(i);
 
-    return new Blob([ia], { type: mimeString })
+    return new Blob([ia], { type: mimeString });
   }
 
   const upload = async (image) => {
     const formData = new FormData();
-    if(cameraOpen == true){
+    if (cameraOpen == true) {
+      const file = DataURIToBlob(pic);
 
-      const file = DataURIToBlob(pic)
-  
-  formData.append('file', file, 'image.jpg') 
-    }else{
-      formData.append('file', image) 
+      formData.append("file", file, "image.jpg");
+    } else {
+      formData.append("file", image);
     }
-// console.log("--------->",file, typeof pic);
-const jwt = localStorage.getItem('JWTEventBuddy')
-      try {
-        let fata = await axios.post(
-          "http://54.144.168.52:3000/media/upload",
-          formData,
-          {
-            headers:{
-              "Content-Type":"multipart/form-data",
-              "authorization":jwt
-            }
-          }
-        );
-        // console.log(fata, "api payload");
-        if (fata?.data?.Status == 200) {
-          
-          {cameraOpen == true && closeCamera();}
-          setCameraOpen(false);
-          sendMessage(fata?.data?.Data?.Id)
-          setNoPhoto(true)
-        } else {
-          // console.log(fata?.data, "api payload");
-          // toast.error(fata?.data?.Message);
-          throw new Error(fata?.data);
+    // console.log("--------->",file, typeof pic);
+    const jwt = localStorage.getItem("JWTEventBuddy");
+    try {
+      let fata = await axios.post(
+        "http://54.144.168.52:3000/media/upload",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            authorization: jwt,
+          },
         }
-      } catch (error) {
-        // toast.error(error);
-        // console.log(error, "api payload");
+      );
+      // console.log(fata, "api payload");
+      if (fata?.data?.Status == 200) {
+        {
+          cameraOpen == true && closeCamera();
+        }
+        setCameraOpen(false);
+        sendMessage(fata?.data?.Data?.Id);
+        setNoPhoto(true);
+      } else {
+        // console.log(fata?.data, "api payload");
+        // toast.error(fata?.data?.Message);
+        throw new Error(fata?.data);
       }
+    } catch (error) {
+      // toast.error(error);
+      // console.log(error, "api payload");
+    }
   };
   useEffect(() => {
     loadingTrue();
@@ -226,7 +228,7 @@ const jwt = localStorage.getItem('JWTEventBuddy')
       {
         InvitationId: chatItem?.Id,
         Content: message,
-        MediaId:id
+        MediaId: id,
       },
       async (data) => {
         // console.log('Data From Server',data)
@@ -240,8 +242,8 @@ const jwt = localStorage.getItem('JWTEventBuddy')
         });
         setMessage("");
         setSendChat(false);
-        setPic()
-        setNoPhoto(true)
+        setPic();
+        setNoPhoto(true);
       }
     );
 
@@ -276,11 +278,11 @@ const jwt = localStorage.getItem('JWTEventBuddy')
     <>
       {cameraOpen == false ? (
         <div>
-           <Head>
-        <title>Event Buddy</title>
-        <meta name="description" content="Generated by create next app" />
-        <link rel="icon" href="/appicon.png" />
-      </Head>
+          <Head>
+            <title>Event Buddy</title>
+            <meta name="description" content="Generated by create next app" />
+            <link rel="icon" href="/appicon.png" />
+          </Head>
           <Nav active="messeges" />
           <div className="p-2 mx-auto mt-0 max-w-7xl md:mt-5 "></div>
           <div className="flex flex-wrap mx-auto justify-left max-w-7xl ">
@@ -327,8 +329,11 @@ const jwt = localStorage.getItem('JWTEventBuddy')
                             // layout="fill"
                             // objectfit="contain"
                             // className="rounded-xl"
-                            style={{height:'60px',width:'60px',borderRadius:'10px'}}
-                          
+                            style={{
+                              height: "60px",
+                              width: "60px",
+                              borderRadius: "10px",
+                            }}
                           />
                         </div>
                         <div className="flex items-center flex-grow ml-4 md:ml-4">
@@ -348,7 +353,9 @@ const jwt = localStorage.getItem('JWTEventBuddy')
                               //     item?.Chats[0]?.Seen == false ? "black" : "grey",
                               // }}
                             >
-                              {item?.Chats[0]?.Message != ''?item?.Chats[0]?.Message:'Photo'}
+                              {item?.Chats[0]?.Message != ""
+                                ? item?.Chats[0]?.Message
+                                : "Photo"}
                             </h1>
                           </div>
                           <p className="mb-4 text-sm text-[#E9813B]  min-w-[120px] max-h-10">
@@ -463,48 +470,41 @@ const jwt = localStorage.getItem('JWTEventBuddy')
                                         </h1>
                                       ) : (
                                         <div
-                                       
-                                        style={{
-                                          // height: "10vh",
-                                          // width: "100%",
-                                          display: "flex",
-                                          alignContent: "center",
-                                          alignItems: "center",
-                                          justifyContent:'flex-end',
-                                          marginTop: "50px",
-                                          alignSelf:'end'
-                                        }}
-                                      >
-                                        
-                                        <span
                                           style={{
-                                            fontSize: "8px",
-                                            marginLeft: "10px",
+                                            // height: "10vh",
+                                            // width: "100%",
+                                            display: "flex",
+                                            alignContent: "center",
+                                            alignItems: "center",
+                                            justifyContent: "flex-end",
+                                            marginTop: "50px",
+                                            alignSelf: "end",
                                           }}
                                         >
-                                          {moment(item?.CreatedAt).format(
-                                            "HH:mm a"
-                                          )}
-                                        </span>
-                                        <br></br>
-                                        <img
-                                          src={
-                                            imageBaseUrl + item?.Media?.Path
-                                          }
-                                          alt="infoImg"
-                                          
-                                          style={{
-                                            marginLeft: "10px",
-                                            borderRadius: "10px",
-                                           
-                                          }}
-
-                                        />
-                                         <br></br>
-                                         
-                                      </div>
-                                      )} 
-                                        
+                                          <span
+                                            style={{
+                                              fontSize: "8px",
+                                              marginLeft: "10px",
+                                            }}
+                                          >
+                                            {moment(item?.CreatedAt).format(
+                                              "HH:mm a"
+                                            )}
+                                          </span>
+                                          <br></br>
+                                          <img
+                                            src={
+                                              imageBaseUrl + item?.Media?.Path
+                                            }
+                                            alt="infoImg"
+                                            style={{
+                                              marginLeft: "10px",
+                                              borderRadius: "10px",
+                                            }}
+                                          />
+                                          <br></br>
+                                        </div>
+                                      )}
                                     </div>
                                   ) : (
                                     <div>
@@ -621,23 +621,21 @@ const jwt = localStorage.getItem('JWTEventBuddy')
                           />
                           {/* <EmojiHappyIcon className="w-5 h-5 mr-2 text-gray-400 cursor-pointer" /> */}
                           <div>
-                          <PaperClipIcon
-                            className="w-5 h-5 text-gray-400 cursor-pointer"
-                            onClick={() => filePickerRef.current.click()}
-                            
-                          />
-                           <input
-              ref={filePickerRef}
-              type="file"
-              className="hidden"
-              onChange={fileSelectedHandler}
-            />
-            </div>
+                            <PaperClipIcon
+                              className="w-5 h-5 text-gray-400 cursor-pointer"
+                              onClick={() => filePickerRef.current.click()}
+                            />
+                            <input
+                              ref={filePickerRef}
+                              type="file"
+                              className="hidden"
+                              onChange={fileSelectedHandler}
+                            />
+                          </div>
                           <CameraIcon
                             className="w-5 h-5 text-gray-400 cursor-pointer"
                             onClick={getUserCamera}
                           />
-                         
                         </div>
                         <div
                           className="float-right  cursor-pointer bg-[#E9813B] flex items-center justify-center p-2 rounded-md "
@@ -666,13 +664,12 @@ const jwt = localStorage.getItem('JWTEventBuddy')
         </div>
       ) : (
         <div className="">
-             <Head>
-        <title>Event Buddy</title>
-        <meta name="description" content="Generated by create next app" />
-        <link rel="icon" href="/appicon.png" />
-      </Head>
+          <Head>
+            <title>Event Buddy</title>
+            <meta name="description" content="Generated by create next app" />
+            <link rel="icon" href="/appicon.png" />
+          </Head>
           <div className="bg-black h-[100vh] sm:h-[92vh]">
-            
             <div
               style={{
                 display: "flex",
@@ -681,7 +678,6 @@ const jwt = localStorage.getItem('JWTEventBuddy')
                 alignItems: "center",
               }}
             >
-              
               <video
                 ref={videoRef}
                 // className=" w-full  md:h-[92vh] h-[80vh]"
@@ -747,7 +743,6 @@ const jwt = localStorage.getItem('JWTEventBuddy')
                 className="p-3 bg-red-600 border rounded-full cursor-pointer"
               >
                 <CameraIcon className="w-6 h-6 text-white" />
-
               </div>
             ) : (
               <>
@@ -766,15 +761,13 @@ const jwt = localStorage.getItem('JWTEventBuddy')
                 </div>
               </>
             )}
-           
           </div>
           <button
-        onClick={closeCamera}
-        className="fixed px-4 py-2 font-semibold uppercase bg-gray-200 rounded-lg lg:left-12 lg:bottom-3 hover:bg-gray-300 left-2 bottom-1"
-        
-      >
-        Back
-      </button>
+            onClick={closeCamera}
+            className="fixed px-4 py-2 font-semibold uppercase bg-gray-200 rounded-lg lg:left-12 lg:bottom-3 hover:bg-gray-300 left-2 bottom-1"
+          >
+            Back
+          </button>
         </div>
       )}
     </>
