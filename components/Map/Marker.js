@@ -3,7 +3,7 @@ import { usersDataModal } from "../../atoms/modalAtom";
 import { useRecoilState } from "recoil";
 import { useRouter } from "next/router";
 const MyMarker = ({ image, item }) => {
-  console.log("------------>", item);
+  // console.log("------------>", item);
   const [usersData, setUsersData] = useRecoilState(usersDataModal);
   const router = useRouter();
   return (

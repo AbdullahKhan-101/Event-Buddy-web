@@ -131,7 +131,7 @@ const jwt = localStorage.getItem('JWT')
             }
           }
         );
-        console.log(fata, "api payload");
+        // console.log(fata, "api payload");
         if (fata?.data?.Status == 200) {
           
           {cameraOpen == true && closeCamera();}
@@ -139,13 +139,13 @@ const jwt = localStorage.getItem('JWT')
           sendMessage(fata?.data?.Data?.Id)
           setNoPhoto(true)
         } else {
-          console.log(fata?.data, "api payload");
+          // console.log(fata?.data, "api payload");
           // toast.error(fata?.data?.Message);
           throw new Error(fata?.data);
         }
       } catch (error) {
         // toast.error(error);
-        console.log(error, "api payload");
+        // console.log(error, "api payload");
       }
   };
   useEffect(() => {
@@ -189,7 +189,7 @@ const jwt = localStorage.getItem('JWT')
         }
       )
       .then((res) => {
-        console.log("--------->chat", res?.data);
+        // console.log("--------->chat", res?.data);
         res?.data?.Data?.map((item) => {
           chat.push({
             CreatedById: item?.CreatedById,
@@ -227,7 +227,7 @@ const jwt = localStorage.getItem('JWT')
         MediaId:id
       },
       async (data) => {
-        console.log('Data From Server',data)
+        // console.log('Data From Server',data)
         chat.push({
           CreatedById: data?.Chat?.CreatedById,
           Id: data?.Chat.Id,
@@ -247,7 +247,7 @@ const jwt = localStorage.getItem('JWT')
   };
   const recievedMessagesfromServer = () => {
     socket.on("message", (data) => {
-      console.log("--------->", data);
+      // console.log("--------->", data);
       setChat([
         ...chat,
         {

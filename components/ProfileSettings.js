@@ -87,7 +87,7 @@ const ProfileSettings = () => {
             },
           }
         );
-        console.log(fata, "image response");
+        // console.log(fata, "image response");
         if (fata?.data.Status == 200) {
           updateProfile(fata?.data?.Data?.Id);
         } else {
@@ -101,7 +101,7 @@ const ProfileSettings = () => {
     }
   };
   const updateProfile = async (data) => {
-    console.log(data, "data ");
+    // console.log(data, "data ");
     const JWT = localStorage.getItem("JWTEventBuddy");
     if (data) {
       const params = new URLSearchParams();
@@ -114,7 +114,7 @@ const ProfileSettings = () => {
             authorization: JWT,
           },
         });
-        console.log(fata, "user setting api image");
+        // console.log(fata, "user setting api image");
         if (fata?.data?.Data?.Message == "Updated") {
           localStorage.setItem(
             "user",

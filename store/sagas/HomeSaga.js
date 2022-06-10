@@ -129,7 +129,7 @@ export function* GetDiscoverUsers(action) {
 }
 
 export function* GetUserById(action) {
-  console.log("hello world from GetUserById", action);
+  // console.log("hello world from GetUserById", action);
   const payload = action.payload;
   // const id = "1";
   const jwt = localStorage.getItem("JWTEventBuddy");
@@ -137,7 +137,7 @@ export function* GetUserById(action) {
     "content-type": "application/json",
     authorization: jwt,
   });
-  console.log(response, "Get  User by id ");
+  // console.log(response, "Get  User by id ");
   const response_status = yield call(validateResponse, response);
   if (response_status.success) {
     yield put({
@@ -232,7 +232,7 @@ export function* GetInvitationById(action) {
     "content-type": "application/json",
     authorization: jwt,
   });
-  console.log(response, "GetInvitationById ");
+  // console.log(response, "GetInvitationById ");
   const response_status = yield call(validateResponse, response);
   if (response_status.success) {
     yield put({

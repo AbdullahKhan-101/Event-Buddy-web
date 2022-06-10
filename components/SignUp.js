@@ -48,7 +48,7 @@ const SignUp = () => {
           "http://54.144.168.52:3000/user/signup",
           payload
         );
-        console.log(fata, "api payload");
+        // console.log(fata, "api payload");
         if (fata?.data?.Status == 200) {
           toast.success("Signup Successful");
           setName("");

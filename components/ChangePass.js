@@ -24,7 +24,7 @@ const ChangePass = () => {
               authorization: JWT,
             },
           });
-          console.log(fata, "Change Pass");
+          // console.log(fata, "Change Pass");
           if (fata?.data?.Status == 200) {
             toast.success("Password Changed Successfully");
             setOldPass("");
@@ -35,7 +35,7 @@ const ChangePass = () => {
           }
         } catch (error) {
           toast.error(error);
-          console.log(error, "api payload");
+          // console.log(error, "api payload");
         }
       } else {
         toast.error("Passwords Not Matched..");

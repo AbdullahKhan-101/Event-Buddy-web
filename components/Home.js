@@ -54,7 +54,7 @@ const Home = () => {
         setUserAddress(`${area}, ${city}, ${state}`);
       },
       (error) => {
-        console.error("--------->", error);
+        // console.error("--------->", error);
       }
     );
   };
@@ -146,7 +146,7 @@ const Home = () => {
                       objectfit="cover"
                       className="rounded-xl"
                       onLoad={() => {
-                        console.log("Loading");
+                        // console.log("Loading");
                       }}
                     />
                   </div>

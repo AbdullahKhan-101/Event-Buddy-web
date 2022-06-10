@@ -33,7 +33,7 @@ const LeftSettingBar = () => {
           authorization: JWT,
         },
       });
-      console.log(fata, "api payload");
+      // console.log(fata, "api payload");
       if (fata?.data?.Data?.Message == "Updated") {
         localStorage.setItem(
           "user",

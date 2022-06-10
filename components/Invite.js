@@ -30,7 +30,7 @@ const Invite = () => {
     delay: isOpen === "open" ? 120 : 0,
   });
 
-  console.log("Personaol Deatails", personDetails);
+  // console.log("Personaol Deatails", personDetails);
   const createInvitation = async () => {
     if (
       !eventName ||
@@ -52,7 +52,7 @@ const Invite = () => {
         Address: eventAddress,
         UserId: personDetails?.Id,
       };
-      console.log(payload, "api payload");
+      // console.log(payload, "api payload");
       try {
         let fata = await axios.post(
           "http://54.144.168.52:3000/invitation",
@@ -64,7 +64,7 @@ const Invite = () => {
             },
           }
         );
-        console.log(fata, "api payload");
+        // console.log(fata, "api payload");
         setIsOpen("close");
       } catch (error) {}
     }

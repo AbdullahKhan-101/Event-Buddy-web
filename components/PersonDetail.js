@@ -34,7 +34,7 @@ const PersonDetail = ({ img, name, position, about, data }) => {
   const UserDetails = async () => {
     const User = await localStorage.getItem("user");
     const user = JSON.parse(User);
-    console.log("user", user);
+    // console.log("user", user);
     setUser(user?.user);
   };
   return (

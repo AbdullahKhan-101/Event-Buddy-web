@@ -23,7 +23,7 @@ const Selfie = () => {
   const [play, setPlay] = useState(false);
 const [noPhoto, setNoPhoto] = useState(true);
 const [pic, setPic] = useState();
-console.log('---------->',photoRef)
+// console.log('---------->',photoRef)
   const openCamera = () => {};
   const closeCamera = () => {
     let video = videoRef.current;
@@ -96,7 +96,7 @@ setPic(img.src)
     const file = DataURIToBlob(pic)
 const formData = new FormData();
 formData.append('file', file, 'image.jpg') 
-console.log("--------->",file);
+// console.log("--------->",file);
 const jwt = localStorage.getItem('JWT')
       try {
         let fata = await axios.post(
@@ -109,7 +109,7 @@ const jwt = localStorage.getItem('JWT')
             }
           }
         );
-        console.log(fata, "api payload");
+        // console.log(fata, "api payload");
         if (fata?.data?.Status == 200) {
           localStorage.setItem('userSelfieImage', JSON.stringify({MediaId:fata?.data?.Data?.Id ,path:fata?.data?.Data?.MediaObject?.Path}))
          router.push('/verifyPicture')
@@ -124,7 +124,7 @@ const jwt = localStorage.getItem('JWT')
         }
       } catch (error) {
         toast.error(error);
-        console.log(error, "api payload");
+        // console.log(error, "api payload");
       }
   };
   return (

@@ -84,7 +84,7 @@ const Search = () => {
         // setEventAddress(address);
         // setEventLat(lat);
         // setEventLng(lng);
-        console.error("--------->", res);
+        // console.error("--------->", res);
       },
       (error) => {
         // console.error("--------->", error);
@@ -92,7 +92,7 @@ const Search = () => {
     );
   };
   const setLocationApi = async (data) => {
-    console.log("data aya aya ya ", data);
+    // console.log("data aya aya ya ", data);
     const JWT = localStorage.getItem("JWTEventBuddy");
 
     const params = new URLSearchParams();
@@ -106,7 +106,7 @@ const Search = () => {
           authorization: JWT,
         },
       });
-      console.log(fata, "user setting api image");
+      // console.log(fata, "user setting api image");
       if (fata?.data?.Data?.Message == "Updated") {
         localStorage.setItem(
           "user",

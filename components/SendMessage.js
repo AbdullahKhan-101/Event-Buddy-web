@@ -48,7 +48,7 @@ const SendMessage = () => {
 
   const router = useRouter();
   const dispatch = useDispatch();
-  console.log("sMID", sMID);
+  // console.log("sMID", sMID);
   const createChat = async () => {
     const jwt = localStorage.getItem("JWTEventBuddy");
     if (!message) {
@@ -60,7 +60,7 @@ const SendMessage = () => {
         Message: message,
         InvitationId: sMID?.Meta?.InvitationId,
       };
-      console.log(payload, "api payload");
+      // console.log(payload, "api payload");
       try {
         let fata = await axios.post("http://54.144.168.52:3000/chat", payload, {
           headers: {
@@ -68,7 +68,7 @@ const SendMessage = () => {
             authorization: jwt,
           },
         });
-        console.log(fata, "api payload");
+        // console.log(fata, "api payload");
         if (fata?.data?.Status == 200) {
           setIsSMOpen("close");
           router.push("/messeges");
@@ -76,7 +76,7 @@ const SendMessage = () => {
       } catch (error) {
         // setIsLoading(false);
         // toast.error(error);
-        console.log(error, "error chat");
+        // console.log(error, "error chat");
         // console.log("if user error", isLoading);
       }
     }

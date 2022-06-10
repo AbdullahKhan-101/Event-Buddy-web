@@ -78,13 +78,13 @@ const AcceptInvite = () => {
           setInvitatioinAdd(`${area}, ${city}, ${state}`);
         },
         (error) => {
-          console.error("--------->123", error);
+          // console.error("--------->123", error);
         }
       );
     }
   };
   const AcceptInvitation = async (id) => {
-    console.log("Accepted", id);
+    // console.log("Accepted", id);
     const JWT = localStorage.getItem("JWTEventBuddy");
     try {
       let fata = await axios.put(
@@ -96,12 +96,12 @@ const AcceptInvite = () => {
           },
         }
       );
-      console.log(fata, "Accept Invitation Response");
+      // console.log(fata, "Accept Invitation Response");
       if (fata?.data?.Status == 200) {
         setIsOpen("close");
       }
     } catch (error) {
-      console.log(error, "api payload");
+      // console.log(error, "api payload");
     }
   };
   const RejectInvitation = async (id) => {
@@ -116,12 +116,12 @@ const AcceptInvite = () => {
           },
         }
       );
-      console.log(fata, "Reject Invitation Response");
+      // console.log(fata, "Reject Invitation Response");
       if (fata?.data?.Status == 200) {
         setIsOpen("close");
       }
     } catch (error) {
-      console.log(error, "api payload");
+      // console.log(error, "api payload");
     }
   };
   return (

@@ -32,7 +32,7 @@ const Review = ({ eventDetails }) => {
         InvitationId: eventDetails?.Id,
         Title: eventDetails?.Title,
       };
-      console.log(payload, "api payload");
+      // console.log(payload, "api payload");
       try {
         let fata = await axios.post(
           "http://54.144.168.52:3000/review",
@@ -44,7 +44,7 @@ const Review = ({ eventDetails }) => {
             },
           }
         );
-        console.log(fata, "api payload");
+        // console.log(fata, "api payload");
         if (fata?.data?.Status == 200) {
           setOpenReview(false);
           setActive(0);

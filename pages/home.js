@@ -14,7 +14,7 @@ const Homee = () => {
       setLoggedIn(true);
       UserDetails()
         .then((res) => {
-          console.log("=======>Render1", res);
+          // console.log("=======>Render1", res);
           const jwt = localStorage.getItem("JWTEventBuddy");
           socketConnection({ id: res?.user?.Id, token: jwt });
         })

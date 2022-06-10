@@ -22,7 +22,7 @@ const VerifyPicture = () => {
     const SelfiePic = JSON.parse(selfie);
     setUploadedImage(UploadPic);
     setSelfieImage(SelfiePic);
-    console.log("---------->", UploadPic, SelfiePic);
+    // console.log("---------->", UploadPic, SelfiePic);
   };
 
   const verifyPicture = async () => {
@@ -41,7 +41,7 @@ const VerifyPicture = () => {
         },
       }
     );
-    console.log(verifyImage, "verifyImage payload");
+    // console.log(verifyImage, "verifyImage payload");
     if (verifyImage?.data?.Status == 200) {
       router.push("/enableLocation");
     }
