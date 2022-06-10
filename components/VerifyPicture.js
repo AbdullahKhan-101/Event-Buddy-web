@@ -26,7 +26,7 @@ const VerifyPicture = () => {
   };
 
   const verifyPicture = async () => {
-    const JWT = localStorage.getItem("JWT");
+    const JWT = localStorage.getItem("JWTEventBuddy");
     const params = new URLSearchParams();
     params.append("SelfieMediaId", selfieImage?.MediaId);
     params.append("SelfieMedia", selfieImage?.MediaId);

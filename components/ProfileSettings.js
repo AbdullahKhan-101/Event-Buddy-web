@@ -41,7 +41,7 @@ const ProfileSettings = () => {
     getUserDetailsApi();
   }, []);
   const getUserDetailsApi = async () => {
-    const jwt = localStorage.getItem("JWT");
+    const jwt = localStorage.getItem("JWTEventBuddy");
     await axios
       .get(
         `
@@ -72,7 +72,7 @@ const ProfileSettings = () => {
     }, 3000);
   };
   const onSave = async (image) => {
-    const JWT = localStorage.getItem("JWT");
+    const JWT = localStorage.getItem("JWTEventBuddy");
     if (selectedImage) {
       const formData = new FormData();
       formData.append("file", selectedImage);
@@ -102,7 +102,7 @@ const ProfileSettings = () => {
   };
   const updateProfile = async (data) => {
     console.log(data, "data ");
-    const JWT = localStorage.getItem("JWT");
+    const JWT = localStorage.getItem("JWTEventBuddy");
     if (data) {
       const params = new URLSearchParams();
       params.append("MediaId", data);

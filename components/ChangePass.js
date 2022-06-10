@@ -9,7 +9,7 @@ const ChangePass = () => {
   const [reNewPass, setReNewPass] = useState("");
 
   const ChangePassword = async () => {
-    const JWT = localStorage.getItem("JWT");
+    const JWT = localStorage.getItem("JWTEventBuddy");
     if (!oldPass && !newPass && !reNewPass) {
       toast.error("Please Fill All Fields..");
     } else {

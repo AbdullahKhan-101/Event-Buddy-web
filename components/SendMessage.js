@@ -50,7 +50,7 @@ const SendMessage = () => {
   const dispatch = useDispatch();
   console.log("sMID", sMID);
   const createChat = async () => {
-    const jwt = localStorage.getItem("JWT");
+    const jwt = localStorage.getItem("JWTEventBuddy");
     if (!message) {
       // toast.error("Please Fill All Fields");
       // setIsLoading(false);

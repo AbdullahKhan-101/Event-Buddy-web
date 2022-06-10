@@ -177,7 +177,7 @@ const jwt = localStorage.getItem('JWT')
   }
   const getOldChatFromApi = async (id) => {
     setLoading(true);
-    const jwt = localStorage.getItem("JWT");
+    const jwt = localStorage.getItem("JWTEventBuddy");
     let data = await axios
       .get(
         `

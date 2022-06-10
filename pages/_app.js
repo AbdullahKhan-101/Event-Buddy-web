@@ -20,7 +20,7 @@ function MyApp({ Component, pageProps }) {
     UserDetails()
       .then((res) => {
         console.log("=======>Render1", res);
-        const jwt = localStorage.getItem("JWT");
+        const jwt = localStorage.getItem("JWTEventBuddy");
         socketConnection({ id: res?.user?.Id, token: jwt });
       })
       .catch((e) => {

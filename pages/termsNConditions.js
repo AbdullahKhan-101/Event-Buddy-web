@@ -4,12 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 const TermsnConditionss = () => {
   const router = useRouter();
-  useEffect(() => {
-    const JWT = localStorage.getItem("JWT");
-    if (JWT) {
-      router.push("/home");
-    }
-  }, []);
+
   return (
     <div>
       <TermnConditionM />

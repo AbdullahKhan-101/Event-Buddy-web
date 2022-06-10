@@ -5,7 +5,7 @@ const Messegess = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const router = useRouter();
   useEffect(() => {
-    const JWT = localStorage.getItem("JWT");
+    const JWT = localStorage.getItem("JWTEventBuddy");
     if (!JWT) {
       router.push("/login");
     } else {

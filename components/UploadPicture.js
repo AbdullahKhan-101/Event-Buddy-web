@@ -36,7 +36,7 @@ const UploadPicture = () => {
   };
   const upload = async (image) => {
     // console.log("===========>", image);
-    const JWT = localStorage.getItem("JWT");
+    const JWT = localStorage.getItem("JWTEventBuddy");
     const formData = new FormData();
     formData.append("file", image);
     try {

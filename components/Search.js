@@ -93,7 +93,8 @@ const Search = () => {
   };
   const setLocationApi = async (data) => {
     console.log("data aya aya ya ", data);
-    const JWT = localStorage.getItem("JWT");
+    const JWT = localStorage.getItem("JWTEventBuddy");
+
     const params = new URLSearchParams();
     params.append("Lat", data.lat);
     params.append("Lng", data.lng);

@@ -21,7 +21,7 @@ const Review = ({ eventDetails }) => {
 
   const writeReview = async () => {
     setLoading(true);
-    const jwt = localStorage.getItem("JWT");
+    const jwt = localStorage.getItem("JWTEventBuddy");
     if (!description || active == 0) {
       alert("Please Fill All Fields");
     } else {

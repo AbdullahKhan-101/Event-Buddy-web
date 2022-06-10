@@ -85,7 +85,7 @@ const AcceptInvite = () => {
   };
   const AcceptInvitation = async (id) => {
     console.log("Accepted", id);
-    const JWT = localStorage.getItem("JWT");
+    const JWT = localStorage.getItem("JWTEventBuddy");
     try {
       let fata = await axios.put(
         `http://54.144.168.52:3000/invitation/${id}/accept`,
@@ -105,7 +105,7 @@ const AcceptInvite = () => {
     }
   };
   const RejectInvitation = async (id) => {
-    const JWT = localStorage.getItem("JWT");
+    const JWT = localStorage.getItem("JWTEventBuddy");
     try {
       let fata = await axios.put(
         `http://54.144.168.52:3000/invitation/${id}/reject`,

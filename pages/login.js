@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 const Signin = () => {
   const router = useRouter();
   useEffect(() => {
-    const JWT = localStorage.getItem("JWT");
+    const JWT = localStorage.getItem("JWTEventBuddy");
     if (JWT) {
       router.push("/home");
     }

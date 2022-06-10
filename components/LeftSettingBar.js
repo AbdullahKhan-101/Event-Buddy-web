@@ -23,7 +23,7 @@ const LeftSettingBar = () => {
     setUser(user?.user);
   };
   const AvailableforInvitation = async (boolean) => {
-    const JWT = localStorage.getItem("JWT");
+    const JWT = localStorage.getItem("JWTEventBuddy");
     const params = new URLSearchParams();
     params.append("AvailableForInvitation", boolean);
     try {
