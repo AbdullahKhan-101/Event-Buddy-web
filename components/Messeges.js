@@ -119,7 +119,7 @@ setPic(img.src)
       formData.append('file', image) 
     }
 // console.log("--------->",file, typeof pic);
-const jwt = localStorage.getItem('JWT')
+const jwt = localStorage.getItem('JWTEventBuddy')
       try {
         let fata = await axios.post(
           "http://54.144.168.52:3000/media/upload",

@@ -88,14 +88,14 @@ const Home = () => {
                 }}
                 id="mapView"
               >
-                <div className="relative w-[20px] mr-2 h-[18px]  text-[#E9813B] ">
+                <span className="relative w-[20px] mr-2 h-[18px]  text-[#E9813B] ">
                   <Image
                     src="/mapview.png"
                     alt="infoImg"
                     layout="fill"
                     objectfit="contain"
                   />
-                </div>
+                </span>
                 <span className="text-[#42526E] font-normall">Map View</span>
               </p>
             ) : (
@@ -106,7 +106,7 @@ const Home = () => {
                 }}
                 id="mapView"
               >
-                <div className="relative w-[20px] mr-2 h-[18px]  text-[#E9813B] ">
+                <span className="relative w-[20px] mr-2 h-[18px]  text-[#E9813B] ">
                   {/* <Image
                     src="/mapview.png"
                     alt="infoImg"
@@ -114,7 +114,7 @@ const Home = () => {
                     objectfit="contain"
                   /> */}
                   <ViewListIcon />
-                </div>
+                </span>
                 <span className="text-[#42526E] font-normall">List View</span>
               </p>
             )}
