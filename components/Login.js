@@ -43,7 +43,7 @@ const Login = () => {
       };
       try {
         let fata = await axios.post(
-          "http://54.144.168.52:3000/user/login",
+          "https://api.theeventbuddy.com/user/login",
           payload
         );
 
