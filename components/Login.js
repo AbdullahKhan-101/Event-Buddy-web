@@ -48,7 +48,7 @@ const Login = () => {
         );
 
         if (fata?.data?.Status == 200) {
-          localStorage.setItem("JWT", fata?.data?.Data?.Token);
+          localStorage.setItem("JWTEventBuddy", fata?.data?.Data?.Token);
 
           if (fata?.data?.Data?.User?.Media == null) {
             localStorage.setItem(
@@ -58,7 +58,7 @@ const Login = () => {
                 token: fata?.data?.Data?.Token,
               })
             );
-            localStorage.setItem("JWT", fata?.data?.Data?.Token);
+            localStorage.setItem("JWTEventBuddy", fata?.data?.Data?.Token);
             setLoading(false);
             setEmail("");
             setPassword("");
@@ -91,7 +91,7 @@ const Login = () => {
                 token: fata?.data?.Data?.Token,
               })
             );
-            localStorage.setItem("JWT", fata?.data?.Data?.Token);
+            localStorage.setItem("JWTEventBuddy", fata?.data?.Data?.Token);
             router.push("/home");
             setLoading(false);
             setEmail("");
