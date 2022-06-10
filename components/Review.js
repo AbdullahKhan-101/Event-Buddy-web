@@ -6,6 +6,7 @@ import { useRecoilState } from "recoil";
 import { useSpring, animated } from "react-spring";
 import axios from "axios";
 import Loader from "./Loader";
+import { baseUrl } from "../config/utils";
 const Review = ({ eventDetails }) => {
   const [openReview, setOpenReview] = useRecoilState(reviewModal);
   const [loading, setLoading] = useRecoilState(loadingState);
@@ -34,16 +35,12 @@ const Review = ({ eventDetails }) => {
       };
       // console.log(payload, "api payload");
       try {
-        let fata = await axios.post(
-          "http://54.144.168.52:3000/review",
-          payload,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              authorization: jwt,
-            },
-          }
-        );
+        let fata = await axios.post(`${baseUrl}review`, payload, {
+          headers: {
+            "Content-Type": "application/json",
+            authorization: jwt,
+          },
+        });
         // console.log(fata, "api payload");
         if (fata?.data?.Status == 200) {
           setOpenReview(false);

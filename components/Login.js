@@ -16,6 +16,7 @@ import { HomeActions } from "../store/actions";
 import Loader from "./Loader";
 import { useRecoilState } from "recoil";
 import { loadingState } from "../atoms/modalAtom";
+import { baseUrl } from "../config/utils";
 const Login = () => {
   const router = useRouter();
   const dispatch = useDispatch();
@@ -42,10 +43,7 @@ const Login = () => {
         FCMToken: null,
       };
       try {
-        let fata = await axios.post(
-          "https://api.theeventbuddy.com/user/login",
-          payload
-        );
+        let fata = await axios.post(`${baseUrl}user/login`, payload);
 
         if (fata?.data?.Status == 200) {
           localStorage.setItem("JWTEventBuddy", fata?.data?.Data?.Token);

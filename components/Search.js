@@ -7,6 +7,7 @@ import GooglePlaces from "./Map/GoogePlaces";
 import ClipLoader from "react-spinners/ClipLoader";
 import Geocode from "react-geocode";
 import axios from "axios";
+import { baseUrl } from "../config/utils";
 const Search = () => {
   const router = useRouter();
   const [location, setLocation] = useState({});
@@ -103,7 +104,7 @@ const Search = () => {
     params.append("Lng", data.lng);
 
     try {
-      let fata = await axios.put("http://54.144.168.52:3000/user", params, {
+      let fata = await axios.put(`${baseUrl}user`, params, {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
           authorization: JWT,

@@ -26,6 +26,7 @@ import axios from "axios";
 import ClipLoader from "react-spinners/ClipLoader";
 import Review from "./Review";
 import Head from "next/head";
+import { baseUrl } from "../config/utils";
 const Messeges = () => {
   const dispatch = useDispatch();
   const router = useRouter();
@@ -122,16 +123,12 @@ const Messeges = () => {
     // console.log("--------->",file, typeof pic);
     const jwt = localStorage.getItem("JWTEventBuddy");
     try {
-      let fata = await axios.post(
-        "http://54.144.168.52:3000/media/upload",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            authorization: jwt,
-          },
-        }
-      );
+      let fata = await axios.post(`${baseUrl}media/upload`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          authorization: jwt,
+        },
+      });
       // console.log(fata, "api payload");
       if (fata?.data?.Status == 200) {
         {
@@ -185,7 +182,7 @@ const Messeges = () => {
     let data = await axios
       .get(
         `
-        http://54.144.168.52:3000/chat/${id}`,
+        ${baseUrl}chat/${id}`,
         {
           headers: {
             authorization: jwt,

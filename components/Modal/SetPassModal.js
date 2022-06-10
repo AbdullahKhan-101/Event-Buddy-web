@@ -5,6 +5,7 @@ import Image from "next/image";
 import { XIcon } from "@heroicons/react/solid";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { baseUrl } from "../../config/utils";
 
 function SetPassModal({ closeModal }) {
   const [data, setData] = useState({ email: "", code: "", password: "" });
@@ -25,10 +26,7 @@ function SetPassModal({ closeModal }) {
         Email: data.email,
       };
       try {
-        let fata = await axios.post(
-          "http://54.144.168.52:3000/user/forget-password",
-          payload
-        );
+        let fata = await axios.post(`${baseUrl}user/forget-password`, payload);
         if (fata?.data?.Status == 200) {
           setData({ ...data, email: "" });
           closeModal(false);

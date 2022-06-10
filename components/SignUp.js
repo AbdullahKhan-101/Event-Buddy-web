@@ -13,7 +13,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import Head from "next/head";
 import Loader from "./Loader";
-
+import { baseUrl } from "../config/utils";
 const SignUp = () => {
   const dispatch = useDispatch();
 
@@ -44,10 +44,7 @@ const SignUp = () => {
         UserName: name,
       };
       try {
-        let fata = await axios.post(
-          "http://54.144.168.52:3000/user/signup",
-          payload
-        );
+        let fata = await axios.post(`${baseUrl}user/signup`, payload);
         // console.log(fata, "api payload");
         if (fata?.data?.Status == 200) {
           toast.success("Signup Successful");

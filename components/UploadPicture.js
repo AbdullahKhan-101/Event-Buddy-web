@@ -6,6 +6,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Head from "next/head";
 import axios from "axios";
+import { baseUrl } from "../config/utils";
 
 const UploadPicture = () => {
   const router = useRouter();
@@ -40,16 +41,12 @@ const UploadPicture = () => {
     const formData = new FormData();
     formData.append("file", image);
     try {
-      let fata = await axios.post(
-        "http://54.144.168.52:3000/media/upload",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            authorization: JWT,
-          },
-        }
-      );
+      let fata = await axios.post(`${baseUrl}media/upload`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          authorization: JWT,
+        },
+      });
       // console.log(fata?.data.Status, "api payload");
       if (fata?.data.Status == 200) {
         localStorage.setItem(

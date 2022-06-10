@@ -21,6 +21,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { HomeActions } from "../store/actions";
 import Geocode from "react-geocode";
 import axios from "axios";
+import { baseUrl } from "../config/utils";
 const AcceptInvite = () => {
   const [isOpen, setIsOpen] = useRecoilState(acceptInviteModal);
   const [jwt, setJwt] = useState();
@@ -88,7 +89,7 @@ const AcceptInvite = () => {
     const JWT = localStorage.getItem("JWTEventBuddy");
     try {
       let fata = await axios.put(
-        `http://54.144.168.52:3000/invitation/${id}/accept`,
+        `${baseUrl}invitation/${id}/accept`,
         {},
         {
           headers: {
@@ -108,7 +109,7 @@ const AcceptInvite = () => {
     const JWT = localStorage.getItem("JWTEventBuddy");
     try {
       let fata = await axios.put(
-        `http://54.144.168.52:3000/invitation/${id}/reject`,
+        `${baseUrl}invitation/${id}/reject`,
         {},
         {
           headers: {

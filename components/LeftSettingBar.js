@@ -8,6 +8,7 @@ import { useRecoilState } from "recoil";
 import Switch from "@mui/material/Switch";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
+import { baseUrl } from "../config/utils";
 const LeftSettingBar = () => {
   const router = useRouter();
   const label = { inputProps: { "aria-label": "Switch demo" } };
@@ -30,7 +31,7 @@ const LeftSettingBar = () => {
     const params = new URLSearchParams();
     params.append("AvailableForInvitation", boolean);
     try {
-      let fata = await axios.put("http://54.144.168.52:3000/user", params, {
+      let fata = await axios.put(`${baseUrl}user`, params, {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
           authorization: JWT,

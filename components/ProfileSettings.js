@@ -15,6 +15,7 @@ import { useRecoilState } from "recoil";
 import { loadingState } from "../atoms/modalAtom";
 import Loader from "./Loader";
 import axios from "axios";
+import { baseUrl } from "../config/utils";
 const ProfileSettings = () => {
   const [name, setName] = useState("");
   const [number, setNumber] = useState("");
@@ -48,7 +49,7 @@ const ProfileSettings = () => {
     await axios
       .get(
         `
-      http://54.144.168.52:3000/user/me`,
+        ${baseUrl}user/me`,
         {
           headers: {
             authorization: jwt,
@@ -80,16 +81,12 @@ const ProfileSettings = () => {
       const formData = new FormData();
       formData.append("file", selectedImage);
       try {
-        let fata = await axios.post(
-          "http://54.144.168.52:3000/media/upload",
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              authorization: JWT,
-            },
-          }
-        );
+        let fata = await axios.post(`${baseUrl}media/upload`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            authorization: JWT,
+          },
+        });
         // console.log(fata, "image response");
         if (fata?.data.Status == 200) {
           updateProfile(fata?.data?.Data?.Id);
@@ -111,7 +108,7 @@ const ProfileSettings = () => {
       params.append("MediaId", data);
 
       try {
-        let fata = await axios.put("http://54.144.168.52:3000/user", params, {
+        let fata = await axios.put(`${baseUrl}user`, params, {
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
             authorization: JWT,
@@ -138,7 +135,7 @@ const ProfileSettings = () => {
       params.append("UserName", name);
 
       try {
-        let fata = await axios.put("http://54.144.168.52:3000/user", params, {
+        let fata = await axios.put(`${baseUrl}user`, params, {
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
             authorization: JWT,
@@ -162,7 +159,7 @@ const ProfileSettings = () => {
 
       params.append("About", description);
       try {
-        let fata = await axios.put("http://54.144.168.52:3000/user", params, {
+        let fata = await axios.put(`${baseUrl}user`, params, {
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
             authorization: JWT,
@@ -186,7 +183,7 @@ const ProfileSettings = () => {
       const params = new URLSearchParams();
       params.append("PhoneNumber", number);
       try {
-        let fata = await axios.put("http://54.144.168.52:3000/user", params, {
+        let fata = await axios.put(`${baseUrl}user`, params, {
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
             authorization: JWT,
@@ -211,7 +208,7 @@ const ProfileSettings = () => {
       params.append("UserName", name);
       params.append("PhoneNumber", number);
       try {
-        let fata = await axios.put("http://54.144.168.52:3000/user", params, {
+        let fata = await axios.put(`${baseUrl}user`, params, {
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
             authorization: JWT,
@@ -238,7 +235,7 @@ const ProfileSettings = () => {
       params.append("PhoneNumber", number);
       params.append("About", description);
       try {
-        let fata = await axios.put("http://54.144.168.52:3000/user", params, {
+        let fata = await axios.put(`${baseUrl}user`, params, {
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
             authorization: JWT,
@@ -267,7 +264,7 @@ const ProfileSettings = () => {
       params.append("About", description);
       params.append("MediaId", data);
       try {
-        let fata = await axios.put("http://54.144.168.52:3000/user", params, {
+        let fata = await axios.put(`${baseUrl}user`, params, {
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
             authorization: JWT,

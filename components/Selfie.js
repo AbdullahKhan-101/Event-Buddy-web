@@ -12,7 +12,7 @@ import { ConstructionOutlined } from "@mui/icons-material";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
-
+import { baseUrl } from "../config/utils";
 const WIDTH = 500;
 const HEIGHT = 500;
 
@@ -99,16 +99,12 @@ const Selfie = () => {
     // console.log("--------->",file);
     const jwt = localStorage.getItem("JWTEventBuddy");
     try {
-      let fata = await axios.post(
-        "http://54.144.168.52:3000/media/upload",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            authorization: jwt,
-          },
-        }
-      );
+      let fata = await axios.post(`${baseUrl}media/upload`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          authorization: jwt,
+        },
+      });
       console.log(fata, "api payload");
       if (fata?.data?.Status == 200) {
         localStorage.setItem(

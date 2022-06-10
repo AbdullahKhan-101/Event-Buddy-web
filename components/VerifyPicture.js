@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { ChevronLeftIcon } from "@heroicons/react/outline";
 import Image from "next/image";
-import { imageBaseUrl } from "../config/utils";
+import { baseUrl, imageBaseUrl } from "../config/utils";
 import { route } from "next/dist/server/router";
 import axios from "axios";
 import Head from "next/head";
@@ -31,16 +31,12 @@ const VerifyPicture = () => {
     params.append("SelfieMediaId", selfieImage?.MediaId);
     params.append("SelfieMedia", selfieImage?.MediaId);
     params.append("MediaId", uploadedImage?.MediaId);
-    let verifyImage = await axios.put(
-      "http://54.144.168.52:3000/user",
-      params,
-      {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-          authorization: JWT,
-        },
-      }
-    );
+    let verifyImage = await axios.put(`${baseUrl}user`, params, {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        authorization: JWT,
+      },
+    });
     // console.log(verifyImage, "verifyImage payload");
     if (verifyImage?.data?.Status == 200) {
       router.push("/enableLocation");

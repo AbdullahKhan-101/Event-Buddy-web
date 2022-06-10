@@ -24,6 +24,7 @@ import moment from "moment";
 import GooglePlaces from "./Map/GoogePlaces";
 import Geocode from "react-geocode";
 import { ToastContainer, toast } from "react-toastify";
+import { baseUrl } from "../config/utils";
 
 const SendMessage = () => {
   const [isOpen, setIsOpen] = useRecoilState(inviteModal);
@@ -62,7 +63,7 @@ const SendMessage = () => {
       };
       // console.log(payload, "api payload");
       try {
-        let fata = await axios.post("http://54.144.168.52:3000/chat", payload, {
+        let fata = await axios.post(`${baseUrl}chat`, payload, {
           headers: {
             "Content-Type": "application/json",
             authorization: jwt,

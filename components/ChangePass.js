@@ -3,6 +3,7 @@ import { ChevronLeftIcon } from "@heroicons/react/outline";
 import { useRouter } from "next/router";
 import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
+import { baseUrl } from "../config/utils";
 const ChangePass = () => {
   const [oldPass, setOldPass] = useState("");
   const [newPass, setNewPass] = useState("");
@@ -18,7 +19,7 @@ const ChangePass = () => {
         params.append("OldPassword", oldPass);
         params.append("Password", newPass);
         try {
-          let fata = await axios.put("http://54.144.168.52:3000/user", params, {
+          let fata = await axios.put(`${baseUrl}user`, params, {
             headers: {
               "Content-Type": "application/x-www-form-urlencoded",
               authorization: JWT,

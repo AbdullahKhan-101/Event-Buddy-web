@@ -12,7 +12,7 @@ import { useSpring, animated } from "react-spring";
 import GooglePlaces from "./Map/GoogePlaces";
 import Geocode from "react-geocode";
 import { ToastContainer, toast } from "react-toastify";
-
+import { baseUrl } from "../config/utils";
 const Invite = () => {
   const [isOpen, setIsOpen] = useRecoilState(inviteModal);
   const [personDetails, setPersonDetails] = useRecoilState(usersDataModal);
@@ -54,16 +54,12 @@ const Invite = () => {
       };
       // console.log(payload, "api payload");
       try {
-        let fata = await axios.post(
-          "http://54.144.168.52:3000/invitation",
-          payload,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              authorization: userId?.token,
-            },
-          }
-        );
+        let fata = await axios.post(`${baseUrl}invitation`, payload, {
+          headers: {
+            "Content-Type": "application/json",
+            authorization: userId?.token,
+          },
+        });
         // console.log(fata, "api payload");
         setIsOpen("close");
       } catch (error) {}
