@@ -262,7 +262,7 @@ const LeftSettingBar = () => {
                   onClick={() => {
                     router.push("/login");
                     localStorage.setItem("user", "");
-                    localStorage.setItem("JWT", "");
+                    localStorage.setItem("JWTEventBuddy", "");
                   }}
                 >
                   <h1 className="font-bold text-[#0E134F]">Logout</h1>

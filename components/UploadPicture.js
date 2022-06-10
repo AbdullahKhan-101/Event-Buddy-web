@@ -65,13 +65,6 @@ const UploadPicture = () => {
         setTimeout(() => {
           router.push("/selfie");
         }, 1500);
-        // } else if (!fata?.data?.Data?.User?.SelfieMedia) {
-        //   router.push("/selfie");
-        // } else {
-        //   localStorage.setItem("user", fata?.data?.Data?.User);
-        //   localStorage.setItem("JWT", fata?.data?.Data?.Token);
-        //   router.push("/home");
-        // }
       } else {
         // toast.error(fata?.data?.Message);
         // console.log(fata, "api payload");

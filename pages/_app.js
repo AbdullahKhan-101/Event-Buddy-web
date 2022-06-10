@@ -4,7 +4,7 @@ import { store } from "../store/index";
 import { RecoilRoot } from "recoil";
 import { useEffect } from "react";
 import { socket, setSocketRef } from "../config/utils";
-import io from "socket.io-client";
+// import io from "socket.io-client";
 import { SOCKET_URL } from "../config/utils";
 // import { configureStore } from "@reduxjs/toolkit";
 // import userReducer from "../slices/userReducer";
@@ -17,15 +17,15 @@ import { SOCKET_URL } from "../config/utils";
 function MyApp({ Component, pageProps }) {
   // console.log("=======>Render");
   useEffect(() => {
-    UserDetails()
-      .then((res) => {
-        console.log("=======>Render1", res);
-        const jwt = localStorage.getItem("JWTEventBuddy");
-        socketConnection({ id: res?.user?.Id, token: jwt });
-      })
-      .catch((e) => {
-        // console.log("=======>User Not Login", e);
-      });
+    // UserDetails()
+    //   .then((res) => {
+    //     console.log("=======>Render1", res);
+    //     const jwt = localStorage.getItem("JWTEventBuddy");
+    //     socketConnection({ id: res?.user?.Id, token: jwt });
+    //   })
+    //   .catch((e) => {
+    //     // console.log("=======>User Not Login", e);
+    //   });
   }, []);
   const socketConnection = (data) => {
     let socket = io(

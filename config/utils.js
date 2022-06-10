@@ -1,4 +1,3 @@
-import IO from "socket.io-client";
 export const baseUrl = "http://54.144.168.52:3000/";
 export const SOCKET_URL = "http://54.144.168.52:3000/";
 const actorId = "64";

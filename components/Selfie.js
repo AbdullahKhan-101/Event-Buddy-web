@@ -115,15 +115,7 @@ const jwt = localStorage.getItem('JWT')
          router.push('/verifyPicture')
           closeCamera();
         
-          // if (!fata?.data?.Data?.User?.Media) {
-          // router.push("/uploadPicture");
-          // } else if (!fata?.data?.Data?.User?.SelfieMedia) {
-          //   router.push("/selfie");
-          // } else {
-          //   localStorage.setItem("user", fata?.data?.Data?.User);
-          //   localStorage.setItem("JWT", fata?.data?.Data?.Token);
-          //   router.push("/home");
-          // }
+     
         } else {
           // toast.error(fata?.data?.Message);
           // console.log(fata, "api payload");
