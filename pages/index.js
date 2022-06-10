@@ -15,6 +15,7 @@ export default function Home() {
     loged();
   }, []);
   const loged = () => {
+    console.log("--->index.js");
     setTimeout(() => {
       if (!localStorage.getItem("JWTEventBuddy")) {
         router.push("/login");

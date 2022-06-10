@@ -5,11 +5,14 @@ import { useRouter } from "next/router";
 const Signin = () => {
   const router = useRouter();
   useEffect(() => {
+    console.log("--->login.js-->useEffect");
     const JWT = localStorage.getItem("JWTEventBuddy");
     if (JWT) {
       router.push("/home");
     }
   }, []);
+
+  console.log("--->login.js");
   return (
     <div>
       <Login />
