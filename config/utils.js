@@ -1,4 +1,5 @@
-export const baseUrl = "http://54.144.168.52:3000/";
+// export const baseUrl = "http://54.144.168.52:3000/";
+export const baseUrl = "http://api.theeventbuddy.com/";
 export const SOCKET_URL = "http://54.144.168.52:3000/";
 const actorId = "64";
 const authToken = "fa1411c4-ac3e-4f96-8692-d3279177e296";
