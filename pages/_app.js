@@ -13,6 +13,7 @@ import { useEffect } from "react";
 // });
 
 function MyApp({ Component, pageProps }) {
+  console.log("------------------->Started");
   return (
     <Provider store={store}>
       <RecoilRoot>
