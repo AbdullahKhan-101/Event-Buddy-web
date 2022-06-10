@@ -42,11 +42,13 @@ const RequestInvitionComponent = () => {
   };
 
   useEffect(() => {
+    loadingTrue();
+  }, []);
+  const loadingTrue = () => {
     SentInvitations();
     setActive("sent");
     accepted();
-  }, []);
-
+  };
   const SentInvitations = () => {
     setActive("sent");
     setState("accepted");

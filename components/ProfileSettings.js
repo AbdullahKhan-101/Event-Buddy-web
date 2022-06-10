@@ -37,9 +37,12 @@ const ProfileSettings = () => {
     };
   };
   useEffect(() => {
-    setLoading(true);
     getUserDetailsApi();
+    loadingTrue();
   }, []);
+  const loadingTrue = () => {
+    setLoading(true);
+  };
   const getUserDetailsApi = async () => {
     const jwt = localStorage.getItem("JWTEventBuddy");
     await axios

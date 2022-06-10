@@ -149,6 +149,9 @@ const jwt = localStorage.getItem('JWTEventBuddy')
       }
   };
   useEffect(() => {
+    loadingTrue();
+  }, []);
+  const loadingTrue = () => {
     setLoading(true);
     UserDetails()
       .then((res) => {
@@ -161,8 +164,7 @@ const jwt = localStorage.getItem('JWTEventBuddy')
       })
       .catch((e) => {});
     dispatch(HomeActions.InvitationMessages());
-  }, []);
-
+  };
   const UserDetails = async () => {
     const User = await localStorage.getItem("user");
     const user = JSON.parse(User);

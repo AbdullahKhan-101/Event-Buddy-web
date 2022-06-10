@@ -15,8 +15,11 @@ const LeftSettingBar = () => {
   const [user, setUser] = useState();
   useEffect(() => {
     getUserDetails();
-    setIsOpenN(false);
+    loadingTrue();
   }, []);
+  const loadingTrue = () => {
+    setIsOpenN(false);
+  };
   const getUserDetails = async () => {
     const User = await localStorage.getItem("user");
     const user = JSON.parse(User);

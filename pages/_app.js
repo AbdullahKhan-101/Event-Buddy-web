@@ -3,7 +3,6 @@ import { Provider } from "react-redux";
 import { store } from "../store/index";
 import { RecoilRoot } from "recoil";
 import { useEffect } from "react";
-import { socket, setSocketRef } from "../config/utils";
 
 // import { configureStore } from "@reduxjs/toolkit";
 // import userReducer from "../slices/userReducer";

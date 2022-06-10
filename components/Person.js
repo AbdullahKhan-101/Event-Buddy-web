@@ -39,11 +39,13 @@ const Person = ({ active }) => {
   const userById = useSelector((state) => state?.Home?.UserById);
   const userReviews = useSelector((state) => state?.Home?.User_reviews);
   useEffect(() => {
+    loadingTrue();
+  }, []);
+  const loadingTrue = () => {
     dispatch(HomeActions.UserById(usersData?.Id));
     dispatch(HomeActions.UserReviews(usersData?.Id));
     setIsOpenN(false);
-  }, []);
-
+  };
   return (
     <div>
       <Head>

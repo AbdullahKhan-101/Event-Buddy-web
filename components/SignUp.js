@@ -89,10 +89,12 @@ const SignUp = () => {
   // };
 
   useEffect(() => {
+    loadingTrue();
+  }, []);
+  const loadingTrue = () => {
     setSignupSuccess(SignupResponse);
     dispatch(HomeActions.UserProfile());
-  }, []);
-
+  };
   return (
     <div className="bg-white">
       <Head>

@@ -20,10 +20,13 @@ const Search = () => {
     getLocation();
   }, [lat]);
   useEffect(() => {
+    loadingTrue();
+  }, []);
+  const loadingTrue = () => {
     setTimeout(() => {
       setPlacesOpen(true);
     }, 5000);
-  }, []);
+  };
   const getLocation = async () => {
     const Latitude = await localStorage.getItem("userLatitude");
     const userLatitude = JSON.parse(Latitude);

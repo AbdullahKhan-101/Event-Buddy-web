@@ -3,10 +3,14 @@ import Home from "../components/Home";
 import { useRouter } from "next/router";
 import io from "socket.io-client";
 import { SOCKET_URL } from "../config/utils";
+import { setSocketRef } from "../config/utils";
 const Homee = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const router = useRouter();
   useEffect(() => {
+    loged();
+  }, []);
+  const loged = () => {
     const JWT = localStorage.getItem("JWTEventBuddy");
     if (!JWT) {
       router.push("/login");
@@ -22,8 +26,7 @@ const Homee = () => {
           // console.log("=======>User Not Login", e);
         });
     }
-  }, []);
-
+  };
   const socketConnection = (data) => {
     let socket = io(
       `${SOCKET_URL}?actorId=${data?.id}&authorization=${data?.token}`,

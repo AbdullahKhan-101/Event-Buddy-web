@@ -43,17 +43,19 @@ const Notifications = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const [notificationSuccess, setNotificationSuccess] = useState([]);
-  setNotificationsCount(notificationsData);
+  // setNotificationsCount(notificationsData);
 
   useEffect(() => {
+    loadingTrue();
+  }, []);
+  const loadingTrue = () => {
     AOS.init();
     dispatch(HomeActions.Notifications());
 
     setTimeout(() => {
       setNotificationsCount(notificationsData);
     }, 1000);
-  }, []);
-
+  };
   return (
     <div>
       {isOpen && (

@@ -26,11 +26,14 @@ const Home = () => {
   const RealData = discoverUsers?.data?.Data?.Users;
 
   useEffect(() => {
-    setLoading(true);
+    loadingTrue();
     getLocation();
     dispatch(HomeActions.UserProfile());
     dispatch(HomeActions.DiscoverUsers());
   }, []);
+  const loadingTrue = () => {
+    setLoading(true);
+  };
   if (discoverUsers?.data?.Data?.Users.length > 0) {
     setTimeout(() => {
       setLoading(false);
