@@ -44,8 +44,8 @@ const Login = () => {
       };
       try {
         let fata = await axios.post(`${baseUrl}user/login`, payload);
-
-        if (fata?.data?.Status == 200) {
+        console.log("fata", fata);
+        if (fata?.data?.Data?.Status == 200) {
           localStorage.setItem("JWTEventBuddy", fata?.data?.Data?.Token);
 
           if (fata?.data?.Data?.User?.Media == null) {
