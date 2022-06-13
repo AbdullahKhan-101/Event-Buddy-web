@@ -1,10 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import PrivacyPolicyM from "../components/PrivacyPolicyM";
 import Image from "next/image";
-import { useRouter } from "next/router";
-const privacyPolicys = () => {
-  const router = useRouter();
 
+const privacyPolicys = () => {
   return (
     <div>
       <PrivacyPolicyM />
