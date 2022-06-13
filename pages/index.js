@@ -22,7 +22,7 @@ export default function Home() {
       } else {
         router.push("/home");
       }
-    }, 3000);
+    }, 1500);
   };
   return (
     <div>
