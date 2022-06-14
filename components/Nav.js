@@ -73,7 +73,7 @@ const Nav = ({ active }) => {
                 }  bg-white cursor-pointer opacity-100`}
               >
                 <div className="relative w-[18px] mr-1 h-[18px]">
-                  <img
+                  <Image
                     src={`${
                       active === "Home" ? "/activeHome.png" : "/home.png"
                     } `}
