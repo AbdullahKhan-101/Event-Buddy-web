@@ -368,7 +368,7 @@ const Messeges = () => {
 
             {chatItem && (
               <div
-                className="  flex-grow  bg-white hidden md:inline-block"
+                className="flex-grow hidden bg-white md:inline-block"
                 style={{
                   marginLeft: chatItem ? "50px" : "0px",
                   height: "85vh",
@@ -377,7 +377,7 @@ const Messeges = () => {
                 }}
               >
                 <div
-                  className=" flex-grow  bg-white "
+                  className="flex-grow bg-white "
                   style={{
                     height: "85vh",
                   }}
