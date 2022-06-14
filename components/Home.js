@@ -35,9 +35,6 @@ const Home = () => {
     setLoading(true);
   };
   if (discoverUsers?.data?.Data?.Users.length > 0) {
-    setTimeout(() => {
-      setLoading(false);
-    }, 500);
   }
   const getLocation = async () => {
     const Latitude = await localStorage.getItem("userLatitude");
