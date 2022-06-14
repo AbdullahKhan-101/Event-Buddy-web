@@ -52,7 +52,7 @@ const EnableLocation = () => {
           </span>
           <span className="flex-grow">Enable Location</span>
         </h1>
-        <div className="relative mx-4 text-center  mt-20   w-[100%]  h-[240px] md:h-[390px]">
+        <div className="relative text-center  mt-20   w-[100%] max-w-[500px] mx-auto  h-[240px] md:h-[390px]">
           <Image
             src="/location.png"
             layout="fill"

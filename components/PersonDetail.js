@@ -92,7 +92,7 @@ const PersonDetail = ({ img, name, position, about, data }) => {
                   More Reviews
                 </button>
                 {data?.from == "notification" ? (
-                  <p
+                  <span
                     onClick={() => {
                       if (user?.IsVerified == true) {
                         setSMID(clickNotificationData);
@@ -113,9 +113,9 @@ const PersonDetail = ({ img, name, position, about, data }) => {
                       />
                     </div>
                     Send Message
-                  </p>
+                  </span>
                 ) : (
-                  <p
+                  <span
                     onClick={() => {
                       if (user?.IsVerified == true) {
                         setIsOpen("open");
@@ -135,7 +135,7 @@ const PersonDetail = ({ img, name, position, about, data }) => {
                       />
                     </div>
                     Send Invitaion
-                  </p>
+                  </span>
                 )}
               </div>
             </div>

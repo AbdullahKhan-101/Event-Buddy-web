@@ -159,7 +159,7 @@ const Search = () => {
         {openSL && (
           <>
             {" "}
-            <p className="flex items-center mx-1 mt-4 mb-2 cursor- pointer md:mt-6">
+            <span className="flex items-center mx-1 mt-4 mb-2 cursor- pointer md:mt-6">
               <div className="relative w-[28px] mr-3 h-[28px]  text-[#E9813B] ">
                 <Image
                   src="/send.png"
@@ -175,7 +175,7 @@ const Search = () => {
               >
                 Save Location
               </span>
-            </p>
+            </span>
             <p className="flex items-center mx-1 mt-4 mb-2 cursor- pointer md:mt-6">
               <span
                 className="text-[#42526E] font-normall font-[16px] cursor-pointer"
@@ -186,7 +186,7 @@ const Search = () => {
             </p>
           </>
         )}
-        <p className="flex items-center mx-1 mt-4 mb-2 cursor- pointer md:mt-6">
+        <span className="flex items-center mx-1 mt-4 mb-2 cursor- pointer md:mt-6">
           <div className="relative w-[28px] mr-3 h-[28px]  text-[#E9813B] ">
             <Image
               src="/send.png"
@@ -202,7 +202,7 @@ const Search = () => {
           >
             Use Your Current Location
           </span>
-        </p>
+        </span>
       </div>
       <div className="relative">
         {placesOpen ? (

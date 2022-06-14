@@ -75,8 +75,8 @@ const Nav = ({ active }) => {
                 <div className="relative w-[18px] mr-1 h-[18px]">
                   <Image
                     src={`${
-                      active === "Home" ? "/activeHome.png" : "/home.png"
-                    } `}
+                      active === "settings" ? "/activeGrid.png" : "/grid.png"
+                    }`}
                     alt="infoImg"
                     layout="fill"
                     objectfit="contain"
@@ -158,3 +158,6 @@ const Nav = ({ active }) => {
 };
 
 export default Nav;
+// src={`${
+//   active === "Home" ? "/activeHome.png" : "/home.png"
+// } `}

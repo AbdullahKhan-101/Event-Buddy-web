@@ -417,7 +417,7 @@ const Messeges = () => {
                       </h1>
                     </div>
                     <hr className="w-[100%] mx-auto border-gray-200" />
-                    <div className="p-5">
+                    <div className="p-5 ">
                       <div className="border-[#E77334] border p-3 rounded-lg bg-white shadow-md">
                         <p className="flex items-center ">
                           <CalendarIcon className="w-4 h-4 text-[#ED974B]" />
@@ -433,7 +433,7 @@ const Messeges = () => {
                         </p>
                       </div>
 
-                      <div className="pt-8 pb-4 scrollbar-hide max-h-[450px] overflow-y-scroll ">
+                      <div className="pt-8 pb-2 scrollbar-hide max-h-[400px] relative overflow-y-scroll ">
                         {chat?.length > 0 ? (
                           <div>
                             {chat?.map((item) => {
@@ -604,7 +604,7 @@ const Messeges = () => {
                         )}
                         <AlwaysScrollToBottom />
                       </div>
-                      <div className="flex justify-between mb-6 md:mb-1">
+                      <div className="z-[100000] flex justify-between  md:mb-2">
                         <div className="flex items-center flex-grow px-4 bg-[#F2F2F2] py-2 rounded-md mr-3">
                           <input
                             type="text"
