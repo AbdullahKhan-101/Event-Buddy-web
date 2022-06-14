@@ -174,7 +174,7 @@ const Messeges = () => {
   if (invitationMessages?.data?.Data?.length >= 0) {
     setTimeout(() => {
       setLoading(false);
-    }, 3000);
+    }, 500);
   }
   const getOldChatFromApi = async (id) => {
     setLoading(true);
@@ -284,7 +284,7 @@ const Messeges = () => {
           <div className="p-2 mx-auto mt-0 max-w-7xl md:mt-5 "></div>
           <div className="flex flex-wrap mx-auto justify-left max-w-7xl ">
             <div
-              className="flex-grow md:max-w-[410px] bg-white  hidden md:inline-block"
+              className="flex-grow md:max-w-[410px] bg-white  hidden md:inline-block "
               style={{
                 height: "85vh",
                 flex: 0.5,
@@ -368,7 +368,7 @@ const Messeges = () => {
 
             {chatItem && (
               <div
-                className="flex-grow hidden bg-white md:inline-block"
+                className="relative flex-grow hidden bg-white md:inline-block"
                 style={{
                   marginLeft: chatItem ? "50px" : "0px",
                   height: "85vh",
@@ -604,7 +604,7 @@ const Messeges = () => {
                         )}
                         <AlwaysScrollToBottom />
                       </div>
-                      <div className="z-[100000] flex justify-between  md:mb-2">
+                      <div className="z-[100000] flex justify-between absolute flex-grow md:mb-2 w-[95%] xl:bottom-0 bottom-1">
                         <div className="flex items-center flex-grow px-4 bg-[#F2F2F2] py-2 rounded-md mr-3">
                           <input
                             type="text"

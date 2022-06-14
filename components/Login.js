@@ -203,7 +203,7 @@ const Login = () => {
           </div>
         </div>
         <p className="mx-4 mt-3 mb-6 text-sm text-gray-400 sm:text-[16px] sm:text-center md:mt-8 font-normall">
-          <span>Forgot Password?</span>
+          <span>Forgot Password? </span>
           <button
             onClick={() => setShowModal(true)}
             className="text-[#E9813B] font-normall cursor-pointer"

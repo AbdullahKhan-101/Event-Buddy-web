@@ -93,11 +93,11 @@ const UploadPicture = () => {
 
         {/* camera here */}
         {!selectedFile && (
-          <div className="sm:mt-16 bg-gray-100 border sm:w-[70%] mx-auto  rounded-full sm:py-[114px] px-2 w-[225px] py-[80px] mt-12">
-            <CameraIcon
-              onClick={() => filePickerRef.current.click()}
-              className="mx-auto text-center text-gray-300 cursor-pointer h-14 sm:h-16 w-18"
-            />
+          <div
+            onClick={() => filePickerRef.current.click()}
+            className="sm:mt-16 bg-gray-100 border sm:w-[70%] cursor-pointer mx-auto  rounded-full sm:py-[114px] px-2 w-[225px] py-[80px] mt-12"
+          >
+            <CameraIcon className="mx-auto text-center text-gray-300 cursor-pointer h-14 sm:h-16 w-18" />
             <input
               ref={filePickerRef}
               type="file"

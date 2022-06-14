@@ -73,7 +73,7 @@ const ProfileSettings = () => {
     // setUser(user?.user);
     setTimeout(() => {
       setLoading(false);
-    }, 3000);
+    }, 500);
   };
   const onSave = async (image) => {
     const JWT = localStorage.getItem("JWTEventBuddy");

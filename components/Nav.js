@@ -21,7 +21,9 @@ const Nav = ({ active }) => {
   );
   // console.log("-------------->notificationsCount", notificationsCount);
   useEffect(() => {
-    getNotificationCount();
+    setTimeout(() => {
+      getNotificationCount();
+    }, 3000);
   }, []);
 
   const getNotificationCount = () => {
@@ -75,7 +77,7 @@ const Nav = ({ active }) => {
                 <div className="relative w-[18px] mr-1 h-[18px]">
                   <Image
                     src={`${
-                      active === "settings" ? "/activeGrid.png" : "/grid.png"
+                      active === "Home" ? "/activeHome.png" : "/home.png"
                     }`}
                     alt="infoImg"
                     layout="fill"

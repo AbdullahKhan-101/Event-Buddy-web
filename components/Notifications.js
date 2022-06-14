@@ -80,14 +80,27 @@ const Notifications = () => {
                     className="flex items-center p-2 py-4 mt-1 bg-white rounded-lg shadow-md cursor-pointer md:-ml-2 md:shadow-none"
                     style={{ borderBottom: "1px solid  #DCDCDC" }}
                   >
-                    <div className="relative flex-grow-0 sm:mt-0 mt-0  max-w-[100%] w-[55px] h-[55px]  min-w-[55px]">
-                      <Image
-                        src={imageBaseUrl + item?.Meta?.User?.SelfieMedia?.Path}
-                        layout="fill"
-                        objectfit="contain"
-                        className="rounded-xl"
-                      />
-                    </div>
+                    {item?.Meta?.User?.SelfieMedia?.Path ? (
+                      <div className="relative flex-grow-0 sm:mt-0 mt-0  max-w-[100%] w-[55px] h-[55px]  min-w-[55px]">
+                        <Image
+                          src={
+                            imageBaseUrl + item?.Meta?.User?.SelfieMedia?.Path
+                          }
+                          layout="fill"
+                          objectfit="contain"
+                          className="rounded-xl"
+                        />
+                      </div>
+                    ) : (
+                      <div className="relative flex-grow-0 sm:mt-0 mt-0  max-w-[100%] w-[55px] h-[55px]  min-w-[55px]">
+                        <Image
+                          src={"/appicon.png"}
+                          layout="fill"
+                          objectfit="contain"
+                          className="rounded-xl"
+                        />
+                      </div>
+                    )}
                     <div className="flex items-center flex-grow ml-4 md:ml-4">
                       <div className="flex-grow">
                         <p className="mb-1 text-sm text-[#E9813B]  min-w-[50px]">
