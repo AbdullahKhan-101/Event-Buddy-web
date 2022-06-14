@@ -67,10 +67,12 @@ const ProfileSettings = () => {
         getUserDetails();
       });
   };
+
   const getUserDetails = async () => {
     const User = await localStorage.getItem("user");
     const user = JSON.parse(User);
     // setUser(user?.user);
+    setLoading(false);
   };
   const onSave = async (image) => {
     const JWT = localStorage.getItem("JWTEventBuddy");

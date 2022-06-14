@@ -172,6 +172,7 @@ const Messeges = () => {
   };
 
   if (invitationMessages?.data?.Data?.length >= 0) {
+    setLoading(false);
   }
   const getOldChatFromApi = async (id) => {
     setLoading(true);
